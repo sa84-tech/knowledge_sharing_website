@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+ 
+{% block title %}Home{% endblock %}
+ 
+{% block content %}
+<div class="articles">
+    {% for post in posts %}
+    <article>
+        <h3><a href="http://127.00.00.1:8000/post/{{post.id}}">{{post.title}}</a></h3>
+    </article>
+    <hr>
+    {% endfor %}
+</div>
+{% endblock %}
