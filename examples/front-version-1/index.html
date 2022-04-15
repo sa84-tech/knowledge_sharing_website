@@ -1,247 +1,319 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<link rel="stylesheet" href="css/main.min.css" />
-		<title>Document</title>
-	</head>
-	<body>
-		<header>
-			<div class="px-3 py-2 bg-primary text-light">
-				<div class="container">
-					<div
-						class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start"
-					>
-						<a
-							href="/"
-							class="d-flex col-12 col-lg-auto align-items-center my-2 my-lg-0 me-lg-auto text-light text-decoration-none fs-1 fw-bold"
-						>
-							KWS
-						</a>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/main.min.css" />
+    <title>Document</title>
+  </head>
+  <body class="">
+    <header class="">
+      <div class="px-3 py-2 bg-primary text-light shadow-sm">
+        <div class="container">
+          <div
+            class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start"
+          >
+            <a
+              href="/"
+              class="d-flex col-12 col-lg-auto align-items-center my-2 my-lg-0 me-lg-auto text-light text-decoration-none fs-1 fw-bold"
+            >
+              KSW
+            </a>
 
-						<form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-4">
-							<div class="input-group">
-								<input
-									type="search"
-									class="form-control form-control-dark border-end-0"
-									placeholder="Поиск..."
-									aria-label="Search"
-								/>
-								<button
-									class="btn btn-outline-light border-start-0"
-									type="button"
-									id="button-addon2"
-								>
-									<i class="fa-solid fa-magnifying-glass"></i>
-								</button>
-							</div>
-						</form>
+            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-5">
+              <div class="input-group">
+                <input
+                  type="search"
+                  class="form-control form-control-dark border-end-0"
+                  placeholder="Поиск..."
+                  aria-label="Search"
+                />
+                <button
+                  class="btn btn-outline-light border-start-0"
+                  type="button"
+                  id="button-addon2"
+                >
+                  <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+              </div>
+            </form>
 
-						<div class="h-100 dropdown text-end">
-							<a
-								href="#"
-								class="d-flex align-items-center text-light text-decoration-none dropdown-toggle text-small"
-								id="dropdownUser1"
-								data-bs-toggle="dropdown"
-								aria-expanded="false"
-							>
-								<i class="fa-solid fa-user fa-2xl"></i>
-							</a>
-							<ul
-								class="dropdown-menu text-small"
-								aria-labelledby="dropdownUser1"
-							>
-								<li>
-									<a class="dropdown-item" href="#"
-										>Личный кабинет</a
-									>
-								</li>
-								<li>
-									<a class="dropdown-item" href="#"
-										>Настройки</a
-									>
-								</li>
-								<li>
-									<a class="dropdown-item" href="#"
-										>Профиль</a
-									>
-								</li>
-								<li>
-									<hr class="dropdown-divider" />
-								</li>
-								<li>
-									<a class="dropdown-item" href="#">Выход</a>
-								</li>
-							</ul>
-						</div>
-					</div>
-				</div>
-			</div>
+            <div class="h-100 dropdown text-end">
+              <a
+                href="#"
+                class="d-flex align-items-center text-light text-decoration-none dropdown-toggle text-small"
+                id="dropdownUser1"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <i class="fa-solid fa-user fa-xl"></i>
+              </a>
+              <ul
+                class="dropdown-menu text-small"
+                aria-labelledby="dropdownUser1"
+              >
+                <li>
+                  <a class="dropdown-item" href="#">Личный кабинет</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="#">Настройки</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="#">Профиль</a>
+                </li>
+                <li>
+                  <hr class="dropdown-divider" />
+                </li>
+                <li>
+                  <a class="dropdown-item" href="#">Выход</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
 
-			<div
-				class="px-3 py-2 border-bottom bg-white position-sticky"
-				style="top: 2rem"
-			>
-				<div class="container d-flex flex-wrap justify-content-center">
-					<ul
-						class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0"
-					>
-						<li>
-							<a href="#" class="nav-link text-secondary">
-								Дизайн
-							</a>
-						</li>
-						<li>
-							<a href="#" class="nav-link text-secondary">
-								Веб-разработка
-							</a>
-						</li>
-						<li>
-							<a href="#" class="nav-link text-secondary">
-								Мобильная разработка
-							</a>
-						</li>
-						<li>
-							<a href="#" class="nav-link text-secondary">
-								Маркетинг
-							</a>
-						</li>
-					</ul>
-				</div>
-			</div>
-		</header>
-		<main class="bg-light vh-100">
-			<div class="container">
-				<div class="row pt-4">
-					<div class="col-md-8">
-						<div
-							class="row g-0 bg-white overflow-hidden flex-md-row mb-4 h-md-250 position-relative"
-						>
-							<div
-								class="col p-4 d-flex flex-column position-static"
-							>
-								<strong class="d-inline-block mb-2 text-primary"
-									>Дизайн</strong
-								>
-								<h3 class="mb-0">Заголовок поста</h3>
-								<div class="mb-1 text-muted">Мар 11</div>
-								<p class="mb-auto">
-									Lorem ipsum dolor sit amet consectetur
-									adipisicing elit. Accusantium vero provident
-									cumque adipisci saepe laudantium molestias,
-									iure magnam ab hic laborum in nobis
-									voluptatibus eum fuga quaerat esse dolorum
-									error non nisi. Numquam aliquam omnis
-									expedita eligendi? Sapiente excepturi autem
-									quos quidem aperiam modi fugit natus
-									voluptates eos dolorem. Aspernatur!
-								</p>
-								<a href="#" class="stretched-link"
-									>Продолжить чтение...</a
-								>
-							</div>
-							<div class="col-auto d-none d-lg-block">
-								<img
-									src="https://source.unsplash.com/random/200x250"
-									class="img-fluid"
-									alt="..."
-								/>
-								<!-- <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg> -->
-							</div>
-						</div>
+    <main class="bg-gray min-vh-100 pb-5">
+      <div class="px-3 py-0 border-bottom bg-white sticky-top shadow">
+        <div class="container d-flex flex-wrap justify-content-center">
+          <ul
+            class="nav nav-pills col-12 col-lg-auto my-2 justify-content-center my-md-0 text-secondary sticky-top"
+          >
+            <li class="nav-item">
+              <a href="#" class="nav-link"> Дизайн </a>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link"> Веб-разработка </a>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link"> Мобильная разработка </a>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link"> Маркетинг </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="container">
+        <div class="row pt-4">
+          <div class="col-md-9">
+            <div
+              class="row g-0 bg-white overflow-hidden flex-md-row mb-4 h-md-250 position-relative shadow"
+            >
+              <div class="col p-3 d-flex flex-column position-static">
+                <a href="#" class="nav-link p-0"
+                  ><strong class="d-inline-block mb-2 text-primary"
+                    >Дизайн</strong
+                  >
+                </a>
+                <h3 class="mb-1">
+                  <a href="#" class="nav-link p-0 text-secondary"
+                    >Заголовок поста</a
+                  >
+                </h3>
+                <div class="d-flex mb-2 text-small">
+                  <span class="author_info text-muted fw-bold me-2"
+                    ><a href="#" class="nav-link p-0 text-secondary text-muted"
+                      >Федя Лычков</a
+                    ></span
+                  >
+                  <span class="date_info text-muted">Мар 12 в 09:08</span>
+                </div>
+                <p class="mb-auto">
+                  Lorem, ipsum dolor sit amet consectetur adipisicing elit. Vel
+                  quisquam reprehenderit cumque totam, unde quos facere pariatur
+                  officiis eligendi iure, ullam odit possimus neque quasi dicta
+                  non perspiciatis eos nemo.
+                </p>
+                <div class="my-3">
+                  <a
+                    class="btn btn-outline-primary btn-sm d-inline"
+                    type="button"
+                    href="#"
+                  >
+                    Далее...
+                  </a>
+                </div>
+                <div class="text-muted">
+                  <span class="me-3"><i class="fa-solid fa-eye"></i> 2.4k</span>
+                  <span class="me-3"
+                    ><i class="fa-solid fa-comment"></i> 62</span
+                  >
+                  <span class="me-3"
+                    ><i class="fa-solid fa-thumbs-up"></i> 568</span
+                  >
+                </div>
+              </div>
+              <div class="col-auto d-none d-lg-block">
+                <img
+                  src="https://source.unsplash.com/random/219x300"
+                  class="img-fluid"
+                  alt="..."
+                />
+              </div>
+            </div>
 
-						<div
-							class="row g-0 bg-white overflow-hidden flex-md-row mb-4 h-md-250 position-relative"
-						>
-							<div
-								class="col p-4 d-flex flex-column position-static"
-							>
-								<strong
-									class="d-inline-block mb-2 text-primary"
-									>Маркетинг</strong
-								>
-								<h3 class="mb-0">Еще один пост</h3>
-								<div class="mb-1 text-muted">Мар 12</div>
-								<p class="card-text mb-auto">
-									Lorem ipsum, dolor sit amet consectetur
-									adipisicing elit. Reiciendis voluptatum
-									sapiente nostrum temporibus distinctio a
-									minus natus nam optio doloremque! Porro
-									deserunt repudiandae doloribus, aspernatur
-									molestiae quae reiciendis sit soluta?
-								</p>
-								<a href="#" class="stretched-link"
-									>Продолжить чтение...</a
-								>
-							</div>
-							<div class="col-auto d-none d-lg-block">
-								<img
-									src="https://source.unsplash.com/random/200x251"
-									class="img-fluid"
-									alt="..."
-								/>
-							</div>
-						</div>
-					</div>
-					<div class="col-md-4">
-						<div class="" style="top: 2rem">
-							<div class="p-4 bg-white mb-3">
-								
-									<h5 class="text-secondary mb-2">ЛУЧШИЕ БЛОГИ</h5>
-									<ol class="list-unstyled">
-										<li class="d-flex align-items-center mb-1 rounded-3">
-											<img src="https://source.unsplash.com/random/30x30" class="img-fluid rounded-3" alt="..."/>
-											<a class="nav-link text-secondary" href="#">RUVDS.com</a></li>
-										<li class="d-flex align-items-center mb-1 rounded-3">
-											<img src="https://source.unsplash.com/random/30x32" class="img-fluid rounded-3" alt="..."/>
-											<a class="nav-link text-secondary" href="#">Selectel</a></li>
-										<li class="d-flex align-items-center mb-1 rounded-3">
-											<img src="https://source.unsplash.com/random/30x33" class="img-fluid rounded-3" alt="..."/>
-											<a class="nav-link text-secondary" href="#">VK</a></li>
-											<li class="d-flex align-items-center mb-1 rounded-3">
-												<img src="https://source.unsplash.com/random/31x33" class="img-fluid rounded-3" alt="..."/>
-												<a class="nav-link text-secondary" href="#">GeekBrains</a>
-											</li>
-									</ol>
-								</div>
-								<div class="bg-white p-4">
-								<h5 class="text-secondary">АРХИВ</h5>
-								<ol class= "list-unstyled mb-0">
-									<li class="d-flex align-items-center mb-1 rounded-3">
-										<a class="nav-link text-secondary" href="#">Апрель 2022</a></li>
-									<li class="d-flex align-items-center mb-1 rounded-3">
-										<a class="nav-link text-secondary" href="#">Март 2022</a></li>
-									<li class="d-flex align-items-center mb-1 rounded-3">
-										<a class="nav-link text-secondary" href="#">Январь 2022</a></li>
-									<li class="d-flex align-items-center mb-1 rounded-3">
-										<a class="nav-link text-secondary" href="#">Декабрь 2021</a></li>
-									<li class="d-flex align-items-center mb-1 rounded-3">
-										<a class="nav-link text-secondary" href="#">Ноябрь 2021</a></li>
-									<li class="d-flex align-items-center mb-1 rounded-3">
-										<a class="nav-link text-secondary" href="#">Октябрь 2021</a></li>
-									<li class="d-flex align-items-center mb-1 rounded-3">
-										<a class="nav-link text-secondary" href="#">Сентябрь 2021</a></li>
-									<li class="d-flex align-items-center mb-1 rounded-3">
-										<a class="nav-link text-secondary" href="#">Август 2021</a></li>
-									<li class="d-flex align-items-center mb-1 rounded-3">
-										<a class="nav-link text-secondary" href="#">Июль 2021</a></li>
-									<li class="d-flex align-items-center mb-1 rounded-3">
-										<a class="nav-link text-secondary" href="#">Июнь 2021</a></li>
-									<li class="d-flex align-items-center mb-1 rounded-3">
-										<a class="nav-link text-secondary" href="#">Май 2021</a></li>
-									<li class="d-flex align-items-center mb-1 rounded-3">
-										<a class="nav-link text-secondary" href="#">Апрель 2021</a></li>
-								</ol>
-							</div>
+            <div
+              class="row g-0 bg-white overflow-hidden flex-md-row mb-4 h-md-250 position-relative shadow"
+            >
+              <div class="col p-3 d-flex flex-column position-static">
+                <a href="#" class="nav-link p-0"
+                  ><strong class="d-inline-block mb-2 text-primary"
+                    >Веб-разработка</strong
+                  >
+                </a>
+                <h3 class="mb-1">
+                  <a href="#" class="nav-link p-0 text-secondary"
+                    >Новая статья</a
+                  >
+                </h3>
+                <div class="d-flex mb-2 text-small">
+                  <span class="author_info text-muted fw-bold me-2"
+                    ><a href="#" class="nav-link p-0 text-secondary text-muted"
+                      >Гоша Трешкин</a
+                    ></span
+                  >
+                  <span class="date_info text-muted">Мар 12 в 09:08</span>
+                </div>
+                <p class="mb-auto">
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus
+                  iusto ipsa minima quis dolorum quod. Natus, ipsa eos? Vel
+                  excepturi ratione at officia nostrum iusto in veritatis
+                  quisquam reprehenderit doloremque?
+                </p>
+                <div class="my-3">
+                  <a
+                    class="btn btn-outline-primary btn-sm d-inline"
+                    type="button"
+                    href="#"
+                  >
+                    Далее...
+                  </a>
+                </div>
+                <div class="text-muted">
+                  <span class="me-3"><i class="fa-solid fa-eye"></i> 408</span>
+                  <span class="me-3"
+                    ><i class="fa-solid fa-comment"></i> 7</span
+                  >
+                  <span class="me-3"
+                    ><i class="fa-solid fa-thumbs-up"></i> 65</span
+                  >
+                </div>
+              </div>
+              <div class="col-auto d-none d-lg-block">
+                <img
+                  src="https://source.unsplash.com/random/220x300"
+                  class="img-fluid"
+                  alt="..."
+                />
+              </div>
+            </div>
+          </div>
 
-							
-						</div>
-					</div>
-				</div>
-			</div>
-		</main>
-		<script src="js/main.min.js"></script>
-	</body>
+          <div class="col-md-3">
+            <div class="" style="top: 2rem">
+              <div class="p-4 bg-white mb-3 shadow">
+                <h5 class="text-secondary mb-2">ЛУЧШИЕ БЛОГИ</h5>
+                <ol class="list-unstyled">
+                  <li class="d-flex align-items-center mb-1 rounded-3">
+                    <img
+                      src="https://source.unsplash.com/random/40x41"
+                      class="img-fluid rounded-3"
+                      alt="..."
+                    />
+                    <a class="nav-link text-secondary" href="#">RUVDS.com</a>
+                  </li>
+                  <li class="d-flex align-items-center mb-1 rounded-3">
+                    <img
+                      src="https://source.unsplash.com/random/40x42"
+                      class="img-fluid rounded-3"
+                      alt="..."
+                    />
+                    <a class="nav-link text-secondary" href="#">Selectel</a>
+                  </li>
+                  <li class="d-flex align-items-center mb-1 rounded-3">
+                    <img
+                      src="https://source.unsplash.com/random/40x43"
+                      class="img-fluid rounded-3"
+                      alt="..."
+                    />
+                    <a class="nav-link text-secondary" href="#">VK</a>
+                  </li>
+                  <li class="d-flex align-items-center mb-1 rounded-3">
+                    <img
+                      src="https://source.unsplash.com/random/41x43"
+                      class="img-fluid rounded-3"
+                      alt="..."
+                    />
+                    <a class="nav-link text-secondary" href="#">GeekBrains</a>
+                  </li>
+                </ol>
+              </div>
+              <div class="bg-white p-4 shadow">
+                <h5 class="text-secondary">АРХИВ</h5>
+                <ol class="list-unstyled mb-0">
+                  <li class="d-flex align-items-center mb-1 rounded-3">
+                    <a class="nav-link text-secondary" href="#">Апрель 2022</a>
+                  </li>
+                  <li class="d-flex align-items-center mb-1 rounded-3">
+                    <a class="nav-link text-secondary" href="#">Март 2022</a>
+                  </li>
+                  <li class="d-flex align-items-center mb-1 rounded-3">
+                    <a class="nav-link text-secondary" href="#">Январь 2022</a>
+                  </li>
+                  <li class="d-flex align-items-center mb-1 rounded-3">
+                    <a class="nav-link text-secondary" href="#">Декабрь 2021</a>
+                  </li>
+                  <li class="d-flex align-items-center mb-1 rounded-3">
+                    <a class="nav-link text-secondary" href="#">Ноябрь 2021</a>
+                  </li>
+                  <li class="d-flex align-items-center mb-1 rounded-3">
+                    <a class="nav-link text-secondary" href="#">Октябрь 2021</a>
+                  </li>
+                  <li class="d-flex align-items-center mb-1 rounded-3">
+                    <a class="nav-link text-secondary" href="#"
+                      >Сентябрь 2021</a
+                    >
+                  </li>
+                  <li class="d-flex align-items-center mb-1 rounded-3">
+                    <a class="nav-link text-secondary" href="#">Август 2021</a>
+                  </li>
+                  <li class="d-flex align-items-center mb-1 rounded-3">
+                    <a class="nav-link text-secondary" href="#">Июль 2021</a>
+                  </li>
+                  <li class="d-flex align-items-center mb-1 rounded-3">
+                    <a class="nav-link text-secondary" href="#">Июнь 2021</a>
+                  </li>
+                  <li class="d-flex align-items-center mb-1 rounded-3">
+                    <a class="nav-link text-secondary" href="#">Май 2021</a>
+                  </li>
+                  <li class="d-flex align-items-center mb-1 rounded-3">
+                    <a class="nav-link text-secondary" href="#">Апрель 2021</a>
+                  </li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <footer id="main-footer" class="py-5 bg-secondary text-white">
+      <div class="container">
+        <div class="row text-center">
+          <div class="com-md-6 ml-auto">
+            <p class="lead text-small">
+              Copyright &copy;
+              <span id="year"></span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script>
+      document.querySelector("#year").innerHTML = new Date().getFullYear();
+    </script>
+  </body>
 </html>
