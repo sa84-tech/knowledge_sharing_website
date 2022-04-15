@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Post
+from .models import *
 
 
 def index_page(request):
@@ -9,8 +9,13 @@ def index_page(request):
     return render(request, "index.html", context)
 
 
-def post_page(request, post_id):
+def post_page(request, pk):
     context = {
-        'post': Post.objects.get(id=post_id)
+        'post': Post.objects.get(id=pk)
     }
     return render(request, "post.html", context)
+
+
+
+
+
