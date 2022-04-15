@@ -1,0 +1,15 @@
+<div class="px-3 py-0 border-bottom bg-white sticky-top shadow">
+  <div class="container d-flex flex-wrap justify-content-center">
+    <ul
+      class="nav nav-pills col-12 col-lg-auto my-2 justify-content-center my-md-0 text-secondary sticky-top"
+    >
+
+      {% for category in categories %}
+      <li class="nav-item">
+        <a href="#" class="nav-link"> {{ category|capfirst }} </a>
+      </li>
+      {% endfor %}
+
+    </ul>
+  </div>
+</div>

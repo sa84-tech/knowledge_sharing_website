@@ -1,16 +1,22 @@
 from django.shortcuts import render
-from .models import Post
+from .models import Post, Category
 
 
 def index_page(request):
+
+    title = "Главная страница"
+
     context = {
-        'posts': Post.objects.all()
+        'title': title,
+        'posts': Post.objects.all(),
+        'categories': Category.objects.all()
     }
-    return render(request, "index.html", context)
+
+    return render(request, "mainapp/index.html", context)
 
 
 def post_page(request, post_id):
     context = {
         'post': Post.objects.get(id=post_id)
     }
-    return render(request, "post.html", context)
+    return render(request, "mainapp/post.html", context)

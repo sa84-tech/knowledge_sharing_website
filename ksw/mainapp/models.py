@@ -12,7 +12,7 @@ class Category(models.Model):
 
 class Post(models.Model):
     id = models.AutoField(unique=True, primary_key=True)
-    author = models.ManyToManyField(User)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=50)
     text = models.TextField()
     data = models.DateTimeField(auto_now=True)
