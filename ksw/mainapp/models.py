@@ -3,6 +3,7 @@ from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelatio
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 
+
 class Category(models.Model):
     name = models.CharField(
         verbose_name='имя категории',
@@ -19,7 +20,6 @@ class Category(models.Model):
     class Meta:
         verbose_name = 'Категория'
         verbose_name_plural = 'Категории'
-
 
 
 class StatusArticle(models.Model):
@@ -40,23 +40,22 @@ class StatusArticle(models.Model):
         verbose_name_plural = 'Статусы'
 
 
-
 class Like(models.Model):
     content_type = models.ForeignKey(
         ContentType,
         on_delete=models.CASCADE,
     )
+
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
-    author = models.ManyToManyField(User)
-
+    author = models.ForeignKey(User)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
-
 
     class Meta:
         verbose_name = 'Лайк'
         verbose_name_plural = 'Лайки'
+
 
 class Comment(models.Model):
     comment = models.TextField(
@@ -68,16 +67,17 @@ class Comment(models.Model):
         ContentType,
         on_delete=models.CASCADE,
     )
+
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
-    author = models.ManyToManyField(User)
-
+    author = models.ForeignKey(User)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
     class Meta:
         verbose_name = 'Коментарий'
         verbose_name_plural = 'Коментарии'
+
 
 class Post(models.Model):
     topic = models.CharField(
@@ -106,11 +106,9 @@ class Post(models.Model):
         verbose_name='статус',
     )
 
-    author = models.ManyToManyField(User)
-
+    author = models.ForeignKey(User)
     likes = GenericRelation(Like)
     comment = GenericRelation(Comment)
-
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
@@ -125,10 +123,6 @@ class Post(models.Model):
     def total_comment(self):
         return self.comment.count()
 
-
     class Meta:
         verbose_name = 'Статья'
         verbose_name_plural = 'Статьи'
-
-
-
