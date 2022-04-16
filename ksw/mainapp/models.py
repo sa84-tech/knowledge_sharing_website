@@ -48,7 +48,10 @@ class Like(models.Model):
 
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
-    author = models.ForeignKey(User)
+    author = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+    )
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
@@ -70,7 +73,10 @@ class Comment(models.Model):
 
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
-    author = models.ForeignKey(User)
+    author = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+    )
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
@@ -106,7 +112,10 @@ class Post(models.Model):
         verbose_name='статус',
     )
 
-    author = models.ForeignKey(User)
+    author = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+    )
     likes = GenericRelation(Like)
     comment = GenericRelation(Comment)
     created = models.DateTimeField(auto_now_add=True)
