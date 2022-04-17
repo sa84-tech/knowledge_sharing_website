@@ -6,7 +6,7 @@
 
       {% for category in categories %}
       <li class="nav-item">
-        <a href="#" class="nav-link"> {{ category|capfirst }} </a>
+        <a href="{% url 'index_page' category.pk %}" class="nav-link"> {{ category|capfirst }} </a>
       </li>
       {% endfor %}
 

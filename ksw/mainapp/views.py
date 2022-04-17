@@ -1,35 +1,33 @@
 from django.shortcuts import render
-<<<<<<< HEAD
+
 from .models import Post, Category
-=======
-from .models import *
->>>>>>> d7b24e2af50e6404a84e17d251708ad362d965f7
 
 
-def index_page(request):
+def index_page(request, category_id=0):
 
-    title = "Главная страница"
+    if category_id:
+        posts = Post.objects.filter(status__name='published', category=category_id).order_by('-created')
+    else:
+        posts = Post.objects.filter(status__name='published').order_by('-created')
 
     context = {
-        'title': title,
-        'posts': Post.objects.all(),
-        'categories': Category.objects.all()
+        'title': 'Главная страница',
+        'posts': posts,
+        'categories': Category.objects.all(),
     }
 
     return render(request, "mainapp/index.html", context)
 
 
 def post_page(request, pk):
+
+    post = Post.objects.get(id=pk)
+    post.total_views += 1
+    post.save()
+
     context = {
-        'post': Post.objects.get(id=pk)
+        'post': post,
+        'categories': Category.objects.all(),
     }
-<<<<<<< HEAD
+
     return render(request, "mainapp/post.html", context)
-=======
-    return render(request, "post.html", context)
-
-
-
-
-
->>>>>>> d7b24e2af50e6404a84e17d251708ad362d965f7

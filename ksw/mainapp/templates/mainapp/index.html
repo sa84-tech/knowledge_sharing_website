@@ -18,7 +18,7 @@
             </a>
             <h3 class="mb-1">
               <a href="{% url 'post_page' post.pk %}" class="nav-link p-0 text-secondary"
-                >{{ post.title|capfirst }}</a
+                >{{ post.topic|capfirst }}</a
               >
             </h3>
             <div class="d-flex mb-2 text-small">
@@ -27,10 +27,14 @@
                   >{{ post.author.first_name|capfirst }} {{ post.author.last_name|capfirst }}</a
                 ></span
               >
-              <span class="date_info text-muted">{{ post.data }}</span>
+              <span class="date_info text-muted">{{ post.created }}</span>
             </div>
             <p class="mb-auto">
-              {{ post.text|truncatechars:240 }}
+              {% if post.annotation %}
+                {{ post.annotation }}
+              {% else %}
+                {{ post.article|truncatechars:240 }}
+              {% endif %}
             </p>
             <div class="my-3">
               <a
@@ -42,13 +46,9 @@
               </a>
             </div>
             <div class="text-muted">
-              <span class="me-3"><i class="fa-solid fa-eye"></i> 2.4k</span>
-              <span class="me-3"
-                ><i class="fa-solid fa-comment"></i> 62</span
-              >
-              <span class="me-3"
-                ><i class="fa-solid fa-thumbs-up"></i> 568</span
-              >
+              <span class="me-3"><i class="fa-solid fa-eye"></i> {{ post.total_views }}</span>
+              <span class="me-3"><i class="fa-solid fa-comment"></i> {{ post.total_comment }}</span>
+              <span class="me-3"><i class="fa-solid fa-thumbs-up"></i> {{ post.total_likes }}</span>
             </div>
           </div>
           <div class="col-auto d-none d-lg-block">

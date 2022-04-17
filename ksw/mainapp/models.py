@@ -86,14 +86,6 @@ class Comment(models.Model):
 
 
 class Post(models.Model):
-<<<<<<< HEAD
-    id = models.AutoField(unique=True, primary_key=True)
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
-    title = models.CharField(max_length=50)
-    text = models.TextField()
-    data = models.DateTimeField(auto_now=True)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
-=======
     topic = models.CharField(
         verbose_name='название статьи',
         max_length=200,
@@ -106,6 +98,10 @@ class Post(models.Model):
 
     article = models.TextField(
         verbose_name='текст статьи',
+    )
+
+    total_views = models.PositiveIntegerField(
+        verbose_name='количество просмотров'
     )
 
     category = models.ForeignKey(
@@ -128,7 +124,6 @@ class Post(models.Model):
     comment = GenericRelation(Comment)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
->>>>>>> d7b24e2af50e6404a84e17d251708ad362d965f7
 
     def __str__(self):
         return self.topic
