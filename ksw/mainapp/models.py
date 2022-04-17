@@ -100,6 +100,10 @@ class Post(models.Model):
         verbose_name='текст статьи',
     )
 
+    total_views = models.PositiveIntegerField(
+        verbose_name='количество просмотров'
+    )
+
     category = models.ForeignKey(
         Category,
         on_delete=models.CASCADE,

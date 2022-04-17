@@ -1,0 +1,22 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+ 
+{% block content %}
+  <div class="container">
+    <div class="row pt-4">
+      <div class="col-md-9">
+        <div
+          class="row g-0 bg-white overflow-hidden flex-md-row mb-4 h-md-250 position-relative shadow"
+        >
+          <div class="col p-3 d-flex flex-column position-static">
+            <h1>{{post.topic}}</h1>
+            {{post.article}}
+          </div>
+        </div>
+
+      </div>
+
+      {% include 'mainapp/includes/inc_sidebar.html' %}
+    </div>
+  </div>
+{% endblock %}
