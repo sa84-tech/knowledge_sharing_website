@@ -28,7 +28,7 @@ class Command(BaseCommand):
             with open(file_path, 'r', encoding='utf-8') as read_file:
                 data = json.load(read_file)
 
-            if not data.get('users'):
+            if data.get('users'):
                 for user in data['users']:
                     try:
                         new_user = User.objects.create_user(**user, password=USR_PASSWD)
@@ -37,7 +37,7 @@ class Command(BaseCommand):
                     except IntegrityError:
                         print(f'** User Already Exists **')
 
-            if not data.get('statuses'):
+            if data.get('statuses'):
                 for status in data['statuses']:
                     new_status, is_created = StatusArticle.objects.get_or_create(**status)
                     if is_created:
@@ -46,7 +46,7 @@ class Command(BaseCommand):
                     else:
                         print(f'** Status Already Exists **')
 
-            if not data.get('categories'):
+            if data.get('categories'):
                 for category in data['categories']:
                     new_category, is_created = Category.objects.get_or_create(**category)
                     if is_created:
