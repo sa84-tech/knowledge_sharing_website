@@ -1,5 +1,7 @@
 import json
 import os
+from datetime import datetime, timedelta, timezone
+from random import randint
 
 from django.core.management import BaseCommand
 import environ
@@ -13,7 +15,7 @@ from mainapp.models import StatusArticle, Category, Post
 env = environ.Env()
 environ.Env.read_env()
 ADM_PASSWD = env('INIT_ADM_PSWD')
-USR_PASSWD = env('INIT_USR_PSWD')
+USR_PASSWD = env('INIT_USRS_PSWD')
 
 
 class Command(BaseCommand):

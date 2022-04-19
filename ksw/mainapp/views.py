@@ -5,10 +5,9 @@ from .models import Post, Category
 
 def index_page(request, category_id=0):
 
-    if category_id:
-        posts = Post.objects.filter(status__name='published', category=category_id).order_by('-created')
-    else:
-        posts = Post.objects.filter(status__name='published').order_by('-created')
+    posts = Post.objects.filter(status__name='published')
+    if category_id != 0:
+        posts = posts.filter(category=category_id)
 
     context = {
         'title': 'Главная страница',
