@@ -55,7 +55,7 @@
             <div class="d-flex mb-2 justify-content-between">
               <div class="d-flex text-small align-items-center">
                 <img class="rounded-circle shadow-1-strong me-3"
-                src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(12).webp" alt="avatar" width="40"
+                src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(18).webp" alt="avatar" width="40"
                 height="40" />
                 <span class="author_info fw-bold me-2">
                   <a href="#" class="nav-link p-0 text-muted">
@@ -108,21 +108,21 @@
               {% else %}
 
             <!-- temprorary static comments -->
-
-              <div class="row mb-4">
+              {% for comment_item in comments %}
+                 <div class="row mb-4">
                 <div class="col">
                   <div class="d-flex mb-3 align-items-center">
                     <img class="rounded-circle shadow-1-strong me-3"
-                      src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(28).webp" alt="avatar" width="40"
+                      src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(1{{ forloop.counter0 }}).webp" alt="avatar" width="40"
                       height="40" />
                     <span class="author_info text-muted fw-bold me-2">
-                      <a href="#" class="nav-link p-0 text-secondary text-muted">{{ post.author.first_name|capfirst }} {{ post.author.last_name|capfirst }}</a>
+                      <a href="#" class="nav-link p-0 text-secondary text-muted">{{ comment_item.author.first_name|capfirst }} {{ comment_item.author.last_name|capfirst }}</a>
                     </span>
-                    <span class="date_info text-small text-muted">{{ post.created }}</span>
+                    <span class="date_info text-small text-muted">{{ comment_item.created }}</span>
                   </div>
 
                   <p class="mt-3 mb-3">
-                    Значимость этих проблем настолько очевидна, что дальнейшее развитие различных форм деятельности обеспечивает широкому кругу (специалистов) участие в формировании новых предложений.
+                    {{ comment_item.comment }}
                   </p>
 
                   <div class="small d-flex justify-content-start">
@@ -132,30 +132,7 @@
                   </div>
                 </div>
               </div>
-
-              <div class="row mb-4">
-                <div class="col">
-                  <div class="d-flex mb-3 align-items-center">
-                    <img class="rounded-circle shadow-1-strong me-3"
-                      src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(18).webp" alt="avatar" width="40"
-                      height="40" />
-                    <span class="author_info text-muted fw-bold me-2">
-                      <a href="#" class="nav-link p-0 text-secondary text-muted">{{ post.author.first_name|capfirst }} {{ post.author.last_name|capfirst }}</a>
-                    </span>
-                    <span class="date_info text-small text-muted">{{ post.created }}</span>
-                  </div>
-
-                  <p class="mt-3 mb-3">
-                    Идейные соображения высшего порядка, а также рамки и место обучения кадров обеспечивает широкому кругу (специалистов) участие в формировании новых предложений. Значимость этих проблем настолько очевидна, что консультация с широким активом играет важную роль в формировании новых предложений.
-                  </p>
-
-                  <div class="small d-flex justify-content-start">
-                    <a href="#!" class="d-flex align-items-center me-3">
-                      <p class="mb-0">Ответить</p>
-                    </a>
-                  </div>
-                </div>
-              </div>
+              {% endfor %}
               {% endif %}
             </div>
 

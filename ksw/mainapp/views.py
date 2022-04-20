@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-from .models import Post, Category
+from .models import Post, Category, Comment
 
 
 def index_page(request, category_id=0):
@@ -27,6 +27,7 @@ def post_page(request, pk):
     context = {
         'post': post,
         'categories': Category.objects.all(),
+        'comments': post.comment.all()
     }
 
     return render(request, "mainapp/post.html", context)
