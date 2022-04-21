@@ -23,19 +23,19 @@
               <span class="date_info text-muted">{{ post.created }}</span>
             </div>
             <h1 class="mb-4 text-primary">{{post.topic}}</h1>
-            <div class="mb-3 fst-italic">
-              {{post.annotation}}
-            </div>
+{#            <div class="mb-3 fst-italic">#}
+{#              {{post.annotation}}#}
+{#            </div>#}
+{#            <div class="mb-4">#}
+{#              <img#}
+{#                src="https://source.unsplash.com/random/1024x400"#}
+{#                class="img-fluid"#}
+{#                alt="..."#}
+{#              />#}
+{#            </div>#}
             <div class="mb-4">
-              <img
-                src="https://source.unsplash.com/random/1024x400"
-                class="img-fluid"
-                alt="..."
-              />
-            </div>
-            <div class="mb-4">
-              <h4 class="mb-3 text-secondary">Подзаголовок для примера</h4>
-              {{post.article}}
+{#              <h4 class="mb-3 text-secondary">Подзаголовок для примера</h4>#}
+                {{post.article|safe}}
             </div>
             <div class="row">
               <hr class="border-1 border-top border-secondary">
