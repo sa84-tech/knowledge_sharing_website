@@ -31,9 +31,9 @@
             </div>
             <p class="mb-auto">
               {% if post.annotation %}
-                {{ post.annotation }}
+                {{ post.annotation|safe }}
               {% else %}
-                {{ post.article|truncatechars:240 }}
+                {{ post.article|truncatechars:240|safe }}
               {% endif %}
             </p>
             <div class="my-3">
