@@ -1,5 +1,12 @@
-from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.contenttypes.models import ContentType
+from django.http import HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse_lazy, reverse
+from django.views.generic import CreateView
 
+from .forms import CommentForm
 from .models import Post, Category, Comment
 
 
@@ -31,3 +38,30 @@ def post_page(request, pk):
     }
 
     return render(request, "mainapp/post.html", context)
+
+
+@login_required
+def add_comment(request, target_type, pk):
+
+    post = get_object_or_404(Post, pk=pk)
+
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+
+            comment = {
+                'object_id': post.pk,
+                'author_id': request.user.pk,
+                'comment': form.cleaned_data['comment_text'],
+                'content_type_id': get_object_or_404(ContentType, model=target_type).id
+            }
+
+            new_comment, is_created = Comment.objects.get_or_create(**comment)
+            if is_created:
+                new_comment.save()
+
+    return redirect(f'/post/{post.pk}#add_comment')
+
+
+def add_like(request, pk):
+    pass
