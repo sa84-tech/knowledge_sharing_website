@@ -2,15 +2,13 @@ import json
 import os
 from datetime import datetime, timedelta, timezone
 from random import randint
-
 from django.core.management import BaseCommand
 import environ
-
-from ksw.settings import BASE_DIR
+from ksw.ksw.settings import BASE_DIR
 from django.contrib.auth.models import User
 from django.db import IntegrityError
+from ksw.mainapp.models import StatusArticle, Category, Post
 
-from mainapp.models import StatusArticle, Category, Post
 
 env = environ.Env()
 environ.Env.read_env()
