@@ -9,6 +9,8 @@ from django.views.generic import CreateView
 from .forms import CommentForm
 from .models import Post, Category, Comment
 
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+
 
 def index_page(request, category_id=0):
 
@@ -16,10 +18,15 @@ def index_page(request, category_id=0):
     if category_id != 0:
         posts = posts.filter(category=category_id)
 
+    paginator = Paginator(posts, 3)  # Show 3 contacts per page.
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     context = {
         'title': 'Главная страница',
         'posts': posts,
         'categories': Category.objects.all(),
+        'page_obj': page_obj,
     }
 
     return render(request, "mainapp/index.html", context)
