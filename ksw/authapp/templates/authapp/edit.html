@@ -1,0 +1,31 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+{% block content %}
+
+  <div class="container">
+      <div class="row pt-4">
+          <div class="user_avatar">
+          <img src="/media/{{ user.avatar }}" class="rounded-circle">
+            </div>
+        <div class="row">
+            <form class="form-horizontal" action="{% url 'auth:edit' %}" method="post" enctype="multipart/form-data" style="color: dodgerblue">
+            <div class="mx-auto col-5">
+
+                    {% csrf_token %}
+                    {{ edit_form.as_p }}
+                    {{ profile_form.as_p }}
+                    <input class="form-control" type="submit" value="сохранить">
+            </form>
+                <button class="btn btn-round form-control last">
+                <a href="{% url 'index_page' %}" class="">на главную</a>
+            </div>
+        </div>
+
+    </div>
+
+  </div>
+
+{% endblock %}
+
+
+

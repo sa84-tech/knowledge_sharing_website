@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
-
+from django.conf import settings
 
 class Category(models.Model):
     name = models.CharField(
@@ -49,7 +49,7 @@ class Like(models.Model):
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
     author = models.ForeignKey(
-        User,
+        settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
     )
     created = models.DateTimeField(auto_now_add=True)
@@ -74,7 +74,7 @@ class Comment(models.Model):
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
     author = models.ForeignKey(
-        User,
+        settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
     )
     created = models.DateTimeField(auto_now_add=True)
@@ -117,7 +117,7 @@ class Post(models.Model):
     )
 
     author = models.ForeignKey(
-        User,
+        settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
     )
     likes = GenericRelation(Like)
