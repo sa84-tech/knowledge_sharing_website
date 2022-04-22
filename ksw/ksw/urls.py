@@ -23,10 +23,11 @@ from mainapp.views import index_page, post_page, add_comment, add_like
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', index_page),
+    path('', index_page, name='index_page'),
     path('category/<int:category_id>', index_page, name='index_page'),
     path('post/<int:pk>', post_page, name='post_page'),
     path('comment/<str:target_type>/<int:pk>', add_comment, name='comment'),
     path('like/<str:target_type>/<int:pk>', add_like, name='like'),
     path('ckeditor/', include('ckeditor_uploader.urls')),
+    path('auth/', include('authapp.urls', namespace='auth'), name='auth'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

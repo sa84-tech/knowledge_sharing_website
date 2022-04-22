@@ -1,0 +1,29 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+{% block content %}
+
+  <div class="container">
+    <div class="row pt-4">
+        <div class="row">
+            <div class="mx-auto col-3">
+                <form class="form-horizontal" action="{% url 'auth:login' %}" method="post" >
+                    {% csrf_token %}
+                    {% if next %}
+                        <input type="hidden" name="next" value="{{ next }}">
+                    {% endif %}
+
+                    {{ login_form.as_p }}
+                    <button type="submit" class="btn btn-success">Войти</button>
+                    <button type=submit" class="btn btn-round">
+                    <a href="{% url 'auth:register' %}" class="btn btn-primary">Зарегистрироваться</a>
+                    </button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+  </div>
+
+{% endblock %}
+
