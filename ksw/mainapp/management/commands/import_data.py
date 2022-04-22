@@ -1,14 +1,15 @@
 import json
 import os
-from datetime import datetime, timedelta, timezone
-from random import randint
+
+from django.contrib.contenttypes.models import ContentType
 from django.core.management import BaseCommand
-import environ
-from ksw.ksw.settings import BASE_DIR
 from django.contrib.auth.models import User
 from django.db import IntegrityError
-from ksw.mainapp.models import StatusArticle, Category, Post
+import environ
 
+from ksw.settings import BASE_DIR
+from ksw.mainapp.models import StatusArticle, Category, Post
+from mainapp.models import StatusArticle, Category, Post, Comment
 
 env = environ.Env()
 environ.Env.read_env()
@@ -66,6 +67,18 @@ class Command(BaseCommand):
                         print(f'** New Post Created ({new_post.topic}) **')
                     else:
                         print(f'** Post Already Exists **')
+
+            if data.get('comments'):
+                for comment in data['comments']:
+                    comment['content_type_id'] = ContentType.objects.get(model=comment['content_type_name']).id
+                    del comment['content_type_name']
+
+                    new_comment, is_created = Comment.objects.get_or_create(**comment)
+                    if is_created:
+                        new_comment.save()
+                        print(f'** New comment created ({new_comment.comment}) **')
+                    else:
+                        print(f'** Comment already exists **')
 
         except IOError:
             print(str(IOError))

@@ -2,67 +2,88 @@
 {% load static %}
 
 {% block content %}
-  <div class="container">
+<div class="container">
     <div class="row pt-4">
-      <div class="col-md-9">
+        <div class="col-md-9">
+            {% for post in page_obj %}
+            {# Each "post" is a Post model object. #}
+            <div
+                    class="row g-0 bg-white overflow-hidden flex-md-row mb-4 h-md-250 position-relative shadow"
+            >
+                <div class="col p-3 d-flex flex-column position-static">
+                    <a href="#" class="nav-link p-0">
+                        <strong class="d-inline-block mb-2 text-primary">
+                            {{ post.category|capfirst }}
+                        </strong>
+                    </a>
+                    <h3 class="mb-1">
+                        <a href="{% url 'post_page' post.pk %}" class="nav-link p-0 text-secondary"
+                        >{{ post.topic|capfirst }}</a
+                        >
+                    </h3>
 
-        {% for post in posts %}
-        <div
-          class="row g-0 bg-white overflow-hidden flex-md-row mb-4 h-md-250 position-relative shadow"
-        >
-          <div class="col p-3 d-flex flex-column position-static">
-            <a href="#" class="nav-link p-0">
-              <strong class="d-inline-block mb-2 text-primary">
-                {{ post.category|capfirst }}
-              </strong>
-            </a>
-            <h3 class="mb-1">
-              <a href="{% url 'post_page' post.pk %}" class="nav-link p-0 text-secondary"
-                >{{ post.topic|capfirst }}</a
-              >
-            </h3>
-            <div class="d-flex mb-2 text-small">
+                    <div class="d-flex mb-2 text-small">
               <span class="author_info text-muted fw-bold me-2"
-                ><a href="#" class="nav-link p-0 text-secondary text-muted"
-                  >{{ post.author.first_name|capfirst }} {{ post.author.last_name|capfirst }}</a
-                ></span
+              ><a href="#" class="nav-link p-0 text-secondary text-muted"
+              >{{ post.author.first_name|capfirst }} {{ post.author.last_name|capfirst }}</a
+              ></span
               >
-              <span class="date_info text-muted">{{ post.created }}</span>
+                        <span class="date_info text-muted">{{ post.created }}</span>
+                    </div>
+
+                    <p class="mb-auto">
+                        {% if post.annotation %}
+                        {{ post.annotation|safe }}
+                        {% else %}
+                        {{ post.article|truncatechars:240|safe }}
+                        {% endif %}
+                    </p>
+                    <div class="my-3">
+                        <a
+                                class="btn btn-outline-primary btn-sm d-inline"
+                                type="button"
+                                href="{% url 'post_page' post.pk %}"
+                        >
+                            Далее...
+                        </a>
+                    </div>
+                    <div class="text-muted">
+                        <span class="me-3"><i class="fa-solid fa-eye"></i> {{ post.total_views }}</span>
+                        <span class="me-3"><i class="fa-solid fa-comment"></i> {{ post.total_comment }}</span>
+                        <span class="me-3"><i class="fa-solid fa-thumbs-up"></i> {{ post.total_likes }}</span>
+                    </div>
+                </div>
+                <div class="col-auto d-none d-lg-block">
+                    <img
+                            src="https://source.unsplash.com/random/219x30{{ forloop.counter0 }}"
+                            class="img-fluid"
+                            alt="..."
+                    />
+                </div>
             </div>
-            <p class="mb-auto">
-              {% if post.annotation %}
-                {{ post.annotation }}
-              {% else %}
-                {{ post.article|truncatechars:240 }}
-              {% endif %}
-            </p>
-            <div class="my-3">
-              <a
-                class="btn btn-outline-primary btn-sm d-inline"
-                type="button"
-                href="{% url 'post_page' post.pk %}"
-              >
-                Далее...
-              </a>
+            {% endfor %}
+
+            <div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
             </div>
-            <div class="text-muted">
-              <span class="me-3"><i class="fa-solid fa-eye"></i> {{ post.total_views }}</span>
-              <span class="me-3"><i class="fa-solid fa-comment"></i> {{ post.total_comment }}</span>
-              <span class="me-3"><i class="fa-solid fa-thumbs-up"></i> {{ post.total_likes }}</span>
-            </div>
-          </div>
-          <div class="col-auto d-none d-lg-block">
-            <img
-              src="https://source.unsplash.com/random/219x30{{ forloop.counter0 }}"
-              class="img-fluid"
-              alt="..."
-            />
-          </div>
+
         </div>
-        {% endfor %}
-      </div>
-      {% include 'mainapp/includes/inc_sidebar.html' %}
+        {% include 'mainapp/includes/inc_sidebar.html' %}
     </div>
-  </div>
+</div>
 
 {% endblock %}

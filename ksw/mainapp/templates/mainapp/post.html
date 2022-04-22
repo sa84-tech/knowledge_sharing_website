@@ -23,19 +23,8 @@
               <span class="date_info text-muted">{{ post.created }}</span>
             </div>
             <h1 class="mb-4 text-primary">{{post.topic}}</h1>
-            <div class="mb-3 fst-italic">
-              {{post.annotation}}
-            </div>
             <div class="mb-4">
-              <img
-                src="https://source.unsplash.com/random/1024x400"
-                class="img-fluid"
-                alt="..."
-              />
-            </div>
-            <div class="mb-4">
-              <h4 class="mb-3 text-secondary">Подзаголовок для примера</h4>
-              {{post.article}}
+                {{post.article|safe}}
             </div>
             <div class="row">
               <hr class="border-1 border-top border-secondary">
@@ -66,9 +55,9 @@
                   Рейтинг
                 </div>
               </div>
-            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-              <button class="btn btn-outline-primary opacity-75" type="button"><i class="fa-solid fa-envelope"></i></button>
-              <button class="btn btn-primary opacity-75" type="button">Подписаться</button>
+            <div class="justify-content-md-end">
+              <button class="btn btn-outline-primary btn-sm opacity-75" type="button"><i class="fa-solid fa-envelope"></i></button>
+              <button class="btn btn-primary btn-sm opacity-75" type="button">Подписаться</button>
             </div>
 
             </div>
@@ -109,42 +98,47 @@
                 </div>
               {% else %}
                 {% for comment_item in comments %}
-                   <div class="row mb-4">
-                  <div class="col">
-                    <div class="d-flex mb-3 align-items-center">
-                      <img class="rounded-circle shadow-1-strong me-3"
-                        src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(1{{ forloop.counter0 }}).webp" alt="avatar" width="32"
-                        height="32" />
-                      <span class="author_info text-muted fw-bold me-2">
-                        <a href="#" class="nav-link p-0 text-secondary text-muted">{{ comment_item.author.first_name|capfirst }} {{ comment_item.author.last_name|capfirst }}</a>
-                      </span>
-                      <span class="date_info text-small text-muted">{{ comment_item.created }}</span>
-                    </div>
+                  <div class="row mb-4">
+                    <div class="col">
+                      <div class="d-flex mb-2 align-items-center">
+                        <img class="rounded-circle shadow-1-strong me-3"
+                          src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(1{{ forloop.counter0 }}).webp" alt="avatar" width="32"
+                          height="32" />
+                        <span class="author_info text-muted fw-bold me-2">
+                          <a href="#" class="nav-link p-0 text-secondary text-muted">{{ comment_item.author.first_name|capfirst }} {{ comment_item.author.last_name|capfirst }}</a>
+                        </span>
+                        <span class="date_info text-small text-muted">{{ comment_item.created }}</span>
+                      </div>
 
-                    <p class="mt-3 mb-3">
-                      {{ comment_item.comment }}
-                    </p>
+                      <div class="mt-1 mb-2">
+                        {{ comment_item.comment }}
+                      </div>
 
-                    <div class="small d-flex justify-content-start">
-                      <a href="#!" class="d-flex align-items-center me-3">
-                        <p class="mb-0">Ответить</p>
-                      </a>
+                      <div class="small d-flex justify-content-start">
+
+<!--                        <a href="#!" class="d-flex align-items-center text-decoration-none">-->
+<!--                          <span class="{% if forloop.counter == 2 %} fw-bold {% endif %} text-success fs-6">-->
+<!--                            <i class="fa-solid fa-plus fa-2xs"></i>2</span>-->
+<!--                        </a>-->
+
+                        <a href="#!" class="d-flex align-items-center me-4">
+                          <div class="mb-0">Ответить</div>
+                        </a>
+                      </div>
                     </div>
                   </div>
-                </div>
                 {% endfor %}
               {% endif %}
             </div>
 
             <div class="card-footer py-3 border-0" style="background-color: #f8f9fa;">
-              <form class="form-outline w-100">
-                  <label for="add_comment" class="h6 text-muted fw-bold form-label">Написать комментарий</label>
-                  <textarea class="form-control" id="add_comment" rows="5"
-                    style="background: #fff;">
-                  </textarea>
-
+              <form action="{% url 'comment' 'post' post.pk %}" method="post" class="form-outline w-100">
+                {% csrf_token %}
+                <label for="add_comment" class="h6 text-muted fw-bold form-label">Написать комментарий</label>
+                <textarea class="form-control" id="add_comment" name="comment_text" rows="5" style="background: #fff;"></textarea>
                 <div class="mt-3">
-                  <button type="submit" class="btn btn-primary opacity-75">Отправить</button>
+                  <input type="submit" class="btn btn-primary btn-sm opacity-75 me-1" value="Отправить" >
+                  <input type="button" class="btn btn-outline-primary btn-sm opacity-75" value="Отмена" >
                 </div>
               </form>
             </div>

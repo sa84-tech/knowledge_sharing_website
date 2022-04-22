@@ -2,7 +2,12 @@ from django.contrib.auth.models import User
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
+
 from django.conf import settings
+
+from ckeditor.fields import RichTextField
+from ckeditor_uploader.fields import RichTextUploadingField
+
 
 class Category(models.Model):
     name = models.CharField(
@@ -91,13 +96,17 @@ class Post(models.Model):
         max_length=200,
     )
 
-    annotation = models.CharField(
+    annotation = RichTextUploadingField(
         verbose_name='анотация',
         max_length=256,
+        blank=True,
+        null=True,
     )
 
-    article = models.TextField(
+    article = RichTextUploadingField(
         verbose_name='текст статьи',
+        blank=True,
+        null=True,
     )
 
     total_views = models.PositiveIntegerField(
