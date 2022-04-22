@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 
-from mainapp.views import index_page, post_page
+from mainapp.views import index_page, post_page, add_comment, add_like
 
 
 urlpatterns = [
@@ -26,5 +26,7 @@ urlpatterns = [
     path('', index_page),
     path('category/<int:category_id>', index_page, name='index_page'),
     path('post/<int:pk>', post_page, name='post_page'),
+    path('comment/<str:target_type>/<int:pk>', add_comment, name='comment'),
+    path('like/<str:target_type>/<int:pk>', add_like, name='like'),
     path('ckeditor/', include('ckeditor_uploader.urls')),
-]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
