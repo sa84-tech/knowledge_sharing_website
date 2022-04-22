@@ -29,6 +29,8 @@
           </div>
         </form>
 
+
+        {% if user.is_authenticated %}
         <div class="h-100 dropdown text-end">
           <a
             href="#"
@@ -43,31 +45,33 @@
             class="dropdown-menu text-small"
             aria-labelledby="dropdownUser1"
           >
+
             <li>
-              {% if user.is_authenticated %}
-              <a class="dropdown-item" href="{% url 'auth:edit' %}">Личный кабинет</a>
-              {% else %}
-              <a class="dropdown-item" href="{% url 'auth:login' %}">Личный кабинет</a>
-              {% endif %}
+                <a class="dropdown-item" href="{% url 'auth:edit' %}">Личный кабинет</a>
             </li>
             <li>
-              <a class="dropdown-item" href="#">Настройки</a>
+                <a class="dropdown-item" href="/admin">Админка</a>
             </li>
-            <li>
-              <a class="dropdown-item" href="#">Профиль</a>
-            </li>
+
             <li>
               <hr class="dropdown-divider" />
             </li>
             <li>
-            {% if user.is_authenticated %}
-                <a class="dropdown-item"  href="{% url 'auth:logout' %}">выйти</a>
-            {% else %}
-                <a class="dropdown-item"  href="{% url 'auth:login' %}">войти</a>
-            {% endif %}
+                <a class="dropdown-item"  href="{% url 'auth:logout' %}">Выйти</a>
+
             </li>
           </ul>
         </div>
+        {% else %}
+          <div class="h-100 text-end">
+          <a
+            href="{% url 'auth:login' %}"
+            class="d-flex align-items-center text-light text-decoration-none text-small"
+          >
+            <i class="fa-solid fa-user fa-xl"></i>
+          </a>
+        </div>
+        {% endif %}
       </div>
     </div>
   </div>

@@ -3,7 +3,6 @@ from .views import login, logout, register, edit
 from mainapp.views import index_page
 
 
-
 app_name = 'authapp'
 
 urlpatterns = [

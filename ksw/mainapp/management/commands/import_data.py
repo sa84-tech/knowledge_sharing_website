@@ -8,8 +8,8 @@ from django.db import IntegrityError
 import environ
 
 from ksw.settings import BASE_DIR
-from ksw.mainapp.models import StatusArticle, Category, Post
 from mainapp.models import StatusArticle, Category, Post, Comment
+from authapp.models import WriterUser
 
 env = environ.Env()
 environ.Env.read_env()
@@ -20,8 +20,8 @@ USR_PASSWD = env('INIT_USRS_PSWD')
 class Command(BaseCommand):
     def handle(self, *args, **options):
 
-        if not User.objects.filter(is_superuser=True):
-            super_user = User.objects.create_superuser('admin', 'admin@example.com', ADM_PASSWD)
+        if not WriterUser.objects.filter(is_superuser=True):
+            super_user = WriterUser.objects.create_superuser('admin', 'admin@example.com', ADM_PASSWD)
             print(f'** user created ** ({super_user})')
 
         try:
@@ -32,7 +32,7 @@ class Command(BaseCommand):
             if data.get('users'):
                 for user in data['users']:
                     try:
-                        new_user = User.objects.create_user(**user, password=USR_PASSWD)
+                        new_user = WriterUser.objects.create_user(**user, password=USR_PASSWD)
                         new_user.save()
                         print(f'** New User Created ({new_user.username}) **')
                     except IntegrityError:
@@ -60,7 +60,7 @@ class Command(BaseCommand):
                 for post in data['posts']:
                     post['category'] = Category.objects.get(pk=post['category'])
                     post['status'] = StatusArticle.objects.get(pk=post['status'])
-                    post['author'] = User.objects.get(username=post['author'])
+                    post['author'] = WriterUser.objects.get(username=post['author'])
                     new_post, is_created = Post.objects.get_or_create(**post)
                     if is_created:
                         new_post.save()

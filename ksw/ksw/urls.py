@@ -18,7 +18,6 @@ from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 
-import debug_toolbar
 from mainapp.views import index_page, post_page, add_comment, add_like
 
 
@@ -32,7 +31,3 @@ urlpatterns = [
     path('ckeditor/', include('ckeditor_uploader.urls')),
     path('auth/', include('authapp.urls', namespace='auth'), name='auth'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
-
-if settings.DEBUG:
-    urlpatterns += path('__debug__/', include(debug_toolbar.urls))

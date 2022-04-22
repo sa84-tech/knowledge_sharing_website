@@ -1,18 +1,17 @@
 from django.contrib import auth
-
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
-from .forms import WriterUserLoginForm, WriterUserRegisterForm, WriterUserEditForm, WriterUserProfileForm
 
+from .forms import WriterUserLoginForm, WriterUserRegisterForm, WriterUserEditForm, WriterUserProfileForm
 
 
 def login(request):
     title = 'вход'
     login_form = WriterUserLoginForm(data=request.POST or None)
-    next = request.GET['next'] if 'next' in request.GET.keys() else '' \
-                                                               ''
-    print('next^  ', request.GET.keys())
+
+    next_obj = request.GET['next'] if 'next' in request.GET.keys() else None
+
     if request.method == 'POST' and login_form.is_valid():
         username = request.POST['username']
         password = request.POST['password']
@@ -27,9 +26,10 @@ def login(request):
     context = {
         'title': title,
         'login_form': login_form,
-        'next': next,
+        'next': next_obj,
     }
     return render(request, 'authapp/login.html', context)
+
 
 def logout(request):
     auth.logout(request)
@@ -38,7 +38,7 @@ def logout(request):
 
 def register(request):
     title = 'регистрация'
-    login_form = WriterUserLoginForm(data=request.POST)
+
     if request.method == 'POST':
         register_form = WriterUserRegisterForm(request.POST, request.FILES)
         if register_form.is_valid():
@@ -50,7 +50,6 @@ def register(request):
         'title': title,
         'register_form': register_form}
     return render(request, 'authapp/register.html', context)
-
 
 
 def edit(request):
@@ -71,4 +70,3 @@ def edit(request):
         'profile_form': profile_form,
     }
     return render(request, 'authapp/edit.html', context)
-
