@@ -25,7 +25,7 @@ def index_page(request, category_id=0):
     context = {
         'title': 'Главная страница',
         'posts': posts,
-        'categories': Category.objects.all(),
+        #'categories': Category.objects.all(),
         'page_obj': page_obj,
     }
 
@@ -40,7 +40,7 @@ def post_page(request, pk):
 
     context = {
         'post': post,
-        'categories': Category.objects.all(),
+       # 'categories': Category.objects.all(),
         'comments': post.comment.all()
     }
 
