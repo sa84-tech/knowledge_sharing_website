@@ -5,6 +5,7 @@
       "first_name": "Олег",
       "last_name": "Белов",
       "email": "test_1@example.local",
+      "avatar": "/seeder/users/m_1.webp",
       "is_superuser": false,
       "is_staff": false,
       "is_active": true
@@ -14,6 +15,7 @@
       "first_name": "Юлия",
       "last_name": "Кочетова",
       "email": "test_2@example.local",
+      "avatar":  "/seeder/users/f_1.webp",
       "is_superuser": false,
       "is_staff": false,
       "is_active": true
@@ -23,72 +25,80 @@
       "first_name": "Алина",
       "last_name": "Полякова",
       "email": "test_3@example.local",
+      "avatar":  "/seeder/users/f_2.webp",
       "is_superuser": false,
       "is_staff": false,
       "is_active": true
     },
     {
       "username": "user_4",
+      "first_name": "Лев",
+      "last_name": "Абрамов",
+      "email": "andreadotson@uniworld.com",
+      "avatar":  "/seeder/users/m_2.webp",
       "is_active": true,
       "is_staff": true,
-      "is_superuser": false,
-      "first_name": "Лев",
-      "last_name": "Абрамова",
-      "email": "andreadotson@uniworld.com"
+      "is_superuser": false
     },
     {
       "username": "user_5",
-      "is_active": true,
-      "is_staff": false,
-      "is_superuser": false,
       "first_name": "Арсений",
       "last_name": "Попов",
-      "email": "flynndecker@uniworld.com"
+      "email": "flynndecker@uniworld.com",
+      "avatar":  "/seeder/users/m_3.webp",
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false
     },
     {
       "username": "user_6",
-      "is_active": true,
-      "is_staff": true,
-      "is_superuser": false,
       "first_name": "София",
       "last_name": "Фомина",
-      "email": "barlowayers@uniworld.com"
+      "email": "barlowayers@uniworld.com",
+      "avatar":  "/seeder/users/f_3.webp",
+      "is_active": true,
+      "is_staff": true,
+      "is_superuser": false
     },
     {
       "username": "user_7",
-      "is_active": true,
-      "is_staff": false,
-      "is_superuser": false,
       "first_name": "Елизавета",
       "last_name": "Анисимова",
-      "email": "sherribentley@uniworld.com"
+      "email": "sherribentley@uniworld.com",
+      "avatar":  "/seeder/users/f_4.webp",
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false
     },
     {
       "username": "user_8",
-      "is_active": true,
-      "is_staff": false,
-      "is_superuser": false,
       "first_name": "Арина",
       "last_name": "Богомолова",
-      "email": "patricabooth@uniworld.com"
+      "email": "patricabooth@uniworld.com",
+      "avatar":  "/seeder/users/f_5.webp",
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false
     },
     {
       "username": "user_9",
-      "is_active": true,
-      "is_staff": false,
-      "is_superuser": false,
       "first_name": "Анастасия",
       "last_name": "Гончарова",
-      "email": "harrismanning@uniworld.com"
+      "email": "harrismanning@uniworld.com",
+      "avatar":  "/seeder/users/f_6.webp",
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false
     },
     {
       "username": "user_10",
-      "is_active": true,
-      "is_staff": true,
-      "is_superuser": false,
       "first_name": "Михаил",
       "last_name": "Лукьянов",
-      "email": "kateglass@uniworld.com"
+      "email": "kateglass@uniworld.com",
+      "avatar":  "/seeder/users/m_4.webp",
+      "is_active": true,
+      "is_staff": true,
+      "is_superuser": false
     }
   ],
   "categories": [

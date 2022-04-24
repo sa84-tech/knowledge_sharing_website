@@ -5,7 +5,6 @@ from django.dispatch import receiver
 
 from mainapp.models import Like, Comment, Post
 
-
 class WriterUser(AbstractUser):
     avatar = models.ImageField(upload_to='users_avatars', blank=True)
     age = models.PositiveIntegerField(verbose_name='возраст', default=0)
