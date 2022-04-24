@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-
+from mainapp.models import Like, Comment, Post
 
 
 class WriterUser(AbstractUser):
@@ -37,3 +37,16 @@ class WriterUserProfile(models.Model):
     @receiver(post_save, sender=WriterUser)
     def save_user_profile(sender, instance, **kwargs):
         instance.writeruserprofile.save()
+
+    @property
+    def activity(self):
+        return 2*Like.objects.filter(author=self.user).count() + \
+               5*Comment.objects.filter(author=self.user).count() + \
+               10*Post.objects.filter(author=self.user).count()
+
+    @property
+    def rating(self):
+        i = 0
+        for post in Post.objects.filter(author=self.user, status__name='published'):
+             i += post.likes.count() + post.comment.count()
+        return i
