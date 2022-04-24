@@ -24,7 +24,7 @@ from mainapp.views import index_page, post_page, add_comment, add_like
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index_page, name='index_page'),
-    path('category/<int:category_id>', index_page, name='index_page'),
+    path('<slug:slug>', index_page, name='index_page'),
     path('post/<int:pk>', post_page, name='post_page'),
     path('comment/<str:target_type>/<int:pk>', add_comment, name='comment'),
     path('like/<str:target_type>/<int:pk>', add_like, name='like'),

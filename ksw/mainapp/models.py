@@ -4,6 +4,8 @@ from django.contrib.contenttypes.models import ContentType
 from django.db import models
 
 from django.conf import settings
+from django.utils.text import slugify
+from django.shortcuts import reverse
 
 # from ckeditor.fields import RichTextField
 from ckeditor_uploader.fields import RichTextUploadingField
@@ -19,8 +21,18 @@ class Category(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
+    slug = models.SlugField(
+        max_length=255,
+        unique=True,
+        verbose_name="URL-slug",
+        default=name
+    )
+
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse('index_page', kwargs={'slug': self.slug})
 
     class Meta:
         verbose_name = 'Категория'
