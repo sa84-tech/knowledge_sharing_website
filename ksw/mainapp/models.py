@@ -144,7 +144,7 @@ class Post(models.Model):
     def total_comment(self):
         return self.comment.count()
 
-    def is_liked_by(self, user=None):
+    def is_liked_by(self, user):
         if user.is_authenticated:
             return self.likes.filter(object_id=self.pk,
                                      author_id=user.pk,
