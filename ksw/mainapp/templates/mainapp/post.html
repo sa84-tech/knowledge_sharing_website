@@ -49,13 +49,15 @@
                   src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(18).webp"
                   alt="avatar" width="40" height="40" />
                 <div class="me-2 text-center text-small text-muted">
-                  <span class="d-block fw-bold fs-5 text-warning">153</span>
+                  {% for item in activity %}
+                  <span class="d-block fw-bold fs-5 text-warning">{{item.activity}}</span>
                   Активность
                 </div>
                 <div class="me-2 text-center text-small text-muted">
-                  <span class="d-block fw-bold fs-5 text-success">25.8</span>
+                  <span class="d-block fw-bold fs-5 text-success">{{item.rating}}</span>
                   Рейтинг
                 </div>
+                {% endfor %}
               </div>
             <div class="justify-content-md-end">
               <button class="btn btn-outline-primary btn-sm opacity-75" type="button"><i class="fa-solid fa-envelope"></i></button>

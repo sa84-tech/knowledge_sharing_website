@@ -5,9 +5,11 @@ from django.http import  JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
+
 from .forms import CommentForm, LikeForm
-from .models import Post, Category, Comment, Like
-from .services.helpers import get_cti, get_cti_404
+from .models import Post, Comment, Like
+from .services.helpers import get_cti_404
+from authapp.models import WriterUserProfile
 
 
 def index_page(request, category_id=0):
@@ -35,9 +37,12 @@ def post_page(request, pk):
     post.total_views += 1
     post.save()
 
+    activity = WriterUserProfile.objects.filter(user=post.author)
+
     context = {
         'post': post,
         'comments': post.comment.all(),
+        'activity': activity,
     }
 
     return render(request, "mainapp/post.html", context)
