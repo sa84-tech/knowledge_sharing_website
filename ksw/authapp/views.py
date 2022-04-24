@@ -10,7 +10,7 @@ def login(request):
     title = 'вход'
     login_form = WriterUserLoginForm(data=request.POST or None)
 
-    next_obj = request.GET['next'] if 'next' in request.GET.keys() else None
+    next_obj = request.GET['next'] if 'next' in request.GET.keys() else ''
 
     if request.method == 'POST' and login_form.is_valid():
         username = request.POST['username']

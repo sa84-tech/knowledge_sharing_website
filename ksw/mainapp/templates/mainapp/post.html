@@ -130,7 +130,7 @@
                 {% endfor %}
               {% endif %}
             </div>
-
+            {% if request.user.is_authenticated %}
             <div class="card-footer py-3 border-0" style="background-color: #f8f9fa;">
               <form action="{% url 'comment' 'post' post.pk %}" method="post" class="form-outline w-100">
                 {% csrf_token %}
@@ -142,7 +142,11 @@
                 </div>
               </form>
             </div>
-
+{#            {% else %}#}
+{#             <div class="card-footer py-3 border-0" style="background-color: #f8f9fa;">#}
+{#             Только полноправные пользователи могут оставлять комментарии. Войдите, пожалуйста.#}
+{#             </div>#}
+          {% endif %}
           </div>
         </div>
 
