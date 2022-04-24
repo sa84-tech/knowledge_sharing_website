@@ -6,6 +6,7 @@ from django.db import models
 from django.conf import settings
 from django.utils.text import slugify
 from django.shortcuts import reverse
+from django.contrib import admin
 
 # from ckeditor.fields import RichTextField
 from ckeditor_uploader.fields import RichTextUploadingField
@@ -25,7 +26,8 @@ class Category(models.Model):
         max_length=255,
         unique=True,
         verbose_name="URL-slug",
-        default=name
+        blank=True,
+        null=True
     )
 
     def __str__(self):

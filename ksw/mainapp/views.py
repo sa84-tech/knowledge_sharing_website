@@ -16,7 +16,7 @@ def index_page(request, slug=None):
 
     posts = Post.objects.filter(status__name='published')
     if slug != None:
-        print('slug = ' + slug)  # <====================================================убрать позже
+        print('slug_2 = ' + slug)  # <====================================================убрать позже
         posts = posts.filter(category=slug)
 
     paginator = Paginator(posts, 3)  # Show 3 contacts per page.
