@@ -1,12 +1,10 @@
-from django.contrib.auth.models import User
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
-
 from django.conf import settings
-
-# from ckeditor.fields import RichTextField
 from ckeditor_uploader.fields import RichTextUploadingField
+
+from mainapp.services.helpers import get_cti
 
 
 class Category(models.Model):
@@ -145,6 +143,14 @@ class Post(models.Model):
     @property
     def total_comment(self):
         return self.comment.count()
+
+    def is_liked_by(self, user):
+        if user.is_authenticated:
+            return self.likes.filter(object_id=self.pk,
+                                     author_id=user.pk,
+                                     content_type_id=get_cti('post')).exists()
+
+        return False
 
     class Meta:
         verbose_name = 'Статья'

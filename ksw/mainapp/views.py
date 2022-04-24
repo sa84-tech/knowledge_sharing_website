@@ -1,16 +1,14 @@
+import json
+
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.contenttypes.models import ContentType
-from django.http import HttpResponseRedirect
+from django.http import  JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
-from django.urls import reverse_lazy, reverse
-from django.views.generic import CreateView
-
-from .forms import CommentForm
-from .models import Post, Category, Comment
-
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
+
+from .forms import CommentForm, LikeForm
+from .models import Post, Comment, Like
+from .services.helpers import get_cti_404
 from authapp.models import WriterUserProfile
 
 
@@ -27,7 +25,6 @@ def index_page(request, category_id=0):
     context = {
         'title': 'Главная страница',
         'posts': posts,
-        #'categories': Category.objects.all(),
         'page_obj': page_obj,
     }
 
@@ -44,7 +41,6 @@ def post_page(request, pk):
 
     context = {
         'post': post,
-       # 'categories': Category.objects.all(),
         'comments': post.comment.all(),
         'activity': activity,
     }
@@ -65,7 +61,7 @@ def add_comment(request, target_type, pk):
                 'object_id': post.pk,
                 'author_id': request.user.pk,
                 'comment': form.cleaned_data['comment_text'],
-                'content_type_id': get_object_or_404(ContentType, model=target_type).id
+                'content_type_id': get_cti_404(target_type)
             }
 
             new_comment, is_created = Comment.objects.get_or_create(**comment)
@@ -75,5 +71,25 @@ def add_comment(request, target_type, pk):
     return redirect(f'/post/{post.pk}#add_comment')
 
 
-def add_like(request, pk):
-    pass
+def add_like(request):
+
+    if request.user.is_authenticated:
+
+        form = LikeForm(json.loads(request.body))
+
+        if form.is_valid():
+            cd = form.cleaned_data
+            post = get_object_or_404(Post, pk=cd['target_pk'])
+
+            like = {
+                'object_id': post.pk,
+                'author_id': request.user.pk,
+                'content_type_id': get_cti_404(cd['target_type'])
+            }
+
+            new_like, is_created = Like.objects.get_or_create(**like)
+            new_like.save() if is_created else new_like.delete()
+
+            return JsonResponse({'total_likes': post.total_likes})
+
+    return JsonResponse({'status': 'false', 'message': 'Bad request'}, status=400)
