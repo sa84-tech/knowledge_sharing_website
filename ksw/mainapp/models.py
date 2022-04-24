@@ -2,7 +2,6 @@ from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelatio
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.conf import settings
-
 from ckeditor_uploader.fields import RichTextUploadingField
 
 from mainapp.services.helpers import get_cti
