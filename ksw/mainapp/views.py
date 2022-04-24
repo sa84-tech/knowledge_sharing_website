@@ -11,6 +11,8 @@ from .models import Post, Category, Comment
 
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
+from authapp.models import WriterUserProfile
+
 
 def index_page(request, category_id=0):
 
@@ -38,10 +40,13 @@ def post_page(request, pk):
     post.total_views += 1
     post.save()
 
+    activity = WriterUserProfile.objects.filter(user=post.author)
+
     context = {
         'post': post,
        # 'categories': Category.objects.all(),
-        'comments': post.comment.all()
+        'comments': post.comment.all(),
+        'activity': activity,
     }
 
     return render(request, "mainapp/post.html", context)
