@@ -1,40 +1,27 @@
+{% load main_extras %}
+
 <div class="col-md-3">
   <div class="" style="top: 2rem">
     <div class="p-4 bg-white mb-3 shadow">
       <h5 class="text-secondary mb-2">ЛУЧШИЕ БЛОГИ</h5>
       <ol class="list-unstyled">
+
+        {% for up in most_rated_users %}
         <li class="d-flex align-items-center mb-1 rounded-3">
-          <img
-            src="https://source.unsplash.com/random/40x41"
-            class="img-fluid rounded-3"
-            alt="..."
-          />
-          <a class="nav-link text-secondary" href="#">RUVDS.com</a>
+          <div class="d-flex mb-3 text-small align-items-center">
+
+            <img class="rounded-circle shadow-1-strong me-3"
+              src="{% get_avatar up.user %}" alt="avatar" width="40"
+              height="40" />
+            <span class="author_info text-muted fw-bold me-2">
+              <a href="#" class="nav-link p-0 text-secondary text-muted">
+                {{ up.user.first_name|capfirst }} {{ up.user.last_name|capfirst }}
+              </a>
+            </span>
+            </div>
         </li>
-        <li class="d-flex align-items-center mb-1 rounded-3">
-          <img
-            src="https://source.unsplash.com/random/40x42"
-            class="img-fluid rounded-3"
-            alt="..."
-          />
-          <a class="nav-link text-secondary" href="#">Selectel</a>
-        </li>
-        <li class="d-flex align-items-center mb-1 rounded-3">
-          <img
-            src="https://source.unsplash.com/random/40x43"
-            class="img-fluid rounded-3"
-            alt="..."
-          />
-          <a class="nav-link text-secondary" href="#">VK</a>
-        </li>
-        <li class="d-flex align-items-center mb-1 rounded-3">
-          <img
-            src="https://source.unsplash.com/random/41x43"
-            class="img-fluid rounded-3"
-            alt="..."
-          />
-          <a class="nav-link text-secondary" href="#">GeekBrains</a>
-        </li>
+        {% endfor %}
+
       </ol>
     </div>
     <div class="bg-white p-4 shadow">

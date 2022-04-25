@@ -1,5 +1,5 @@
 <header class="">
-  <div class="px-3 py-2 bg-primary text-light shadow-sm">
+  <div class="px-3 py-2 bg-primary text-light shadow">
     <div class="container">
       <div
         class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start"
@@ -45,6 +45,10 @@
             class="dropdown-menu text-small"
             aria-labelledby="dropdownUser1"
           >
+            <li>
+                <span class="dropdown-item fw-bold" >{{ user.username }}</span>
+                <hr class="dropdown-divider" />
+            </li>
 
             <li>
                 <a class="dropdown-item" href="{% url 'auth:edit' %}">Личный кабинет</a>
