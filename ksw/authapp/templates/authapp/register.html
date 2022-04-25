@@ -76,22 +76,22 @@
 
                 <div class="form-outline mb-2 text-secondary text-start">
                   <label for="reg_age" class="col-form-label text-muted">Возраст</label>
-                  <p class="text-danger text-small opacity-75 text-decoration-none">
+                  <span class="text-danger text-small opacity-75 text-decoration-none">
                     {{ register_form.age.errors.as_text }}
-                  </p>
+                  </span>
                   {{ register_form.age }}
                 </div>
 
                 <div class="form-outline mb-5 text-start">
                   <label for="reg_avatar" class="col-form-label text-muted">Фото</label>
-                  <p class="text-danger text-small opacity-75 text-decoration-none">
+                  <span class="text-danger text-small opacity-75 text-decoration-none">
                     {{ register_form.avatar.errors.as_text }}
-                  </p>
+                  </span>
                   {{ register_form.avatar }}
                 </div>
 
               <div class="form-outline text-start">
-                <input type="submit" class="btn btn-primary btn-lg" value="Зарегистрироваться" />
+                <input type="submit" class="btn btn-primary" value="Зарегистрироваться" />
               </div>
 
             </form>

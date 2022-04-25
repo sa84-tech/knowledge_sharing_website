@@ -24,7 +24,7 @@ class WriterUserRegisterForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super(WriterUserRegisterForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
-            field.widget.attrs['class'] = 'form-control form-control-lg'
+            field.widget.attrs['class'] = 'form-control'
             field.widget.attrs['placeholder'] = field.label
             field.widget.attrs['id'] = f'reg_{field_name}'
 
@@ -51,7 +51,9 @@ class WriterUserEditForm(UserChangeForm):
     def __init__(self, *args, **kwargs):
         super(WriterUserEditForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
-            field.widget.attrs['class'] = 'form-control form-control-lg'
+            field.widget.attrs['class'] = 'form-control'
+            field.widget.attrs['placeholder'] = field.label
+            field.widget.attrs['id'] = f'reg_{field_name}'
 
     def clean_age(self):
         data = self.cleaned_data['age']
@@ -69,4 +71,6 @@ class WriterUserProfileForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(WriterUserProfileForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
-            field.widget.attrs['class'] = 'form-control form-control-lg'
+            field.widget.attrs['class'] = 'form-control'
+            field.widget.attrs['placeholder'] = field.label
+            field.widget.attrs['id'] = f'reg_{field_name}'
