@@ -9,7 +9,7 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from .forms import CommentForm, LikeForm
 from .models import Post, Comment, Like
 from .services.helpers import get_cti_404
-from authapp.models import WriterUserProfile
+from authapp.models import WriterUser, WriterUserProfile
 
 
 POSTS_PER_PAGE = 5
@@ -29,6 +29,7 @@ def index_page(request, category_id=0):
         'title': 'Главная страница',
         'posts': posts,
         'page_obj': page_obj,
+        'most_rated_users': WriterUserProfile.get_most_rated(4)
     }
 
     return render(request, "mainapp/index.html", context)

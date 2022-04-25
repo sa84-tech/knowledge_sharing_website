@@ -3,6 +3,8 @@ from django.contrib.auth.models import AbstractUser
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+import numpy as np
+
 from mainapp.models import Like, Comment, Post
 
 
@@ -51,3 +53,11 @@ class WriterUserProfile(models.Model):
         for post in Post.objects.filter(author=self.user, status__name='published'):
             idx += post.likes.count() + post.comment.count()
         return idx
+
+    @classmethod
+    def get_most_rated(cls, count=4):
+        users = [{'item': item, 'rating': item.rating} for item in cls.objects.all()]
+        max_rated_users = sorted(users, key=lambda x: x['rating'], reverse=True)[:4]
+        return [x['item'] for x in max_rated_users]
+
+
