@@ -12,13 +12,16 @@ from .services.helpers import get_cti_404
 from authapp.models import WriterUserProfile
 
 
+POSTS_PER_PAGE = 5
+
+
 def index_page(request, category_id=0):
 
     posts = Post.objects.filter(status__name='published')
     if category_id != 0:
         posts = posts.filter(category=category_id)
 
-    paginator = Paginator(posts, 3)  # Show 3 contacts per page.
+    paginator = Paginator(posts, POSTS_PER_PAGE)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
