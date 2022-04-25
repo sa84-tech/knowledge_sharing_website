@@ -7,17 +7,14 @@ from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView
 
 from .forms import CommentForm
-from .models import Post, Comment
+from mainapp.models import Post, Comment, Category
 
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
-
-def index_page(request, slug=None):
-
+def index_page(request, category_id=0, slug=None):
     posts = Post.objects.filter(status__name='published')
-    if slug != None:
-        print('slug_2 = ' + slug)  # <====================================================убрать позже
-        posts = posts.filter(category=slug)
+    if category_id != 0:
+        posts = posts.filter(category=category_id)
 
     paginator = Paginator(posts, 3)  # Show 3 contacts per page.
     page_number = request.GET.get('page')
