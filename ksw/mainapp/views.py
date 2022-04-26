@@ -5,9 +5,8 @@ from django.http import  JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
-
 from .forms import CommentForm, LikeForm
-from .models import Post, Comment, Like
+from .models import Post, Comment, Like, Category
 from .services.helpers import get_cti_404
 from authapp.models import WriterUser, WriterUserProfile
 
@@ -15,8 +14,7 @@ from authapp.models import WriterUser, WriterUserProfile
 POSTS_PER_PAGE = 5
 
 
-def index_page(request, category_id=0):
-
+def index_page(request, category_id=0, slug=None):
     posts = Post.objects.filter(status__name='published')
     if category_id != 0:
         posts = posts.filter(category=category_id)

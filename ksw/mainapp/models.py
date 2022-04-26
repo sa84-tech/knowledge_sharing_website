@@ -2,6 +2,7 @@ from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelatio
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.conf import settings
+from django.shortcuts import reverse
 from ckeditor_uploader.fields import RichTextUploadingField
 
 from mainapp.services.helpers import get_cti
@@ -17,8 +18,19 @@ class Category(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
+    slug = models.SlugField(
+        max_length=255,
+        unique=True,
+        verbose_name="URL-slug",
+        blank=True,
+        null=True
+    )
+
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse('index_page', kwargs={'slug': self.slug})
 
     class Meta:
         verbose_name = 'Категория'
