@@ -22,16 +22,17 @@ class WriterUserRegisterForm(UserCreationForm):
         fields = ('username', 'first_name', 'password1', 'password2', 'email', 'age', 'avatar')
 
     def __init__(self, *args, **kwargs):
-        super(WriterUserRegisterForm, self).__init__(*args,**kwargs)
+        super(WriterUserRegisterForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'
+            field.widget.attrs['placeholder'] = field.label
+            field.widget.attrs['id'] = f'reg_{field_name}'
 
     def clean_age(self):
         data = self.cleaned_data['age']
         if data < 0:
             raise forms.ValidationError("Возраст указан не верно")
         return data
-
 
     def save(self, *args, **kwargs):
         user = super(WriterUserRegisterForm, self).save()
@@ -40,6 +41,7 @@ class WriterUserRegisterForm(UserCreationForm):
         user.activation_key = hashlib.sha1((user.email + salt).encode('utf8')).hexdigest()
         user.save()
         return user
+
 
 class WriterUserEditForm(UserChangeForm):
     class Meta:
@@ -50,6 +52,8 @@ class WriterUserEditForm(UserChangeForm):
         super(WriterUserEditForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'
+            field.widget.attrs['placeholder'] = field.label
+            field.widget.attrs['id'] = f'reg_{field_name}'
 
     def clean_age(self):
         data = self.cleaned_data['age']
@@ -68,3 +72,5 @@ class WriterUserProfileForm(forms.ModelForm):
         super(WriterUserProfileForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'
+            field.widget.attrs['placeholder'] = field.label
+            field.widget.attrs['id'] = f'reg_{field_name}'

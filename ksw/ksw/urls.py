@@ -27,7 +27,7 @@ urlpatterns = [
     path('category/<slug:slug>', index_page, name='index_page'),
     path('post/<int:pk>', post_page, name='post_page'),
     path('comment/<str:target_type>/<int:pk>', add_comment, name='comment'),
-    path('like/<str:target_type>/<int:pk>', add_like, name='like'),
+    path('like/', add_like, name='like'),
     path('ckeditor/', include('ckeditor_uploader.urls')),
     path('auth/', include('authapp.urls', namespace='auth'), name='auth'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

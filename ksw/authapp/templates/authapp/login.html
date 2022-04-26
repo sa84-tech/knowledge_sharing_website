@@ -2,28 +2,75 @@
 {% load static %}
 {% block content %}
 
-  <div class="container">
-    <div class="row pt-4">
-        <div class="row">
-            <div class="mx-auto col-3">
-                <form class="form-horizontal" action="{% url 'auth:login' %}" method="post" >
-                    {% csrf_token %}
-                    {% if next %}
-                        <input type="hidden" name="next" value="{{ next }}">
-                    {% endif %}
+<style type="text/css">
+.card .form-control::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: #343a40;
+    opacity: 0.3; /* Firefox */
+}
 
-                    {{ login_form.as_p }}
-                    <button type="submit" class="btn btn-success">Войти</button>
-                    <button type=submit" class="btn btn-round">
-                    <a href="{% url 'auth:register' %}" class="btn btn-primary">Зарегистрироваться</a>
-                    </button>
-                </form>
-            </div>
+.card .form-control:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: #343a40;
+    opacity: 0.35;
+}
+
+.card .form-control::-ms-input-placeholder { /* Microsoft Edge */
+    color: #343a40;
+    opacity: 0.35;
+}
+</style>
+
+<main class="vh-100">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center h-100">
+      <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+        <div class="card shadow">
+          <div class="card-body p-5 pt-4 text-center">
+
+
+            <form action="{% url 'auth:login' %}" method="post">
+                <div class="text-center mb-3 text-primary fs-1 fw-bold">
+                KSW
+              </div>
+                {% if login_form.non_field_errors %}
+                    <p class="text-danger text-small opacity-75 text-decoration-none">
+                        {{ login_form.non_field_errors.as_text }}
+                    </p>
+                {% else %}
+                    <p class="mb-3 text-secondary fs-5 opacity-75">Пожалуйста авторизуйтесь</p>
+                {% endif %}
+                {% csrf_token %}
+                {% if next %}
+                    <input type="hidden" name="next" value="{{ next }}">
+                {% endif %}
+
+
+                <div class="form-outline mb-4 text-secondary">
+                  <input type="text" name="username" class="form-control form-control-lg" placeholder="Логин" />
+                </div>
+
+                <div class="form-outline mb-4">
+                  <input type="password" name="password" placeholder="Пароль" class="form-control form-control-lg text-secondary" />
+                </div>
+
+                <div class="mb-4 form-check text-start">
+                  <input type="checkbox" class="form-check-input" id="remember_chk">
+                  <label class="form-check-label" for="remember_chk">Запомнить</label>
+                </div>
+
+                <input type="submit" class="btn btn-primary btn-lg w-100" value="Войти" />
+                <div class="mt-5">
+                  <p class="mb-0">Нет аккаунта?
+                      <a href="{% url 'auth:register' %}" class="text-primary-50"> Зарегистрируйтесь</a>
+                  </p>
+                </div>
+            </form>
+
+          </div>
         </div>
-
+      </div>
     </div>
-
   </div>
+</main>
 
 {% endblock %}
 
