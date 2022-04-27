@@ -1,12 +1,12 @@
 from django.urls import path
-from .views import account, product_create, product_read, product_update, product_delete
+from .views import account, article_create, article_read, article_update, article_delete
 
 app_name = 'accountapp'
 
 urlpatterns = [
     path('lk/', account, name='account'),
-    path('product_create/', product_create, name='product_create'),
-    path('product_read/', product_read, name='product_read'),
-    path('product_update/', product_update, name='product_update'),
-    path('product_delete/', product_delete, name='product_delete'),
+    path('article_create/', article_create, name='article_create'),
+    path('article_read/', article_read, name='article_read'),
+    path('article_update/', article_update, name='article_update'),
+    path('article_delete/', article_delete, name='article_delete'),
 ]

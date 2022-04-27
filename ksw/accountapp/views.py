@@ -5,17 +5,17 @@ def account(request):
     return render(request, "accountapp/account.html")
 
 
-def product_create(request, pk):
+def article_create(request, pk):
     pass
 
 
-def product_read(request, pk):
+def article_read(request, pk):
     pass
 
 
-def product_update(request, pk):
+def article_update(request, pk):
     pass
 
 
-def product_delete(request, pk):
+def article_delete(request, pk):
     pass
