@@ -16,8 +16,8 @@ POSTS_PER_PAGE = 5
 
 def index_page(request, category_id=0, slug=None):
     posts = Post.objects.filter(status__name='published')
-    if category_id != 0:
-        posts = posts.filter(category=category_id)
+    if slug:
+        posts = posts.filter(category__slug=slug)
 
     paginator = Paginator(posts, POSTS_PER_PAGE)
     page_number = request.GET.get('page')
