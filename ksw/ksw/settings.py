@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'authapp',
     'ckeditor',
     'ckeditor_uploader',
+    'accountapp',
 ]
 
 AUTH_USER_MODEL = 'authapp.WriterUser'
