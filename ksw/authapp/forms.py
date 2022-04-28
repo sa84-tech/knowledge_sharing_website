@@ -13,7 +13,7 @@ class WriterUserLoginForm(AuthenticationForm):
     def __init__(self, *args, **kwargs):
         super(WriterUserLoginForm, self).__init__(*args,**kwargs)
         for field_name, field in self.fields.items():
-            field.widget.attrs['class'] = 'form-control'
+            field.widget.attrs['class'] = 'form-control form-control-lg'
 
 
 class WriterUserRegisterForm(UserCreationForm):
@@ -24,7 +24,7 @@ class WriterUserRegisterForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super(WriterUserRegisterForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
-            field.widget.attrs['class'] = 'form-control'
+            field.widget.attrs['class'] = 'form-control form-control-lg'
             field.widget.attrs['placeholder'] = field.label
             field.widget.attrs['id'] = f'reg_{field_name}'
 
