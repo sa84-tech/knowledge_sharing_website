@@ -31,4 +31,5 @@ urlpatterns = [
     path('ckeditor/', include('ckeditor_uploader.urls')),
     path('auth/', include('authapp.urls', namespace='auth'), name='auth'),
     path('account/', include('accountapp.urls'), name='account'),
+    path('', include('social_django.urls', namespace='social')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
