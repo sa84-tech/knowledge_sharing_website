@@ -58,6 +58,23 @@
                 </div>
 
                 <input type="submit" class="btn btn-primary btn-lg w-100" value="Войти" />
+                <div>
+                    <button class="btn btn-round form-control">
+                        <a href="{% url 'social:begin' 'vk-oauth2' %}?next=/">
+                            Вход через ВКонтакте
+                        </a>
+                    </button>
+                    <button class="btn btn-round form-control">
+                        <a href="{% url 'social:begin' 'github' %}?next=/">
+                            Вход через GitHub
+                        </a>
+                    </button>
+                    <button class="btn btn-round form-control">
+                        <a href="{% url 'social:begin' 'google-oauth2' %}?next=/">
+                            Вход через Google
+                        </a>
+                    </button>
+                </div>
                 <div class="mt-5">
                   <p class="mb-0">Нет аккаунта?
                       <a href="{% url 'auth:register' %}" class="text-primary-50"> Зарегистрируйтесь</a>
