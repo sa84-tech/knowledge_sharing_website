@@ -36,7 +36,7 @@ class WriterUserRegisterForm(UserCreationForm):
 
     def save(self, *args, **kwargs):
         user = super(WriterUserRegisterForm, self).save()
-        user.is_active = True
+        user.is_active = False
         salt = hashlib.sha1(str(random.random()).encode('utf8')).hexdigest()[:6]
         user.activation_key = hashlib.sha1((user.email + salt).encode('utf8')).hexdigest()
         user.save()

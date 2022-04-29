@@ -34,7 +34,7 @@ SECRET_KEY = env('SECRET_KEY')
 DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
-
+DOMAIN_NAME = 'http://localhost:8000'
 
 # Application definition
 
@@ -50,7 +50,15 @@ INSTALLED_APPS = [
     'ckeditor',
     'ckeditor_uploader',
     'accountapp',
+    'social_django',
 ]
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'social_core.backends.vk.VKOAuth2',
+    'social_core.backends.github.GithubOAuth2',
+    'social_core.backends.google.GoogleOAuth2',
+)
 
 AUTH_USER_MODEL = 'authapp.WriterUser'
 
@@ -77,6 +85,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
                 'mainapp.context_processors.menu',
             ],
         },
@@ -165,3 +175,24 @@ CKEDITOR_UPLOAD_PATH = "uploads/"
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Social_auth key
+SOCIAL_AUTH_VK_OAUTH2_KEY = env('VK_APP_ID')
+SOCIAL_AUTH_VK_OAUTH2_SECRET = env('VK_API_SECRET')
+
+SOCIAL_AUTH_GITHUB_KEY = env('GITHUB_APP_ID')
+SOCIAL_AUTH_GITHUB_SECRET = env('GITHUB_API_SECRET')
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = env('GOOGLE_APP_ID')
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = env('GOOGLE_API_SECRET')
+
+# Email settings
+
+EMAIL_HOST = 'localhost'
+EMAIL_PORT = '25'
+EMAIL_HOST_USER = 'admin@ksw.local'
+EMAIL_HOST_PASSWORD = 'admin'
+EMAIL_USE_SSL = False
+
+EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+EMAIL_FILE_PATH = 'tmp/email-messages/'
