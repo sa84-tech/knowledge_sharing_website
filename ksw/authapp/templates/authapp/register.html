@@ -24,9 +24,17 @@
     <div class="row d-flex justify-content-center h-100">
       <div class="col-12 col-md-9 col-lg-7 col-xl-5">
         <div class="card shadow">
+
+
+          {% if success %}
+          <div class="card-body p-4 text-end">
+            <p class="text-center mb-3 text-secondary fs-4 opacity-75 w-100">Регистрация завершена</p>
+            <p class="text-start mb-2">На почту, указанную при регистрации, отправлена ссылка для активации аккаунта.</p>
+            <a href="{% url 'auth:login' %}" role="button" class="btn btn-primary mt-3 px-4">ОК</a>
+          </div>
+
+          {% else %}
           <div class="card-body p-5 pt-4 text-center">
-
-
             <form class="mb-2" action="{% url 'auth:register' %}" method="post" enctype=multipart/form-data>
               <div class="text-center mb-3 text-primary fs-1 fw-bold">
                 KSW
@@ -74,8 +82,10 @@
 <!--              </div>-->
 
             </form>
-
           </div>
+          {% endif %}
+
+
         </div>
       </div>
     </div>

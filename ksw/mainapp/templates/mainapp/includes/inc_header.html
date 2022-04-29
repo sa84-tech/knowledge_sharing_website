@@ -34,7 +34,7 @@
 
 
         {% if user.is_authenticated %}
-
+{% comment %}
         <div class="h-100 dropdown d-inline-block ms-lg-2 me-lg-4 py-2 px-1 position-relative">
           <a
             href="#"
@@ -83,12 +83,12 @@
           </div>
 
         </div>
-
+{% endcomment %}
         <div class="h-100 ms-1 dropdown text-end">
           <a
             href="#"
             class="d-flex align-items-center text-light text-decoration-none dropdown-toggle"
-            id="dropdownUser1"
+            id="dropdownUser"
             data-bs-toggle="dropdown"
             aria-expanded="false"
             data-bs-offset="0, 16"
@@ -96,8 +96,8 @@
             <i class="fa-solid fa-user fa-xl"></i>
           </a>
           <ul
-            class="dropdown-menu "
-            aria-labelledby="dropdownUser1"
+            class="dropdown-menu shadow"
+            aria-labelledby="dropdownUser"
           >
             <li>
               <div class="dropdown-item d-flex align-items-center me-5">
@@ -115,13 +115,13 @@
                 <hr class="dropdown-divider" />
             </li>
             <li>
-                <a class="dropdown-item" href="{% url 'auth:edit' %}">Статьи</a>
+                <a class="dropdown-item" href="{% url 'account:lk' %}">Статьи</a>
             </li>
             <li>
-                <a class="dropdown-item pe-5" href="{% url 'auth:edit' %}">Комментарии</a>
+                <a class="dropdown-item pe-5" href="{% url 'account:lk' %}">Комментарии</a>
             </li>
             <li>
-                <a class="dropdown-item" href="{% url 'auth:edit' %}">Закладки</a>
+                <a class="dropdown-item" href="{% url 'account:lk' %}">Закладки</a>
             </li>
 
             {% if user.is_staff %}
@@ -140,7 +140,7 @@
               <hr class="dropdown-divider" />
             </li>
             <li>
-                <a class="dropdown-item" href="{% url 'auth:logout' %}">
+                <a class="dropdown-item" href="{% url 'auth:edit' %}">
                   <i class="fa-solid fa-gear text-primary opacity-50 me-2 fs-6"></i> Профиль
                 </a>
             </li>
@@ -155,9 +155,9 @@
           <div class="h-100 text-end">
           <a
             href="{% url 'auth:login' %}"
-            class="d-flex align-items-center text-light text-decoration-none text-small"
+            class="d-flex align-items-center text-light text-decoration-none"
           >
-            <i class="fa-solid fa-user fa-xl"></i>
+            <i class="fa-regular fa-user fa-xl"></i>
           </a>
         </div>
         {% endif %}

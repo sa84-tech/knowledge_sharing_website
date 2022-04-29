@@ -11,7 +11,7 @@
                     class="row g-0 bg-white overflow-hidden flex-md-row mb-4 h-md-250 position-relative shadow"
             >
                 <div class="col p-3 d-flex flex-column position-static">
-                    <a href="#" class="nav-link p-0">
+                    <a href="{% url 'index_page' post.category.slug %}" class="nav-link p-0">
                         <strong class="d-inline-block mb-2 text-primary">
                             {{ post.category|capfirst }}
                         </strong>

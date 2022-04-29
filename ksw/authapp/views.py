@@ -2,11 +2,10 @@ from django.contrib import auth
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
-from django.core.mail import send_mail
-from django.conf import settings
 
 from .forms import WriterUserLoginForm, WriterUserRegisterForm, WriterUserEditForm, WriterUserProfileForm
 from .models import WriterUser
+from .services.email import send_verify_mail
 
 
 def login(request):
@@ -40,23 +39,22 @@ def logout(request):
 
 
 def register(request):
-    title = 'регистрация'
+    context = {'title': 'Регистрация'}
 
-    if request.method == 'POST':
-        register_form = WriterUserRegisterForm(request.POST, request.FILES)
-        if register_form.is_valid():
-            user = register_form.save()
-            if send_verify_mail(user):
-                print('сообщение подтверждения отправлено')
-                return HttpResponseRedirect(reverse('auth:login'))
-            else:
-                print('сообщение НЕ отправлено')
-                return HttpResponseRedirect(reverse('auth:login'))
-    else:
-        register_form = WriterUserRegisterForm()
-    context = {
-        'title': title,
-        'register_form': register_form}
+    register_form = WriterUserRegisterForm(data=request.POST or None)
+
+    if request.method == 'POST' and register_form.is_valid():
+        user = register_form.save()
+        if send_verify_mail(user):
+            context['success'] = True
+            return render(request, 'authapp/register.html', context)
+
+        user.delete()
+        register_form.add_error(None, 'Произошла ошибка при попытке отправить ссылку активации. '
+                                      'Попробуйте пройти регистрацию позднее.')
+
+    context['register_form'] = register_form
+
     return render(request, 'authapp/register.html', context)
 
 
@@ -78,17 +76,6 @@ def edit(request):
         'profile_form': profile_form,
     }
     return render(request, 'authapp/edit.html', context)
-
-
-def send_verify_mail(user):
-    verify_link = reverse('auth:verify', args=[user.email, user.activation_key])
-
-    title = f'Подтверждение учетной записи {user.username}'
-
-    message = f'Для подтверждения учетной записи {user.username} на портале ' \
-              f'{settings.DOMAIN_NAME} перейдите по ссылке: \n{settings.DOMAIN_NAME}{verify_link}'
-
-    return send_mail(title, message, settings.EMAIL_HOST_USER, [user.email], fail_silently=False)
 
 
 def verify(request, email, activation_key):
