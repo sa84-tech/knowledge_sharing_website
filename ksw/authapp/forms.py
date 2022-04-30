@@ -13,26 +13,20 @@ class WriterUserLoginForm(AuthenticationForm):
     def __init__(self, *args, **kwargs):
         super(WriterUserLoginForm, self).__init__(*args,**kwargs)
         for field_name, field in self.fields.items():
-            field.widget.attrs['class'] = 'form-control'
+            field.widget.attrs['class'] = 'form-control form-control-lg'
 
 
 class WriterUserRegisterForm(UserCreationForm):
     class Meta:
         model = WriterUser
-        fields = ('username', 'password1', 'password2', 'email')
+        fields = ('username', 'email', 'password1', 'password2')
 
     def __init__(self, *args, **kwargs):
         super(WriterUserRegisterForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
-            field.widget.attrs['class'] = 'form-control'
+            field.widget.attrs['class'] = 'form-control form-control-lg'
             field.widget.attrs['placeholder'] = field.label
             field.widget.attrs['id'] = f'reg_{field_name}'
-
-    def clean_age(self):
-        data = self.cleaned_data['age']
-        if data < 0:
-            raise forms.ValidationError("Возраст указан не верно")
-        return data
 
     def save(self, *args, **kwargs):
         user = super(WriterUserRegisterForm, self).save()

@@ -1,3 +1,5 @@
+{% load main_extras %}
+
 <header class="">
   <div class="px-3 py-2 bg-primary text-light shadow">
     <div class="container">
@@ -30,39 +32,122 @@
         </form>
 
 
+
         {% if user.is_authenticated %}
-        <div class="h-100 dropdown text-end">
+{% comment %}
+        <div class="h-100 dropdown d-inline-block ms-lg-2 me-lg-4 py-2 px-1 position-relative">
           <a
             href="#"
-            class="d-flex align-items-center text-light text-decoration-none dropdown-toggle text-small"
-            id="dropdownUser1"
+            class="d-flex align-items-center text-light text-decoration-none"
+            id="dropDownNotification"
             data-bs-toggle="dropdown"
             aria-expanded="false"
+            data-bs-offset="0, 16"
+          >
+            <i class="fa-regular fa-bell fa-lg opacity-50 "></i>
+          </a>
+          <span class="position-absolute top-0 start-100 py-0 px-1 translate-middle badge rounded-pill text-primary bg-light opacity-50">
+            8
+            <span class="visually-hidden">unread messages</span>
+          </span>
+
+          <div class="dropdown-menu dropdown-menu-end py-0" aria-labelledby="dropDownNotification"
+               style="width: 400px !important; "
+          >
+            <div class="d-flex justify-content-between align-items-center bg-gray">
+              <div class="h6 p-2 m-0">Уведомления</div>
+            </div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item d-flex justify-content-between align-items-start mb-1">
+                <div class="ms-2 me-auto">
+                  <div class="fw-bold">Ивано Петров</div>
+                  Новое сообщение
+                </div>
+                <span class="text-muted text-small">14:30</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-start mb-1">
+                <div class="ms-2 me-auto">
+                  <div class="fw-bold">Семен Шпак</div>
+                  Оформлена подписка
+                </div>
+                <span class="text-muted text-small">12:05</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-start mb-1">
+                <div class="ms-2 me-auto">
+                  <div class="fw-bold">Валерий Федотов</div>
+                  Новое на портале
+                </div>
+                <span class="text-muted text-small">11:40</span>
+              </li>
+            </ul>
+          </div>
+
+        </div>
+{% endcomment %}
+        <div class="h-100 ms-1 dropdown text-end">
+          <a
+            href="#"
+            class="d-flex align-items-center text-light text-decoration-none dropdown-toggle"
+            id="dropdownUser"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+            data-bs-offset="0, 16"
           >
             <i class="fa-solid fa-user fa-xl"></i>
           </a>
           <ul
-            class="dropdown-menu text-small"
-            aria-labelledby="dropdownUser1"
+            class="dropdown-menu shadow"
+            aria-labelledby="dropdownUser"
           >
             <li>
-                <span class="dropdown-item fw-bold" >{{ user.username }}</span>
-                <hr class="dropdown-divider" />
+              <div class="dropdown-item d-flex align-items-center me-5">
+
+                <img class="rounded-circle shadow-1-strong me-3"
+                  src="{% get_avatar user %}" alt="avatar" width="32"
+                  height="32" />
+                <span class="fw-bold me-2">
+                  <a href="#" class="p-0 text-decoration-none text-primary fw-normal">@{{ user.username }}</a>
+                </span>
+              </div>
             </li>
 
             <li>
-                <a class="dropdown-item" href="{% url 'auth:edit' %}">Личный кабинет</a>
+                <hr class="dropdown-divider" />
             </li>
             <li>
-                <a class="dropdown-item" href="/admin">Админка</a>
+                <a class="dropdown-item" href="{% url 'account:lk' %}">Статьи</a>
             </li>
+            <li>
+                <a class="dropdown-item pe-5" href="{% url 'account:lk' %}">Комментарии</a>
+            </li>
+            <li>
+                <a class="dropdown-item" href="{% url 'account:lk' %}">Закладки</a>
+            </li>
+
+            {% if user.is_staff %}
+              <li>
+                <hr class="dropdown-divider" />
+              </li>
+              <li>
+                  <a class="dropdown-item" href="/admin">
+                    <i class="fa-solid fa-screwdriver-wrench text-primary opacity-50 me-2 fs-6"></i> Админка
+                  </a>
+              </li>
+
+            {% endif %}
 
             <li>
               <hr class="dropdown-divider" />
             </li>
             <li>
-                <a class="dropdown-item"  href="{% url 'auth:logout' %}">Выйти</a>
-
+                <a class="dropdown-item" href="{% url 'auth:edit' %}">
+                  <i class="fa-solid fa-gear text-primary opacity-50 me-2 fs-6"></i> Профиль
+                </a>
+            </li>
+            <li>
+                <a class="dropdown-item" href="{% url 'auth:logout' %}">
+                  <i class="fa-solid fa-right-from-bracket text-primary opacity-50 me-2 fs-6"></i> Выйти
+                </a>
             </li>
           </ul>
         </div>
@@ -70,9 +155,9 @@
           <div class="h-100 text-end">
           <a
             href="{% url 'auth:login' %}"
-            class="d-flex align-items-center text-light text-decoration-none text-small"
+            class="d-flex align-items-center text-light text-decoration-none"
           >
-            <i class="fa-solid fa-user fa-xl"></i>
+            <i class="fa-regular fa-user fa-xl"></i>
           </a>
         </div>
         {% endif %}

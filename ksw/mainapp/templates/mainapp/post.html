@@ -49,15 +49,15 @@
                   src="{% get_avatar post.author %}"
                   alt="avatar" width="40" height="40" />
                 <div class="me-2 text-center text-small text-muted">
-                  {% for item in activity %}
-                  <span class="d-block fw-bold fs-5 text-warning">{{item.activity}}</span>
+
+                  <span class="d-block fw-bold fs-5 text-warning">{{author_info.activity}}</span>
                   Активность
                 </div>
                 <div class="me-2 text-center text-small text-muted">
-                  <span class="d-block fw-bold fs-5 text-success">{{item.rating}}</span>
+                  <span class="rating d-block fw-bold fs-5 text-success">{{author_info.rating}}</span>
                   Рейтинг
                 </div>
-                {% endfor %}
+
               </div>
             <div class="justify-content-md-end">
               <button class="btn btn-outline-primary btn-sm opacity-75" type="button"><i class="fa-solid fa-envelope"></i></button>

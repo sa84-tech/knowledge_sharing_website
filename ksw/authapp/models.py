@@ -11,6 +11,7 @@ from mainapp.models import Like, Comment, Post
 class WriterUser(AbstractUser):
     avatar = models.ImageField(upload_to='users_avatars', blank=True)
     age = models.PositiveIntegerField(verbose_name='возраст', default=0)
+    email = models.EmailField(verbose_name='email', blank=False, unique=True)
 
     activation_key = models.CharField(max_length=128, blank=True)
     activation_key_expires = models.DateTimeField(default=(now() + timedelta(hours=48)))

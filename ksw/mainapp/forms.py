@@ -7,5 +7,4 @@ class CommentForm(forms.Form):
 
 class LikeForm(forms.Form):
     target_type = forms.CharField()
-    target_pk = forms.IntegerField()
-
+    target_id = forms.IntegerField()
