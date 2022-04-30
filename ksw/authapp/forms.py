@@ -19,7 +19,7 @@ class WriterUserLoginForm(AuthenticationForm):
 class WriterUserRegisterForm(UserCreationForm):
     class Meta:
         model = WriterUser
-        fields = ('username', 'password1', 'password2', 'email')
+        fields = ('username', 'email', 'password1', 'password2')
 
     def __init__(self, *args, **kwargs):
         super(WriterUserRegisterForm, self).__init__(*args, **kwargs)

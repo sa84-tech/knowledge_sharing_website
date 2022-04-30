@@ -2,40 +2,19 @@
 {% load static %}
 {% block content %}
 
-<style type="text/css">
-.card .form-control::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
-    color: #343a40;
-    opacity: 0.3; /* Firefox */
-}
-
-.card .form-control:-ms-input-placeholder { /* Internet Explorer 10-11 */
-    color: #343a40;
-    opacity: 0.35;
-}
-
-.card .form-control::-ms-input-placeholder { /* Microsoft Edge */
-    color: #343a40;
-    opacity: 0.35;
-}
-</style>
-
 <main class="vh-100">
   <div class="container py-5 h-100">
     <div class="row d-flex justify-content-center h-100">
       <div class="col-12 col-md-8 col-lg-6 col-xl-5">
         <div class="card shadow">
-          <div class="card-body p-5 pt-4 text-center">
-              {% if user %}
-                <h3>Поздравляем!</h3>
-                <br>
-                <h4>Пользователь {{user.username}} подтвержден.</h4>
-              {% else %}
-                <h3>Верификация не пройдена.</h3>
-              {% endif %}
-              <br>
-              <button class="btn btn-round form-control">
-                <a href="{% url 'index_page' %}" class="">на главную</a>
-              </button>
+          <div class="card-body p-3 text-center">
+
+            <div class="card-body text-end">
+                <p class="text-center mb-3 text-secondary fs-4 opacity-75 w-100">{{ message_title }}</p>
+                <p class="text-start mb-2">{{ message_body }}</p>
+                <a href="{% url url_path %}" role="button" class="btn btn-primary mt-3 px-4">ОК</a>
+            </div>
+
           </div>
         </div>
       </div>

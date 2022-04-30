@@ -1,15 +1,14 @@
 import json
 
 from django.contrib.auth.decorators import login_required
-from django.http import  JsonResponse
+from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.core.paginator import Paginator
 
+from authapp.models import WriterUserProfile
 from .forms import CommentForm, LikeForm
-from .models import Post, Comment, Like, Category
-from .services.helpers import get_cti_404
-from authapp.models import WriterUser, WriterUserProfile
-
+from .models import Post
+from .services.queries import toggle_like, get_user_rating, create_comment, increase_total_views
 
 POSTS_PER_PAGE = 5
 
@@ -35,16 +34,14 @@ def index_page(request, category_id=0, slug=None):
 
 def post_page(request, pk):
 
-    post = Post.objects.get(id=pk)
-    post.total_views += 1
-    post.save()
-
-    activity = WriterUserProfile.objects.filter(user=post.author)
+    post = get_object_or_404(Post, pk=pk)
+    author_info = get_object_or_404(WriterUserProfile, user=post.author)
+    increase_total_views(post)
 
     context = {
         'post': post,
         'comments': post.comment.all(),
-        'activity': activity,
+        'author_info': author_info,
     }
 
     return render(request, "mainapp/post.html", context)
@@ -58,17 +55,8 @@ def add_comment(request, target_type, pk):
     if request.method == 'POST':
         form = CommentForm(request.POST)
         if form.is_valid():
-
-            comment = {
-                'object_id': post.pk,
-                'author_id': request.user.pk,
-                'comment': form.cleaned_data['comment_text'],
-                'content_type_id': get_cti_404(target_type)
-            }
-
-            new_comment, is_created = Comment.objects.get_or_create(**comment)
-            if is_created:
-                new_comment.save()
+            comment_text = form.cleaned_data['comment_text']
+            create_comment(request.user.pk, post.pk, target_type, comment_text)
 
     return redirect(f'/post/{post.pk}#add_comment')
 
@@ -76,22 +64,13 @@ def add_comment(request, target_type, pk):
 def add_like(request):
 
     if request.user.is_authenticated:
-
         form = LikeForm(json.loads(request.body))
 
         if form.is_valid():
-            cd = form.cleaned_data
-            post = get_object_or_404(Post, pk=cd['target_pk'])
+            form_data = form.cleaned_data
+            post = get_object_or_404(Post, pk=form_data['target_id'])
+            toggle_like(request.user.pk, post.pk, form_data['target_type'])
 
-            like = {
-                'object_id': post.pk,
-                'author_id': request.user.pk,
-                'content_type_id': get_cti_404(cd['target_type'])
-            }
-
-            new_like, is_created = Like.objects.get_or_create(**like)
-            new_like.save() if is_created else new_like.delete()
-
-            return JsonResponse({'total_likes': post.total_likes})
+            return JsonResponse({'total_likes': post.total_likes, 'user_rating': get_user_rating(post.author)})
 
     return JsonResponse({'status': 'false', 'message': 'Bad request'}, status=400)

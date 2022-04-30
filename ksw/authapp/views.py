@@ -1,11 +1,12 @@
 from django.contrib import auth
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 
 from .forms import WriterUserLoginForm, WriterUserRegisterForm, WriterUserEditForm, WriterUserProfileForm
 from .models import WriterUser
 from .services.email import send_verify_mail
+from .services.queries import make_user_active
 
 
 def login(request):
@@ -39,21 +40,26 @@ def logout(request):
 
 
 def register(request):
-    context = {'title': 'Регистрация'}
 
     register_form = WriterUserRegisterForm(data=request.POST or None)
 
     if request.method == 'POST' and register_form.is_valid():
         user = register_form.save()
         if send_verify_mail(user):
-            context['success'] = True
-            return render(request, 'authapp/register.html', context)
+            context = {
+                'message_title': 'Активация аккаунта',
+                'message_body': f'На адрес {user.email} отправлена ссылка для активации аккаунта.',
+                'url_path': 'auth:login',
+            }
+            return render(request, 'authapp/verification.html', context)
 
         user.delete()
         register_form.add_error(None, 'Произошла ошибка при попытке отправить ссылку активации. '
                                       'Попробуйте пройти регистрацию позднее.')
-
-    context['register_form'] = register_form
+    context = {
+        'title': 'Регистрация',
+        'register_form': register_form
+    }
 
     return render(request, 'authapp/register.html', context)
 
@@ -79,16 +85,20 @@ def edit(request):
 
 
 def verify(request, email, activation_key):
+    context = {'title': 'Активация аккаунта'}
     try:
-        user = WriterUser.objects.get(email=email)
+        user = get_object_or_404(WriterUser, email=email)
         if user.activation_key == activation_key and not user.is_activation_key_expired():
-            user.is_active = True
-            user.save()
-            auth.login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-            return render(request, 'authapp/verification.html')
+            make_user_active(user)
+            context['message_title'] = 'Регистрация завершена'
+            context['message_body'] = f'Пользователь @{user.username} подтвержден.'
+            context['url_path'] = 'auth:login'
         else:
-            print(f'error activation user: {user}')
-            return render(request, 'authapp/verification.html')
+            context['message_title'] = 'Ошибка'
+            context['message_body'] = f'Активация не пройдена.'
+            context['url_path'] = 'auth:register'
+
+        return render(request, 'authapp/verification.html', context)
     except Exception as e:
         print(f'error activation user : {e.args}')
         return HttpResponseRedirect(reverse('auth:login'))
