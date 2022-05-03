@@ -3,14 +3,13 @@ from django.contrib.auth.models import AbstractUser
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils.timezone import now
-from datetime import timedelta, datetime
+from datetime import timedelta
 
 from mainapp.models import Like, Comment, Post
 
 
 class WriterUser(AbstractUser):
     avatar = models.ImageField(upload_to='users_avatars', blank=True)
-    age = models.PositiveIntegerField(verbose_name='возраст', default=0)
     email = models.EmailField(verbose_name='email', blank=False, unique=True)
 
     activation_key = models.CharField(max_length=128, blank=True)
@@ -21,17 +20,6 @@ class WriterUser(AbstractUser):
             return False
         else:
             return True
-
-    @property
-    def status(self):
-        print('DATETIME: ', datetime.now() - self.date_joined)
-        if self.is_superuser:
-            return 'суперпользователь'
-        if self.is_staff:
-            return 'модератор'
-        # if (datetime.now() - self.date_joined) > 12:
-        #     return 'постоянный пользователь'
-        return 'пользователь'
 
 
 class WriterUserProfile(models.Model):
@@ -45,9 +33,11 @@ class WriterUserProfile(models.Model):
 
     user = models.OneToOneField(WriterUser, unique=True, null=False, db_index=True, on_delete=models.CASCADE)
 
+    birthday = models.DateField(verbose_name='дата рождения', null=True, blank=True)
+
     gender = models.CharField(verbose_name='пол', max_length=1, choices=GENDER_CHOICES, blank=True)
 
-    country = models.TextField(verbose_name='страна', max_length=35, blank=True)
+    country = models.CharField(verbose_name='страна', max_length=35, blank=True)
 
     tagline = models.CharField(verbose_name='тэги', max_length=100, blank=True)
 

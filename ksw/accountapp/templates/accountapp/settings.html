@@ -1,0 +1,124 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+{% load main_extras %}
+
+{% block content %}
+  <div class="container content_wrapper">
+    <div class="row pt-4">
+      <div class="col-md-9">
+
+        <div
+          class="row g-0 bg-warning opacity-50 overflow-hidden flex-md-row mb-1 h-md-250 position-relative shadow"
+        >
+          <div class="col p-3">
+            <h1 class="h1 fw-bold text-light"><i class="fas fa-cog fa-xl"></i> Профиль</h1>
+          </div>
+        </div>
+
+        <div
+          class="row g-0 bg-white overflow-hidden flex-md-row mb-1 h-md-250 position-relative shadow"
+        >
+          <ul class="nav nav-pills" id="pills-tab" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button
+                class="nav-link active" id="pills-home-tab"
+                data-bs-toggle="pill" data-bs-target="#pills-posts"
+                type="button" role="tab"
+                aria-controls="pills-posts" aria-selected="true"
+              >
+                Публикации
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button
+                class="nav-link" id="pills-profile-tab"
+                data-bs-toggle="pill" data-bs-target="#pills-bookmarks"
+                type="button" role="tab"
+                aria-controls="pills-bookmarks" aria-selected="false"
+              >
+                Закладки
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button
+                class="nav-link" id="pills-contact-tab"
+                data-bs-toggle="pill" data-bs-target="#pills-subscriptions"
+                type="button" role="tab"
+                aria-controls="pills-subscriptions" aria-selected="false"
+              >
+                Подписки
+              </button>
+            </li>
+          </ul>
+
+        </div>
+
+        {% for post in page_obj %}
+            <div class="row g-0 bg-white overflow-hidden flex-md-row mb-4 h-md-250 position-relative shadow">
+                <div class="col p-3 d-flex flex-column position-static">
+                    <a href="{% url 'index_page' post.category.slug %}" class="nav-link p-0">
+                        <strong class="d-inline-block mb-2 text-primary">
+                            {{ post.category|capfirst }}
+                        </strong>
+                    </a>
+                    <h3 class="mb-1">
+                        <a href="{% url 'post_page' post.pk %}" class="nav-link p-0 text-secondary">
+                            {{ post.topic|capfirst }}
+                        </a>
+                    </h3>
+
+                    <div class="d-flex mb-2 text-small">
+                        <a href="#" class="nav-link p-0 text-muted fw-bold me-2">
+                            {{ post.author.first_name|capfirst }} {{ post.author.last_name|capfirst }}
+                        </a>
+                        <span class="date_info text-muted">{{ post.created }}</span>
+                    </div>
+
+                    <p class="mb-auto">
+                        {% if post.annotation %}
+                            {{ post.annotation|safe }}
+                        {% else %}
+                            {{ post.article|truncatewords:42|safe }}
+                        {% endif %}
+                    </p>
+                    <div class="my-3">
+                        <a
+                            class="btn btn-outline-primary btn-sm d-inline"
+                            type="button"
+                            href="{% url 'post_page' post.pk %}"
+                        >
+                            Далее...
+                        </a>
+                    </div>
+                    <div class="text-muted">
+                        <span class="me-3"><i class="fa-solid fa-eye"></i> {{ post.total_views }}</span>
+                        <span class="me-3"><i class="fa-solid fa-comment"></i> {{ post.total_comment }}</span>
+                        <span class="me-3"><i class="fa-solid fa-thumbs-up"></i> {{ post.total_likes }}</span>
+                    </div>
+                </div>
+                <div class="col-auto d-none d-lg-block">
+                    <img
+                        src="{{ post.image }}"
+                        class="img-fluid"
+                        alt="https://source.unsplash.com/random/220x30{{ forloop.counter0 }}"
+                        width="220"
+                        height="300"
+                    >
+                </div>
+            </div>
+            {% endfor %}
+
+
+      </div>
+
+
+
+      {% include 'accountapp/includes/inc_sidebar.html' %}
+    </div>
+  </div>
+
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'js/post.js' %}"></script>
+{% endblock %}

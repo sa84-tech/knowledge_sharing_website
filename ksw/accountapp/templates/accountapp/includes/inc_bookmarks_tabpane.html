@@ -1,0 +1,69 @@
+{% load main_extras %}
+
+{% for post in posts %}
+<div class="row g-0 bg-white overflow-hidden flex-md-row mb-3 h-md-250 position-relative shadow">
+    <div class="col p-3 pb-2 d-flex flex-column position-static">
+<!--        <a href="{% url 'index_page' post.category.slug %}" class="nav-link p-0">-->
+<!--            <strong class="d-inline-block mb-2 text-primary">-->
+<!--                {{ post.category|capfirst }}-->
+<!--            </strong>-->
+<!--        </a>-->
+
+        <div class="d-flex mb-2 text-small align-items-center">
+
+          <img class="rounded-circle shadow-1-strong me-3"
+            src="{% get_avatar post.author %}" alt="avatar" width="32"
+            height="32">
+          <a href="#" class="nav-link p-0 text-primary fw-bold me-2">
+            {{ post.author.first_name|capfirst }} {{ post.author.last_name|capfirst }}
+          </a>
+          <span class="date_info text-secondary">{{ post.created }}</span>
+        </div>
+        <h3 class="mb-1">
+            <a href="{% url 'post_page' post.pk %}" class="nav-link p-0 text-secondary">
+                {{ post.topic|capfirst }}
+            </a>
+        </h3>
+
+
+
+<!--        <div class="d-flex mb-2 text-small">-->
+<!--            <a href="#" class="nav-link p-0 text-muted fw-bold me-2">-->
+<!--                {{ post.author.first_name|capfirst }} {{ post.author.last_name|capfirst }}-->
+<!--            </a>-->
+<!--            <span class="date_info text-muted">{{ post.created }}</span>-->
+<!--        </div>-->
+
+        <p class="mb-1">
+            {% if post.annotation %}
+                {{ post.annotation|safe }}
+            {% else %}
+                {{ post.article|truncatewords:42|safe }}
+            {% endif %}
+        </p>
+        <div class="my-3">
+            <a
+                class="btn btn-outline-primary btn-sm d-inline"
+                type="button"
+                href="{% url 'post_page' post.pk %}"
+            >
+                Перейти
+            </a>
+        </div>
+        <div class="text-muted text-small">
+              <span class="me-3 "><i class="me-1 fa-solid text-primary opacity-50 fa-eye"></i> {{ post.total_views }}</span>
+              <span class="me-3 "><i class="me-1 fa-regular text-primary opacity-50 fa-comment"></i> {{ post.total_comment }}</span>
+              <span class="me-3 "><i class="fa-regular text-primary opacity-50 fa-thumbs-up"></i> {{ post.total_likes }}</span>
+        </div>
+    </div>
+    <div class="col-auto d-none d-lg-block">
+        <img
+            src="{{ post.image }}"
+            class="img-fluid"
+            alt="post image"
+            width="176"
+            height="240"
+        >
+    </div>
+</div>
+{% endfor %}

@@ -1,8 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
+
+from mainapp.models import Post, Comment
 
 
 def account(request):
-    return render(request, "accountapp/account.html")
+    posts = Post.objects.all()
+    comments = Comment.objects.all()
+    return render(request, "accountapp/account.html", {'posts': posts, 'comments': comments})
 
 
 def post_create(request, pk):

@@ -1,0 +1,41 @@
+{% load main_extras %}
+
+{% for comment_item in comments %}
+<div class="row g-0 bg-white overflow-hidden flex-md-row mb-3 h-md-250 position-relative shadow">
+    <div class="col p-3 pt-2 d-flex flex-column position-static">
+
+        <div class="row">
+            <h5 class="">
+            <a href="#" class="nav-link p-0 text-secondary">
+                {{ comment_item.content_object.topic }}
+            </a>
+        </h5>
+          <hr class="border-1 border-top border-secondary">
+        </div>
+      <div class="d-flex mb-2 align-items-center">
+        <img class="rounded-circle shadow-1-strong me-3"
+          src="{% get_avatar comment_item.author %}" alt="avatar" width="32"
+          height="32">
+        <span class="author_info text-muted fw-bold me-2">
+          <a href="#" class="nav-link p-0 text-secondary text-muted">{{ comment_item.author.first_name|capfirst }} {{ comment_item.author.last_name|capfirst }}</a>
+        </span>
+        <span class="date_info text-small text-muted">{{ comment_item.created }}</span>
+      </div>
+
+      <div class="mt-1 mb-2">
+        {{ comment_item.comment }}
+      </div>
+
+        <div class="my-3">
+            <a
+                class="btn btn-outline-primary btn-sm d-inline"
+                type="button"
+                href="#"
+                {# href="{% url 'post_page' post.pk %}" #}
+            >
+                Перейти
+            </a>
+        </div>
+    </div>
+</div>
+{% endfor %}
