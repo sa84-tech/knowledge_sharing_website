@@ -1,7 +1,10 @@
-from django.contrib import auth
+from django.contrib import auth, messages
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.views import PasswordChangeView
+
 from django.http import HttpResponseRedirect
-from django.shortcuts import render, get_object_or_404
-from django.urls import reverse
+from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse, reverse_lazy
 
 from .forms import WriterUserLoginForm, WriterUserRegisterForm, WriterUserEditForm, WriterUserProfileForm
 from .models import WriterUser
@@ -102,3 +105,12 @@ def verify(request, email, activation_key):
     except Exception as e:
         print(f'error activation user : {e.args}')
         return HttpResponseRedirect(reverse('auth:login'))
+
+
+class PasswordChangeView(PasswordChangeView):
+    from_class = PasswordChangeForm
+    success_url = reverse_lazy('auth:password_success')
+
+
+def password_success(request):
+    return render(request, 'authapp/password_success.html', {})

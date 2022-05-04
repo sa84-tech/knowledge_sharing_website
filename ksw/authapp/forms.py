@@ -40,7 +40,7 @@ class WriterUserRegisterForm(UserCreationForm):
 class WriterUserEditForm(UserChangeForm):
     class Meta:
         model = WriterUser
-        fields = ('username', 'first_name', 'email', 'age', 'avatar', 'password')
+        fields = ('username', 'first_name', 'last_name', 'email', 'age', 'avatar', 'password')
 
     def __init__(self, *args, **kwargs):
         super(WriterUserEditForm, self).__init__(*args, **kwargs)

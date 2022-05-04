@@ -18,7 +18,7 @@
                         {{ edit_form.non_field_errors.as_text }}
                     </p>
                 {% else %}
-                    <p class="mb-3 text-secondary fs-5 opacity-75">Регистрация</p>
+                    <p class="mb-3 text-secondary fs-5 opacity-75">Профиль</p>
                 {% endif %}
                 {% csrf_token %}
 
@@ -34,6 +34,18 @@
                   {{ edit_form.first_name.errors.as_text }}
                   </p>
                   {{ edit_form.first_name }}
+                </div>
+                <div class="form-outline mb-4 text-secondary">
+                  <p class="text-danger text-small opacity-75 text-decoration-none">
+                  {{ edit_form.last_name.errors.as_text }}
+                  </p>
+                  {{ edit_form.last_name }}
+                </div>
+
+                <div class="form-outline mb-4 text-secondary">
+                  <p class="text-danger text-small opacity-75 text-decoration-none">
+                    <a href="{% url 'authapp:change_password' %}">Изменить пароль</a>
+                  </p>
                 </div>
 
                 <div class="form-outline mb-4">
@@ -88,7 +100,7 @@
                 </div>
 
               <div class="form-outline text-start">
-                <input type="submit" class="btn btn-primary btn-lg" value="Зарегистрироваться" />
+                <input type="submit" class="btn btn-primary btn-lg" value="Обновить" />
               </div>
 
             </form>
