@@ -1,6 +1,6 @@
 {% load main_extras %}
 
-<div class="col-md-3">
+<div class="d-none d-xl-block col-xl-4 col-xxl-3">
   <div class="card shadow">
     <div class="card-header border-0">
       <span class="h6 text-muted fw-bold">Информация</span>
@@ -48,9 +48,9 @@
      </div>
       <div class="mt-4 mb-2">
             <a
-                class="btn btn-outline-warning opacity-75 btn-sm float-end"
+                class="btn btn-outline-warning opacity-50 btn-sm float-end"
                 type="button"
-                href="{% url 'auth:edit' %}"
+                href="{% url 'account:settings' %}"
             >
               <i class="fa-solid fa-gear fs-6"></i> Профиль
             </a>

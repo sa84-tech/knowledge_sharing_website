@@ -1,33 +1,34 @@
+{% load static %}
 {% load main_extras %}
 
 {% for comment_item in comments %}
 <div class="row g-0 bg-white overflow-hidden flex-md-row mb-3 h-md-250 position-relative shadow">
     <div class="col p-3 pt-2 d-flex flex-column position-static">
 
-        <div class="position-absolute top-0 end-0 opacity-50 p-2">
-            <i class="fa-regular text-primary opacity-50 fa-comments fa-3x me-1"></i>
-        </div>
-
         <div class="row">
+            <div class="d-flex mb-1 text-small align-items-center">
+                <img class="rounded-circle shadow-1-strong me-3"
+                    src="{% get_avatar comment_item.author %}" alt="avatar" width="32"
+                    height="32">
+                <a href="#" class="nav-link p-0 text-muted fw-bold me-2">
+                    {{ comment_item.content_object.author.first_name|capfirst }} {{ comment_item.content_object.author.last_name|capfirst }}
+                </a>
+                <span class="date_info text-muted">{{ comment_item.content_object.created }}</span>
+            </div>
             <h5 class="">
-            <a href="#" class="nav-link p-0 text-secondary">
-                {{ comment_item.content_object.topic }}
-            </a>
-        </h5>
-        <div class="d-flex mb-1 text-small">
-            <a href="#" class="nav-link p-0 text-muted fw-bold me-2">
-                {{ comment_item.content_object.author.first_name|capfirst }} {{ comment_item.content_object.author.last_name|capfirst }}
-            </a>
-            <span class="date_info text-muted">{{ comment_item.content_object.created }}</span>
-        </div>
-          <hr class="border-1 border-top border-secondary">
+                <a href="#" class="nav-link p-0 text-secondary">
+                    {{ comment_item.content_object.topic }}
+                </a>
+            </h5>
+
+            <hr class="border-1 border-top border-secondary">
         </div>
 
-      <div class="mt-1 mb-2">
+      <div class="mb-2">
         {{ comment_item.comment }}
       </div>
 
-        <div class="my-3">
+        <div class="my-2">
             <a
                 class="btn btn-outline-primary btn-sm d-inline"
                 type="button"
@@ -37,6 +38,15 @@
                 Перейти
             </a>
         </div>
+    </div>
+    <div class="col-auto d-none d-lg-flex p-3 ps-0 align-items-center">
+        <img
+            src="{% static 'img/comment_image.jpg' %}"
+            class="img-fluid opacity-75"
+            alt="post image"
+            width="132"
+            height="180"
+        >
     </div>
 </div>
 {% endfor %}
