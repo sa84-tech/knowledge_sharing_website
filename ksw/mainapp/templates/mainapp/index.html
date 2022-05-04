@@ -1,5 +1,6 @@
 {% extends 'mainapp/base.html' %}
 {% load static %}
+{% load main_extras %}
 
 {% block content %}
 <div class="container">
@@ -46,7 +47,8 @@
                 <div class="text-muted text-small">
                       <span class="me-3 "><i class="me-1 fa-solid text-primary opacity-50 fa-eye"></i> {{ post.total_views }}</span>
                       <span class="me-3 "><i class="me-1 fa-regular text-primary opacity-50 fa-comment"></i> {{ post.total_comment }}</span>
-                      <span class="me-3 "><i class="fa-regular text-primary opacity-50 fa-thumbs-up"></i> {{ post.total_likes }}</span>
+                      <span class="me-3 "><i class="text-primary opacity-50 fa-thumbs-up {% check_like post user %}"></i> {{ post.total_likes }}</span>
+                      <span class="me-3"><i class="me-1 fa-regular fa-bookmark text-primary opacity-50"></i> 4</span>
                 </div>
                 </div>
                 <div class="col-auto d-none d-lg-block">

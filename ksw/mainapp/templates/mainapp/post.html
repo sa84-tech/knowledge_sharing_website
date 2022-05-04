@@ -30,7 +30,8 @@
               <span class="me-3"><i class="me-1 fa-solid fa-eye text-primary opacity-50"></i> {{ post.total_views }}</span>
               <span class="me-3"><a href="#add_comment" class="text-decoration-none"><i class="me-1 fa-regular fa-comment opacity-50"></i></a> {{ post.total_comment }}</span>
               <span class="me-3 post_like " style="cursor: pointer;" data-csrf="{{ csrf_token }}"><i class="me-1 fa-thumbs-up opacity-50 text-primary {% check_like post user %}" style="pointer-events: none;"></i>
-                <i>{{ post.total_likes }}</i></span>
+                {{ post.total_likes }}</span>
+              <span class="me-3"><i class="me-1 fa-regular fa-bookmark text-primary opacity-50"></i> 4</span>
             </div>
           </div>
         </div>

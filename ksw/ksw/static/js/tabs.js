@@ -1,7 +1,10 @@
 'use strict'
 
 const triggerTabList = [...document.querySelectorAll('#pills-tab button')];
-const triggeredTabPanes = [...document.querySelectorAll(`h1.tab-pane`)];
+const triggeredTabPanes = [...document.querySelectorAll('.switchable-tab')];
+const filterBtnGroup = document.querySelector('#filter-btn-group')
+
+console.log(filterBtnGroup)
 
 triggerTabList.forEach(function (triggerEl) {
     const tabTrigger = new bootstrap.Tab(triggerEl);
@@ -18,4 +21,19 @@ triggerTabList.forEach(function (triggerEl) {
             }
         });
     });
+});
+
+filterBtnGroup.addEventListener('click', function (event) {
+    if (event.target.id.includes('filter-posts')) {
+        console.log(event.target.dataset.filter)
+    }
+    else if (event.target.id.includes('filter-comments')) {
+        console.log(event.target.dataset.filter)
+    }
+    else if (event.target.id.includes('filter-bookmarks')) {
+        console.log(event.target.dataset.filter)
+    }
+    else if (event.target.id.includes('filter-subscriptions')) {
+        console.log(event.target.dataset.filter)
+    }
 });

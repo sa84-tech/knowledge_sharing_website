@@ -23,20 +23,20 @@
         <div
           class="row g-0 bg-warning opacity-50 overflow-hidden flex-md-row h-md-250 position-relative shadow"
         >
-          <div class="tab-content col p-3">
-            <h1 id="h-pills-posts" class="tab-pane fade show active fw-bold text-light">
+          <div class="tab-content col p-3 text-light">
+            <h1 id="h-pills-posts" class="switchable-tab tab-pane fade show active fw-bold ">
               <i class="fa-solid fa-pencil fa-xl me-3"></i>
               Публикации
             </h1>
-            <h1 id="h-pills-comments" class="tab-pane fade fw-bold text-light">
-              <i class="fa-solid fa-comment-dots fa-xl me-3"></i>
+            <h1 id="h-pills-comments" class="switchable-tab tab-pane fade fw-bold">
+              <i class="fa-solid fa-comments fa-xl me-3"></i>
               Комментарии
             </h1>
-            <h1 id="h-pills-bookmarks" class="tab-pane fade fw-bold text-light" >
+            <h1 id="h-pills-bookmarks" class="switchable-tab tab-pane fade fw-bold" >
               <i class="fa-solid fa-bookmark fa-xl me-3"></i>
               Закладки
             </h1>
-            <h1 id="h-pills-subscriptions" class="tab-pane fade fw-bold text-light">
+            <h1 id="h-pills-subscriptions" class="switchable-tab tab-pane fade fw-bold">
               <i class="fa-solid fa-hand-pointer fa-xl me-3"></i>
               Подписки
             </h1>
@@ -61,7 +61,7 @@
 
             <li class="nav-item" role="presentation">
               <button
-                class="nav-link" id="pills-posts-tab-v2"
+                class="nav-link" id="pills-comments-tab"
                 data-bs-toggle="pill" data-bs-target="#pills-comments"
                 type="button" role="tab"
                 aria-controls="pills-comments" aria-selected="false"
@@ -80,7 +80,7 @@
                 Закладки
               </button>
             </li>
-
+{% comment %}
             <li class="nav-item" role="presentation">
               <button
                 class="nav-link" id="pills-contact-tab"
@@ -91,24 +91,107 @@
                 Подписки
               </button>
             </li>
-
+{% endcomment %}
           </ul>
 
-          <div class="div p-0 m-0 bg-light">
-            <hr class="border-1 border-top border-secondary m-0">
-            <div class="dropdown">
-              <button id="filterBtn" class="btn btn-light btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Фильтры
-              </button>
-              <ul class="dropdown-menu shadow z-index" aria-labelledby="filterBtn">
-                <li>
-                  <a class="dropdown-item" href="#">Опубликовано</a>
-                </li>
-                <li><a class="dropdown-item" href="#">Черновик</a></li>
-                <li><a class="dropdown-item" href="#">На проверке</a></li>
-              </ul>
+{% comment %}
+          <hr class="border-1 border-top border-secondary m-0">
+
+          <div id="filter-btn-group" class="tab-content m-0 py-0 px-3 bg-white">
+
+            <div id="f-pills-posts" class="switchable-tab tab-pane fade show active">
+              <div class="dropdown">
+                <button id="filter-btn-posts" class="btn btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Все подряд
+                </button>
+                <ul class="dropdown-menu shadow" aria-labelledby="filter-btn-posts">
+                  <li>
+                    <button id="filter-posts-all" data-filter="all" type="button" class="dropdown-item">Все подряд</button>
+                  </li>
+                  <li>
+                    <button id="filter-posts-published" data-filter="published" type="button" class="dropdown-item">Опубликовано</button>
+                  </li>
+                  <li>
+                    <button id="filter-posts-draft" data-filter="draft" type="button" class="dropdown-item">Черновик</button>
+                  </li>
+                  <li>
+                    <button id="filter-posts-check" data-filter="check" type="button" class="dropdown-item">На проверке</button>
+                  </li>
+                  {% if user.is_staff %}
+                    <li>
+                      <button id="filter-posts-deleted" data-filter="deleted" type="button" class="dropdown-item">Удаленные</button>
+                    </li>
+                  {% endif %}
+                  <li><hr class="dropdown-divider"></li>
+                  <li>
+                    <button id="filter-posts-new" type="button" data-filter="new" class="dropdown-item">сначала новые</button>
+                  </li>
+                  <li>
+                    <button id="filter-posts-old" type="button" data-filter="old" class="dropdown-item">сначала старые</button>
+                  </li>
+                  <li>
+                    <button id="filter-posts-title" type="button" data-filter="title" class="dropdown-item">по названию</button>
+                  </li>
+                </ul>
+              </div>
             </div>
+
+            <div id="f-pills-comments" class="switchable-tab tab-pane fade">
+              <div class="dropdown">
+                <button id="filter-btn-comments" class="btn btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Комментарии
+                </button>
+                <ul class="dropdown-menu shadow" aria-labelledby="filter-btn-comments">
+                  <li>
+                    <button id="filter-comments-comment" class="dropdown-item" type="button" data-filter="comment">
+                      Комментарии
+                    </button>
+                  </li>
+                  <li>
+                    <button id="filter-comments-dialog" class="dropdown-item" type="button" data-filter="dialog">
+                      Диалоги
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div id="f-pills-bookmarks" class="switchable-tab tab-pane fade">
+              <div class="dropdown">
+                <button id="filter-btn-bookmarks" class="btn btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Публикации
+                </button>
+                <ul class="dropdown-menu shadow" aria-labelledby="filter-btn-bookmarks">
+                  <li>
+                    <button id="filter-bookmarks-post" class="dropdown-item" type="button" data-filter="post">
+                      Публикации
+                    </button>
+                  </li>
+                  <li>
+                    <button id="filter-bookmarks-comment" class="dropdown-item" type="button" data-filter="comment">
+                      Комментарии
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div id="f-pills-subscriptions" class="switchable-tab tab-pane fade">
+              <div class="dropdown">
+                <button id="filter-btn-subscriptions" class="btn btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Все подряд
+                </button>
+                <ul class="dropdown-menu shadow" aria-labelledby="filter-btn-subscriptions">
+                  <li><button id="filter-subscriptions-all" class="dropdown-item" type="button" data-filter="all">Все подряд</button></li>
+                  <li><button id="filter-subscriptions-author" class="dropdown-item" type="button" data-filter="author">Автор</button></li>
+                  <li><button id="filter-subscriptions-post" class="dropdown-item" type="button" data-filter="post">Статья</button></li>
+                  <li><button id="filter-subscriptions-comment" class="dropdown-item" type="button" data-filter="comment">Комментарий</button></li>
+                </ul>
+              </div>
+            </div>
+
           </div>
+{% endcomment %}
 
         </div>
 
