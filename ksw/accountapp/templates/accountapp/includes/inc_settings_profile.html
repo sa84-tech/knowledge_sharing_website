@@ -1,0 +1,96 @@
+{% load main_extras %}
+
+<div class="row">
+
+    <div class="col-xl-8">
+        <div class="card mb-4">
+            <div class="card-header border-0 text-secondary">Информация</div>
+            <div class="card-body">
+                <form action="{% url 'auth:edit' %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <span class="text-danger text-small opacity-75 text-decoration-none">
+                        {{ edit_form.non_field_errors.as_text }}
+                    </span>
+                    <div class="mb-3">
+                        <label class="small mb-1" for="reg_username">Имя пользователя</label>
+                        <span class="text-danger text-small opacity-75 text-decoration-none">
+                            {{ edit_form.username.errors.as_text }}
+                        </span>
+                        {{ edit_form.username }}
+                    </div>
+                    <div class="row gx-3 mb-3">
+                        <div class="col-md-6">
+                            <label class="small mb-1" for="reg_first_name">Имя</label>
+                            <span class="text-danger text-small opacity-75 text-decoration-none">
+                                {{ edit_form.first_name.errors.as_text }}
+                            </span>
+                            {{ edit_form.first_name }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="small mb-1" for="reg_last_name">Фамилия</label>
+                            <span class="text-danger text-small opacity-75 text-decoration-none">
+                                {{ edit_form.last_name.errors.as_text }}
+                            </span>
+                            {{ edit_form.last_name }}
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="small mb-1" for="reg_email">Адрес email</label>
+                        <span class="text-danger text-small opacity-75 text-decoration-none">
+                            {{ edit_form.email.errors.as_text }}
+                        </span>
+                        {{ edit_form.email }}
+                    </div>
+                    <div class="row gx-3 mb-3">
+                        <div class="col-md-5">
+                            <label class="small mb-1" for="reg_country">Страна</label>
+                            <span class="text-danger text-small opacity-75 text-decoration-none">
+                                {{ profile_form.country.errors.as_text }}
+                            </span>
+                              {{ profile_form.country }}
+                        </div>
+                        <div class="col-md-5">
+                            <label class="small mb-1" for="reg_age">Дата рождения</label>
+                            <span class="text-danger text-small opacity-75 text-decoration-none">
+                                {{ edit_form.age.errors.as_text }}
+                            </span>
+                            {{ edit_form.age }}
+                        </div>
+                        <div class="col-md-2">
+                            <label class="small mb-1" for="reg_country">Пол</label>
+                            <span class="text-danger text-small opacity-75 text-decoration-none">
+                                {{ profile_form.gender.errors.as_text }}
+                            </span>
+                              {{ profile_form.gender }}
+                        </div>
+
+                    </div>
+
+                    <div class="row gx-3 mb-3">
+                        <div class="col-md-12">
+                            <label class="small mb-1" for="reg_country">Обо мне</label>
+                            <span class="text-danger text-small opacity-75 text-decoration-none">
+                                {{ profile_form.about_me.errors.as_text }}
+                            </span>
+                            {{ profile_form.about_me }}
+
+                        </div>
+                    </div>
+
+                    <input type="submit" class="btn btn-primary" value="Сохранить" />
+                </form>
+            </div>
+        </div>
+    </div>
+        <div class="col-xl-4">
+        <div class="card mb-4 mb-xl-0">
+                <div class="card-header border-0 text-secondary">Аватар</div>
+            <div class="card-body text-center">
+                <img class="rounded-circle mb-2" src="{% get_avatar user %}" alt="avatar" style="height: 10rem;">
+                <div class="small font-italic text-muted mb-4">JPG или PNG размером не более 1 Мб</div>
+                <button class="btn btn-primary" type="button">Загрузить</button>
+            </div>
+        </div>
+    </div>
+</div>

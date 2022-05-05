@@ -31,7 +31,6 @@ const post = {
         }
 
         else if (e.target == this.postLike) {
-
             const post_pk = this.contentBlock.dataset.post;
             const response = await fetch('/like/', {
                 headers: {
@@ -40,7 +39,6 @@ const post = {
                 },
                 method: 'POST',
                 body: JSON.stringify({target_type: 'post', target_id: post_pk})
-
             });
 
             if (response.ok) {
@@ -48,8 +46,6 @@ const post = {
                 this.postLike.lastChild.innerText = total_likes;
                 this.postLike.firstChild.classList.toggle('fa-regular');
                 this.postLike.firstChild.classList.toggle('fa-solid');
-                console.log(this.rating)
-                console.log(user_rating)
                 this.rating.innerText = user_rating;
             } else {
                 console.error('Error with fetching data from api');

@@ -1,5 +1,6 @@
 {% extends 'mainapp/base.html' %}
 {% load static %}
+{% load main_extras %}
 
 {% block content %}
 <div class="container">
@@ -7,9 +8,7 @@
         <div class="col-md-9">
             {% for post in page_obj %}
             {# Each "post" is a Post model object. #}
-            <div
-                    class="row g-0 bg-white overflow-hidden flex-md-row mb-4 h-md-250 position-relative shadow"
-            >
+            <div class="row g-0 bg-white overflow-hidden flex-md-row mb-4 h-md-250 position-relative shadow">
                 <div class="col p-3 d-flex flex-column position-static">
                     <a href="{% url 'index_page' post.category.slug %}" class="nav-link p-0">
                         <strong class="d-inline-block mb-2 text-primary">
@@ -17,50 +16,49 @@
                         </strong>
                     </a>
                     <h3 class="mb-1">
-                        <a href="{% url 'post_page' post.pk %}" class="nav-link p-0 text-secondary"
-                        >{{ post.topic|capfirst }}</a
-                        >
+                        <a href="{% url 'post_page' post.pk %}" class="nav-link p-0 text-secondary">
+                            {{ post.topic|capfirst }}
+                        </a>
                     </h3>
 
                     <div class="d-flex mb-2 text-small">
-              <span class="author_info text-muted fw-bold me-2"
-              ><a href="#" class="nav-link p-0 text-secondary text-muted"
-              >{{ post.author.first_name|capfirst }} {{ post.author.last_name|capfirst }}</a
-              ></span
-              >
+                        <a href="#" class="nav-link p-0 text-muted fw-bold me-2">
+                            {{ post.author.first_name|capfirst }} {{ post.author.last_name|capfirst }}
+                        </a>
                         <span class="date_info text-muted">{{ post.created }}</span>
                     </div>
 
                     <p class="mb-auto">
                         {% if post.annotation %}
-                        {{ post.annotation|safe }}
+                            {{ post.annotation|safe }}
                         {% else %}
-                        {{ post.article|truncatechars:240|safe }}
+                            {{ post.article|truncatewords:42|safe }}
                         {% endif %}
                     </p>
-                    <div class="my-3">
+                    <div class="mb-4">
                         <a
-                                class="btn btn-outline-primary btn-sm d-inline"
-                                type="button"
-                                href="{% url 'post_page' post.pk %}"
+                            class="btn btn-outline-primary  d-inline"
+                            type="button"
+                            href="{% url 'post_page' post.pk %}"
                         >
                             Далее...
                         </a>
                     </div>
-                    <div class="text-muted">
-                        <span class="me-3"><i class="fa-solid fa-eye"></i> {{ post.total_views }}</span>
-                        <span class="me-3"><i class="fa-solid fa-comment"></i> {{ post.total_comment }}</span>
-                        <span class="me-3"><i class="fa-solid fa-thumbs-up"></i> {{ post.total_likes }}</span>
-                    </div>
+                <div class="text-muted text-small">
+                      <span class="me-3 "><i class="me-1 fa-solid text-primary opacity-50 fa-eye"></i> {{ post.total_views }}</span>
+                      <span class="me-3 "><i class="me-1 fa-regular text-primary opacity-50 fa-comment"></i> {{ post.total_comment }}</span>
+                      <span class="me-3 "><i class="text-primary opacity-50 fa-thumbs-up {% check_like post user %}"></i> {{ post.total_likes }}</span>
+                      <span class="me-3"><i class="me-1 fa-regular fa-bookmark text-primary opacity-50"></i> 4</span>
+                </div>
                 </div>
                 <div class="col-auto d-none d-lg-block">
                     <img
-                            src="{{ post.image }}"
-                            class="img-fluid"
-                            alt="https://source.unsplash.com/random/220x30{{ forloop.counter0 }}"
-                            width="220"
-                            height="300"
-                    />
+                        src="{{ post.image }}"
+                        class="img-fluid"
+                        alt="post image"
+                        width="220"
+                        height="300"
+                    >
                 </div>
             </div>
             {% endfor %}
