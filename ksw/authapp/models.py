@@ -47,7 +47,7 @@ class WriterUserProfile(models.Model):
 
     gender = models.CharField(verbose_name='пол', max_length=1, choices=GENDER_CHOICES, blank=True)
 
-    country = models.TextField(verbose_name='страна', max_length=35, blank=True)
+    country = models.CharField(verbose_name='страна', max_length=40, blank=True)
 
     tagline = models.CharField(verbose_name='тэги', max_length=100, blank=True)
 

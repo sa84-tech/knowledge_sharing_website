@@ -84,7 +84,7 @@ def edit(request):
         'edit_form': edit_form,
         'profile_form': profile_form,
     }
-    return render(request, 'authapp/edit.html', context)
+    return render(request, 'accountapp/settings.html', context)
 
 
 def verify(request, email, activation_key):
