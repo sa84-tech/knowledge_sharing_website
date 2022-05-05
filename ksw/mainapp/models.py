@@ -120,7 +120,8 @@ class Post(models.Model):
     )
 
     total_views = models.PositiveIntegerField(
-        verbose_name='количество просмотров'
+        verbose_name='количество просмотров',
+        default=1,
     )
 
     category = models.ForeignKey(
