@@ -1,0 +1,62 @@
+{% load main_extras %}
+
+<!--<div class="row justify-content-center">-->
+<div class="row p-1 g-0 bg-light overflow-hidden flex-md-row mb-3 h-md-250 position-relative shadow justify-content-center">
+
+    <div class="col-xl-6">
+        <div class="accordion my-5" id="accordionFlushExample">
+          <div class="accordion-item bg-white mb-4 shadow-sm">
+              <button class="accordion-button collapsed " type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+            <h4 class="accordion-header" id="flush-headingOne">
+                Поменять пароль
+            </h4>
+              </button>
+            <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+              <div class="accordion-body pb-4">
+                    <form action="{% url 'auth:edit' %}" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <span class="text-danger text-small opacity-75 text-decoration-none">
+                            {{ password_form.non_field_errors.as_text }}
+                        </span>
+                        <div class="mb-3">
+                            <label class="small mb-1" for="id_old_password">Текущий пароль</label>
+                            <span class="text-danger text-small opacity-75 text-decoration-none">
+                                {{ password_form.old_password.errors.as_text }}
+                            </span>
+                                {{ password_form.old_password }}
+                        </div>
+                        <div class="mb-3">
+                            <label class="small mb-1" for="id_new_password1">Новый пароль</label>
+                            <span class="text-danger text-small opacity-75 text-decoration-none">
+                                {{ password_form.new_password1.errors.as_text }}
+                            </span>
+                            {{ password_form.new_password1 }}
+                        </div>
+                        <div class="mb-4">
+                            <label class="small mb-1" for="id_new_password2">Подтвердите пароль</label>
+                            <span class="text-danger text-small opacity-75 text-decoration-none">
+                                {{ password_form.new_password2.errors.as_text }}
+                            </span>
+                            {{ password_form.new_password2 }}
+                        </div>
+
+                        <button class="btn btn-outline-primary">Изменить пароль</button>
+                    </form>
+              </div>
+            </div>
+          </div>
+
+                    <div class="accordion-item border shadow-sm">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+            <h4 class="accordion-header" id="flush-headingTwo">
+                Поменять Email
+            </h4>
+              </button>
+            <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
+              <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the second item's accordion body. Let's imagine this being filled with some actual content.</div>
+            </div>
+          </div>
+
+        </div>
+    </div>
+</div>

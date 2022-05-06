@@ -1,4 +1,4 @@
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, UserChangeForm
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, UserChangeForm, PasswordChangeForm
 from .models import WriterUser, WriterUserProfile
 from django import forms
 import hashlib
@@ -68,3 +68,13 @@ class WriterUserProfileForm(forms.ModelForm):
             field.widget.attrs['class'] = 'form-control'
             field.widget.attrs['placeholder'] = field.label
             field.widget.attrs['id'] = f'reg_{field_name}'
+
+
+class PassChangeForm(PasswordChangeForm):
+    class Meta:
+        model = WriterUser
+
+    def __init__(self, *args, **kwargs):
+        super(PasswordChangeForm, self).__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs['class'] = 'form-control'
