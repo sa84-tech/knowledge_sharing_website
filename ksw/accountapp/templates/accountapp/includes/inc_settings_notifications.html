@@ -1,0 +1,125 @@
+<style>
+    .form-switch .form-check-input {
+        border-radius: 2rem;
+    }
+</style>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card card-header-actions mb-4">
+            <div class="card-header">
+                Уведомления по email
+                <div class="form-check form-switch">
+                    <input class="form-check-input" id="flexSwitchCheckChecked" type="checkbox" checked="">
+                    <label class="form-check-label" for="flexSwitchCheckChecked"></label>
+                </div>
+            </div>
+            <div class="card-body">
+                <form>
+                    <div class="mb-3">
+                        <label class="small mb-1" for="inputNotificationEmail">Адрес email для уведомлений</label>
+                        <input class="form-control" id="inputNotificationEmail" type="email" value="{{ user.email }}" disabled="">
+                    </div>
+                    <div class="mb-0">
+                        <label class="small mb-2">Выберите, какие типы обновлений по email вы будете получать</label>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" id="checkEmailPostComment" type="checkbox" checked="">
+                            <label class="form-check-label" for="checkEmailPostComment">Комментарии к моим публикациям</label>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" id="checkEmailCommentResponse" type="checkbox" checked="">
+                            <label class="form-check-label" for="checkEmailCommentResponse">Ответ на мой комментарий</label>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" id="checkEmailBookmarkComment" type="checkbox" checked="">
+                            <label class="form-check-label" for="checkEmailBookmarkComment">Комментарии к статьям в моих закладках</label>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" id="checkEmailSiteChanges" type="checkbox" checked="">
+                            <label class="form-check-label" for="checkEmailSiteChanges">Информация об изменениях на сайте</label>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" id="checkEmailNewFollower" type="checkbox">
+                            <label class="form-check-label" for="checkEmailNewFollower">Если у меня новый подписчик</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" id="checkEmailSecurity" type="checkbox" checked="">
+                            <label class="form-check-label" for="checkEmailSecurity">Оповещения безопасности</label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="card card-header-actions mb-4">
+            <div class="card-header">
+                Уведомления на сайте
+                <div class="form-check form-switch">
+                    <input class="form-check-input" id="smsToggleSwitch" type="checkbox" checked="">
+                    <label class="form-check-label" for="smsToggleSwitch"></label>
+                </div>
+            </div>
+            <div class="card-body">
+                <form>
+                    <div class="mb-0">
+                        <label class="small mb-2">Выберите, какие типы обновлений на сайте вы будете получать</label>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" id="checkSitePostComment" type="checkbox" checked="">
+                            <label class="form-check-label" for="checkEmailPostComment">Комментарии к моим публикациям</label>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" id="checkSiteCommentResponse" type="checkbox" checked="">
+                            <label class="form-check-label" for="checkSiteCommentResponse">Ответ на мой комментарий</label>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" id="checkSiteBookmarkComment" type="checkbox" checked="">
+                            <label class="form-check-label" for="checkSiteBookmarkComment">Комментарии к статьям в моих закладках</label>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" id="checkSiteSiteChanges" type="checkbox">
+                            <label class="form-check-label" for="checkSiteSiteChanges">Информация об изменениях на сайте</label>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" id="checkSiteNewFollower" type="checkbox" checked="">
+                            <label class="form-check-label" for="checkSiteNewFollower">Если у меня новый подписчик</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" id="checkSiteSecurity" type="checkbox">
+                            <label class="form-check-label" for="checkSiteSecurity">Оповещения безопасности</label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+
+        <div class="card">
+            <div class="card-header">Общие настройки</div>
+            <div class="card-body">
+                <form>
+                    <div class="mb-4">
+                        <label class="form-select-label mb-2" for="selectDigest">
+                            Выберите частоту рассылки дайджеста
+                        </label>
+                        <select class="form-select" id="selectDigest" type="select" checked="">
+                            <option selected>Не присылать</option>
+                            <option value="1">Присылать каждый день</option>
+                            <option value="2">Присылать раз в неделю</option>
+                            <option value="3">Присылать раз в месяц</option>
+                        </select>
+
+                    </div>
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" id="checkAutoProduct" type="checkbox">
+                        <label class="form-check-label" for="checkAutoProduct">
+                            Автоматически подписываться на новые публикации в моих хабах
+                        </label>
+                    </div>
+
+                    <button class="btn btn-light text-primary">Отписаться от всех уведомлений</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,28 +1,30 @@
 {% load static %}
+{% load main_extras %}
+
 <!DOCTYPE html>
 <html lang="ru">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="{% static 'css/main.min.css' %}"/>
-    <title>{{ title|title }}</title>
-  </head>
-  <body class="">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="{% static 'css/main.min.css' %}"/>
+        <title>{{ title|title }}</title>
+    </head>
+    <body class="">
 
-    {% include 'mainapp/includes/inc_header.html' %}
+        {% include 'mainapp/includes/inc_header.html' %}
 
-    <main class="bg-gray min-vh-100 pb-5">
-      {% include 'mainapp/includes/inc_category_nav.html' %}
-      {% block content %}{% endblock %}
-    </main>
+        <main class="bg-gray min-vh-100 pb-5">
+            {% include 'mainapp/includes/inc_category_nav.html' %}
+            {% block content %}{% endblock %}
+        </main>
 
-    {% include 'mainapp/includes/inc_footer.html' %}
+        {% include 'mainapp/includes/inc_footer.html' %}
 
-    <script src="{% static 'js/vendor/bootstrap.bundle.min.js' %}"></script>
-    <script>
-      document.querySelector("#year").innerHTML = new Date().getFullYear();
-    </script>
-    {% block script %}{% endblock %}
-  </body>
+        <script src="{% static 'js/vendor/bootstrap.bundle.min.js' %}"></script>
+        <script>
+            document.querySelector("#year").innerHTML = new Date().getFullYear();
+        </script>
+        {% block script %}{% endblock %}
+    </body>
 </html>

@@ -1,16 +1,17 @@
 {% load main_extras %}
 
 <div class="row">
-
     <div class="col-xl-9">
         <div class="card mb-4 shadow">
             <div class="card-header border-0 text-secondary">Информация</div>
             <div class="card-body">
                 <form action="{% url 'auth:edit' %}" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
+
                     <span class="text-danger text-small opacity-75 text-decoration-none">
                         {{ edit_form.non_field_errors.as_text }}
                     </span>
+
                     <div class="mb-3">
                         <label class="small mb-1" for="reg_username">Имя пользователя</label>
                         <span class="text-danger text-small opacity-75 text-decoration-none">
@@ -18,6 +19,7 @@
                         </span>
                         {{ edit_form.username }}
                     </div>
+
                     <div class="row gx-3 mb-3">
                         <div class="col-md-6">
                             <label class="small mb-1" for="reg_first_name">Имя</label>
@@ -34,15 +36,7 @@
                             {{ edit_form.last_name }}
                         </div>
                     </div>
-{% comment %}
-                    <div class="mb-3">
-                        <label class="small mb-1" for="reg_email">Адрес email</label>
-                        <span class="text-danger text-small opacity-75 text-decoration-none">
-                            {{ edit_form.email.errors.as_text }}
-                        </span>
-                        {{ edit_form.email }}
-                    </div>
-{% endcomment %}
+
                     <div class="row gx-3 mb-3">
                         <div class="col-md-5">
                             <label class="small mb-1" for="reg_country">Страна</label>
@@ -65,7 +59,6 @@
                             </span>
                               {{ profile_form.gender }}
                         </div>
-
                     </div>
 
                     <div class="row gx-3 mb-3">
@@ -84,9 +77,10 @@
             </div>
         </div>
     </div>
-        <div class="col-xl-3">
+
+    <div class="col-xl-3">
         <div class="card mb-4 mb-xl-0 shadow">
-                <div class="card-header border-0 text-secondary">Аватар</div>
+            <div class="card-header border-0 text-secondary">Аватар</div>
             <div class="card-body text-center">
                 <img class="rounded-circle mb-2" src="{% get_avatar user %}" alt="avatar" style="height: 10rem;">
                 <div class="small font-italic text-muted mb-4">JPG или PNG размером не более 1 Мб</div>
