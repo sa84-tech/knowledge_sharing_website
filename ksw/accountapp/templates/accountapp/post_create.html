@@ -5,13 +5,14 @@
     <div class="container d-flex flex-wrap justify-content-center">
         <form action="{% url 'account:post_create' %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
-
-            <div class="form-error">{{ form.non_field_errors }}</div>
+            {{ form.media }}
+            {{ form.as_p }}
+<!--             <div class="form-error">{{ form.non_field_errors }}</div>
 
             {% for f in form %}
             <p><label class="form-label" for="{{ f.id_for_label }}">{{f.label}}: </label>{{ f }}</p>
             <div class="form-error">{{ f.errors }}</div>
-            {% endfor %}
+            {% endfor %} -->
 
             <button type="submit">Сохранить</button>
         </form>
