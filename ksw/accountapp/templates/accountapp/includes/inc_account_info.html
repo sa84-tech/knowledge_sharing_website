@@ -1,0 +1,60 @@
+{% load main_extras %}
+
+<div class="d-none d-xl-block col-xl-4 col-xxl-3">
+    <div class="card shadow">
+        <div class="card-header">
+            <span class="h6 text-secondary fw-bold">Информация</span>
+        </div>
+
+        <div class="card-body py-4">
+            <div class="d-flex align-items-center my-2">
+                <img class="rounded-circle shadow-1-strong me-3"
+                    src="{% get_avatar user %}"
+                    alt="avatar" width="64" height="64">
+                <div class="mb-2 ">
+                    <div class="fw-bold">
+                        {{ user.first_name|capfirst }} {{ user.last_name|capfirst }}
+                    </div>
+                    <div class="p-0 text-primary fw-normal">
+                        @{{ user.username }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-footer border-0 py-3 text-secondary" style="background-color: #f8f9fa;">
+            <div class="text-small px-2">
+                <div class="d-flex mb-3">
+                    <span class="col-6 fw-bold">Статус</span>
+                    <span class="col-6 ">{{ user.status }}</span>
+                </div>
+                <div class="d-flex mb-3">
+                    <span class="col-6 fw-bold">Рейтинг</span>
+                    <span class="col-6">{{ user.writeruserprofile.rating }}</span>
+                </div>
+                <div class="d-flex mb-3">
+                    <span class="col-6 fw-bold">Активность</span>
+                    <span class="col-6">{{ user.writeruserprofile.activity }}</span>
+                </div>
+                <div class="d-flex mb-3">
+                    <span class="col-6 fw-bold">Зарегистрирован</span>
+                    <span class="col-6 ">{{ user.date_joined|date:"d.m.Y h:m" }}</span>
+                </div>
+                <div class="d-flex mb-3">
+                    <span class="col-6 fw-bold">Последний вход</span>
+                    <span class="col-6 ">{{ user.last_login|date:"d.m.Y h:m" }}</span>
+                </div>
+            </div>
+            <div class="mt-4 mb-2">
+                <a
+                    class="btn btn-outline-primary btn-sm float-end"
+                    type="button"
+                    href="{% url 'account:settings' %}"
+                >
+                    <i class="fa-solid fa-gear fs-6"></i> Профиль
+                </a>
+            </div>
+        </div>
+
+    </div>
+</div>

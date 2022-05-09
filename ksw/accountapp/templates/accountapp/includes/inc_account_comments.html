@@ -3,9 +3,9 @@
 
 {% for comment_item in comments %}
 <div class="row g-0 bg-white overflow-hidden flex-md-row mb-3 h-md-250 position-relative shadow">
-    <div class="col p-3 pt-2 d-flex flex-column position-static">
+    <div class="col p-3 pt-2 d-flex flex-column">
 
-        <div class="row">
+
             <div class="d-flex mb-1 text-small align-items-center">
                 <img class="rounded-circle shadow-1-strong me-3"
                     src="{% get_avatar comment_item.author %}" alt="avatar" width="32"
@@ -15,22 +15,20 @@
                 </a>
                 <span class="date_info text-muted">{{ comment_item.content_object.created }}</span>
             </div>
-            <h5 class="">
-                <a href="#" class="nav-link p-0 text-secondary">
-                    {{ comment_item.content_object.topic }}
-                </a>
-            </h5>
+            <a href="#" class="h5 nav-link p-0 text-muted">
+                {{ comment_item.content_object.topic }}
+            </a>
 
-            <hr class="border-1 border-top border-secondary">
+            <hr class="border-1 border-top border-secondary mt-0 mb-2">
+
+
+        <div class="mb-3">
+            {{ comment_item.comment }}
         </div>
 
-      <div class="mb-2">
-        {{ comment_item.comment }}
-      </div>
-
-        <div class="my-2">
+        <div class="flex-grow-1 d-flex">
             <a
-                class="btn btn-outline-primary btn-sm d-inline"
+                class="btn btn-outline-primary btn-sm align-self-end"
                 type="button"
                 href="#"
                 {# href="{% url 'post_page' post.pk %}" #}

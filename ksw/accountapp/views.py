@@ -1,10 +1,11 @@
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
+from django.contrib.auth.views import PasswordChangeView
+from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, get_object_or_404
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 
 from mainapp.models import Post, Comment
-from authapp.forms import WriterUserEditForm, WriterUserProfileForm
+from authapp.forms import WriterUserEditForm, WriterUserProfileForm, PassChangeForm
 
 
 @login_required
@@ -28,14 +29,29 @@ def settings(request):
     else:
         edit_form = WriterUserEditForm(instance=request.user)
         profile_form = WriterUserProfileForm(instance=request.user.writeruserprofile)
+    password_form = PassChangeForm(request.user)
     context = {
         'title': title,
         'edit_form': edit_form,
         'profile_form': profile_form,
+        'password_form': password_form,
     }
     return render(request, 'accountapp/settings.html', context)
 
     # return render(request, "accountapp/settings.html", {'posts': posts, 'comments': comments})
+
+
+class PassChangeView(PasswordChangeView):
+    from_class = PassChangeForm
+    success_url = reverse_lazy('auth:password_success')
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update(user=self.request.user)
+        return kwargs
+
+    def form_valid(self, form):
+        return JsonResponse({'foo': 'bar'})
 
 
 def post_create(request, pk):

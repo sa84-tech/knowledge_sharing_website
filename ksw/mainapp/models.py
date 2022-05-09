@@ -141,7 +141,7 @@ class Post(models.Model):
     )
     likes = GenericRelation(Like)
     comment = GenericRelation(Comment)
-    image = models.ImageField(upload_to='image_post', blank=True)
+    image = models.ImageField(upload_to='uploads/%Y/%m/%d', blank=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 

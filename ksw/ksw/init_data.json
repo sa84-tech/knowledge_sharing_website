@@ -5,7 +5,7 @@
       "first_name": "Олег",
       "last_name": "Белов",
       "email": "test_1@example.local",
-      "avatar": "/media/seeder/users/m_1.webp",
+      "avatar": "seeder/users/m_1.webp",
       "is_superuser": false,
       "is_staff": false,
       "is_active": true
@@ -15,7 +15,7 @@
       "first_name": "Юлия",
       "last_name": "Кочетова",
       "email": "test_2@example.local",
-      "avatar":  "/media/seeder/users/f_1.webp",
+      "avatar":  "seeder/users/f_1.webp",
       "is_superuser": false,
       "is_staff": false,
       "is_active": true
@@ -25,7 +25,7 @@
       "first_name": "Алина",
       "last_name": "Полякова",
       "email": "test_3@example.local",
-      "avatar":  "/media/seeder/users/f_2.webp",
+      "avatar":  "seeder/users/f_2.webp",
       "is_superuser": false,
       "is_staff": false,
       "is_active": true
@@ -35,7 +35,7 @@
       "first_name": "Лев",
       "last_name": "Абрамов",
       "email": "andreadotson@uniworld.com",
-      "avatar":  "/media/seeder/users/m_2.webp",
+      "avatar":  "seeder/users/m_2.webp",
       "is_active": true,
       "is_staff": true,
       "is_superuser": false
@@ -45,7 +45,7 @@
       "first_name": "Арсений",
       "last_name": "Попов",
       "email": "flynndecker@uniworld.com",
-      "avatar":  "/media/seeder/users/m_3.webp",
+      "avatar":  "seeder/users/m_3.webp",
       "is_active": true,
       "is_staff": false,
       "is_superuser": false
@@ -55,7 +55,7 @@
       "first_name": "София",
       "last_name": "Фомина",
       "email": "barlowayers@uniworld.com",
-      "avatar":  "/media/seeder/users/f_3.webp",
+      "avatar":  "seeder/users/f_3.webp",
       "is_active": true,
       "is_staff": true,
       "is_superuser": false
@@ -65,7 +65,7 @@
       "first_name": "Елизавета",
       "last_name": "Анисимова",
       "email": "sherribentley@uniworld.com",
-      "avatar":  "/media/seeder/users/f_4.webp",
+      "avatar":  "seeder/users/f_4.webp",
       "is_active": true,
       "is_staff": false,
       "is_superuser": false
@@ -75,7 +75,7 @@
       "first_name": "Арина",
       "last_name": "Богомолова",
       "email": "patricabooth@uniworld.com",
-      "avatar":  "/media/seeder/users/f_5.webp",
+      "avatar":  "seeder/users/f_5.webp",
       "is_active": true,
       "is_staff": false,
       "is_superuser": false
@@ -85,7 +85,7 @@
       "first_name": "Анастасия",
       "last_name": "Гончарова",
       "email": "harrismanning@uniworld.com",
-      "avatar":  "/media/seeder/users/f_6.webp",
+      "avatar":  "seeder/users/f_6.webp",
       "is_active": true,
       "is_staff": false,
       "is_superuser": false
@@ -95,7 +95,7 @@
       "first_name": "Михаил",
       "last_name": "Лукьянов",
       "email": "kateglass@uniworld.com",
-      "avatar":  "/media/seeder/users/m_4.webp",
+      "avatar":  "seeder/users/m_4.webp",
       "is_active": true,
       "is_staff": true,
       "is_superuser": false
@@ -123,7 +123,7 @@
       "category": 1,
       "status": 2,
       "author": "user_3",
-      "image": "/media/seeder/posts/index_1.jpg"
+      "image": "seeder/posts/index_1.jpg"
     },
     {
       "id": 2,
@@ -134,7 +134,7 @@
       "category": 2,
       "status": 2,
       "author": "user_5",
-      "image": "/media/seeder/posts/index_2.jpg"
+      "image": "seeder/posts/index_2.jpg"
     },
     {
       "id": 3,
@@ -145,7 +145,7 @@
       "category": 3,
       "status": 2,
       "author": "user_7",
-      "image": "/media/seeder/posts/index_3.jpg"
+      "image": "seeder/posts/index_3.jpg"
     },
     {
       "id": 4,
@@ -156,7 +156,7 @@
       "category": 4,
       "status": 1,
       "author": "user_7",
-      "image": "/media/seeder/posts/index_4.jpg"
+      "image": "seeder/posts/index_4.jpg"
     },
     {
       "id": 5,
@@ -167,7 +167,7 @@
       "category": 3,
       "status": 2,
       "author": "user_7",
-      "image": "/media/seeder/posts/index_5.jpg"
+      "image": "seeder/posts/index_5.jpg"
     },
     {
       "id": 6,
@@ -178,7 +178,7 @@
       "category": 2,
       "status": 2,
       "author": "user_4",
-      "image": "/media/seeder/posts/index_6.jpg"
+      "image": "seeder/posts/index_6.jpg"
     },
     {
       "id": 7,
@@ -189,7 +189,7 @@
       "category": 1,
       "status": 2,
       "author": "user_3",
-      "image": "/media/seeder/posts/index_7.jpg"
+      "image": "seeder/posts/index_7.jpg"
     },
     {
       "id": 8,
@@ -200,7 +200,7 @@
       "category": 2,
       "status": 2,
       "author": "user_5",
-      "image": "/media/seeder/posts/index_8.jpg"
+      "image": "seeder/posts/index_8.jpg"
     },
     {
       "id": 9,
@@ -211,7 +211,7 @@
       "category": 3,
       "status": 2,
       "author": "user_7",
-      "image": "/media/seeder/posts/index_9.jpg"
+      "image": "seeder/posts/index_9.jpg"
     },
     {
       "id": 10,
@@ -222,7 +222,7 @@
       "category": 4,
       "status": 2,
       "author": "user_8",
-      "image": "/media/seeder/posts/index_10.jpg"
+      "image": "seeder/posts/index_10.jpg"
     },
     {
       "id": 11,
@@ -233,7 +233,7 @@
       "category": 4,
       "status": 2,
       "author": "user_9",
-      "image": "/media/seeder/posts/index_11.jpg"
+      "image": "seeder/posts/index_11.jpg"
     },
     {
       "id": 12,
@@ -244,7 +244,7 @@
       "category": 1,
       "status": 2,
       "author": "user_10",
-      "image": "/media/seeder/posts/index_12.jpg"
+      "image": "seeder/posts/index_12.jpg"
     }
   ],
   "comments": [
