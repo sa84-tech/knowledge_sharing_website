@@ -5,7 +5,7 @@
 {% block content %}
 <div class="container">
     <div class="row pt-4">
-        <div class="col-md-9">
+        <div class="col-lg-12 col-xl-9">
             {% for post in page_obj %}
             {# Each "post" is a Post model object. #}
             <div class="row g-0 bg-white overflow-hidden flex-md-row mb-4 h-md-250 position-relative shadow">
@@ -15,20 +15,20 @@
                             {{ post.category|capfirst }}
                         </strong>
                     </a>
-                    <h3 class="mb-1">
+                    <h3 class="mb-2">
                         <a href="{% url 'post_page' post.pk %}" class="nav-link p-0 text-secondary">
                             {{ post.topic|capfirst }}
                         </a>
                     </h3>
 
-                    <div class="d-flex mb-2 text-small">
+                    <div class="d-flex mb-3 text-small">
                         <a href="#" class="nav-link p-0 text-muted fw-bold me-2">
                             {{ post.author.first_name|capfirst }} {{ post.author.last_name|capfirst }}
                         </a>
                         <span class="date_info text-muted">{{ post.created }}</span>
                     </div>
 
-                    <p class="mb-auto">
+                    <p class="mb-4 mb-lg-auto">
                         {% if post.annotation %}
                             {{ post.annotation|safe }}
                         {% else %}
@@ -51,13 +51,13 @@
                       <span class="me-3"><i class="me-1 fa-regular fa-bookmark text-primary opacity-50"></i> 4</span>
                 </div>
                 </div>
-                <div class="col-auto d-none d-lg-block">
+                <div class="col-auto d-none d-lg-block p-3">
                     <img
-                        src="{{ post.image }}"
+                        src="{{ post.image.url }}"
                         class="img-fluid"
                         alt="post image"
-                        width="220"
-                        height="300"
+                        width="198"
+                        height="270"
                     >
                 </div>
             </div>

@@ -4,11 +4,27 @@
 
 {% block content %}
 
-<div class="container content_wrapper">
+<style>
+    .account .bg-primary {
+        background-color: #3B727D !important;
+    }
+    .btn-outline-primary {
+        color: #fff;
+        color: #3B727D;
+        border-color: #3B727D;
+    }
+    .btn-outline-primary:hover {
+        color: #fff;
+        background-color: #3B727D;
+        border-color: #3B727D;
+    }
+</style>
+
+<div class="account container content_wrapper">
     <div class="row pt-4">
         <div class="col-xl-8 col-xxl-9">
 
-            <div class="row g-0 bg-danger overflow-hidden opacity-50 flex-md-row h-md-250 position-relative shadow">
+            <div class="row g-0 bg-primary overflow-hidden flex-md-row h-md-250 position-relative shadow">
                 <div class="tab-content col p-3 text-white">
                     <h1 id="h-pills-posts" class="switchable-tab tab-pane fade show active fw-bold ">
                         <i class="fa-solid fa-pencil fa-xl me-3"></i>
@@ -81,22 +97,22 @@
 
             <div class="tab-content mt-3">
                 <div id="pills-posts" class="tab-pane fade show active">
-                    {% include 'accountapp/includes/inc_posts_tabpane.html' %}
+                    {% include 'accountapp/includes/inc_account_posts.html' %}
                 </div>
                 <div id="pills-comments" class="tab-pane fade">
-                    {% include 'accountapp/includes/inc_comments_tabpane.html' %}
+                    {% include 'accountapp/includes/inc_account_comments.html' %}
                 </div>
                 <div id="pills-bookmarks" class="tab-pane fade">
-                    {% include 'accountapp/includes/inc_bookmarks_tabpane.html' %}
+                    {% include 'accountapp/includes/inc_account_bookmarks.html' %}
                 </div>
                 <div id="pills-subscriptions" class="tab-pane fade">
-                    {% include 'accountapp/includes/inc_subscriptions_tabpane.html' %}
+                    {% include 'accountapp/includes/inc_account_subscriptions.html' %}
                 </div>
             </div>
 
         </div>
 
-        {% include 'accountapp/includes/inc_sidebar_info.html' %}
+        {% include 'accountapp/includes/inc_account_info.html' %}
 
     </div>
 </div>
