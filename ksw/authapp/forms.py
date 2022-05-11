@@ -1,4 +1,6 @@
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, UserChangeForm, PasswordChangeForm
+from django_countries.fields import CountryField
+
 from .models import WriterUser, WriterUserProfile
 from django import forms
 import hashlib
@@ -37,10 +39,15 @@ class WriterUserRegisterForm(UserCreationForm):
         return user
 
 
+class DatesInput(forms.DateInput):
+    input_type = 'date'
+
+
 class WriterUserEditForm(UserChangeForm):
     class Meta:
         model = WriterUser
-        fields = ('username', 'first_name', 'last_name', 'email', 'age', 'avatar', 'password')
+        fields = ('username', 'first_name', 'last_name', 'email', 'avatar', 'password', 'birthday')
+        widgets = {'birthday': DatesInput()}
 
     def __init__(self, *args, **kwargs):
         super(WriterUserEditForm, self).__init__(*args, **kwargs)
@@ -49,11 +56,11 @@ class WriterUserEditForm(UserChangeForm):
             field.widget.attrs['placeholder'] = field.label
             field.widget.attrs['id'] = f'reg_{field_name}'
 
-    def clean_age(self):
-        data = self.cleaned_data['age']
-        if data < 0:
-            raise forms.ValidationError("Возраст указан не верно")
-        return data
+    # def clean_age(self):
+    #     data = self.cleaned_data['age']
+    #     if data < 0:
+    #         raise forms.ValidationError("Возраст указан не верно")
+    #     return data
 
 
 class WriterUserProfileForm(forms.ModelForm):
@@ -61,6 +68,7 @@ class WriterUserProfileForm(forms.ModelForm):
     class Meta:
         model = WriterUserProfile
         fields = ('tagline', 'about_me', 'country', 'gender')
+        country = CountryField(blank_label='(select country)')
 
     def __init__(self, *args, **kwargs):
         super(WriterUserProfileForm, self).__init__(*args, **kwargs)
