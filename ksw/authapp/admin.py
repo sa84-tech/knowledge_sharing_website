@@ -3,7 +3,7 @@ from .models import WriterUser
 
 
 class UserAdmin(admin.ModelAdmin):
-    list_display = ('username', 'last_name', 'first_name',  'last_login',
+    list_display = ('username', 'last_name', 'first_name', 'birthday', 'last_login',
                     'is_active', 'is_staff', 'is_superuser')
 
 

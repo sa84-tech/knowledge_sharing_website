@@ -5,13 +5,14 @@ from django.dispatch import receiver
 from django.utils.timezone import now
 from datetime import timedelta, datetime
 
+from django_countries.fields import CountryField
 from mainapp.models import Like, Comment, Post
 
 
 class WriterUser(AbstractUser):
     avatar = models.ImageField(upload_to='users_avatars', blank=True)
-    age = models.PositiveIntegerField(verbose_name='возраст', default=0)
     email = models.EmailField(verbose_name='email', blank=False, unique=True)
+    birthday = models.DateField(blank=True, null=True)
 
     activation_key = models.CharField(max_length=128, blank=True)
     activation_key_expires = models.DateTimeField(default=(now() + timedelta(hours=48)))
@@ -39,15 +40,15 @@ class WriterUserProfile(models.Model):
     FEMALE = 'W'
 
     GENDER_CHOICES = (
-        (MALE, 'M'),
-        (FEMALE, 'Ж'),
+        (MALE, 'Mужчина'),
+        (FEMALE, 'Женщина'),
     )
 
     user = models.OneToOneField(WriterUser, unique=True, null=False, db_index=True, on_delete=models.CASCADE)
 
-    gender = models.CharField(verbose_name='пол', max_length=1, choices=GENDER_CHOICES, blank=True)
+    gender = models.CharField(verbose_name='пол', max_length=7, choices=GENDER_CHOICES, blank=True)
 
-    country = models.CharField(verbose_name='страна', max_length=40, blank=True)
+    country = CountryField(blank=True)
 
     tagline = models.CharField(verbose_name='тэги', max_length=100, blank=True)
 

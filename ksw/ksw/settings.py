@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'ckeditor_uploader',
     'accountapp',
     'social_django',
+    'django_countries',
 ]
 
 AUTHENTICATION_BACKENDS = (
