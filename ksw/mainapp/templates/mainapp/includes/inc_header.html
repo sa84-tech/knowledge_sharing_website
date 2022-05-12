@@ -68,7 +68,7 @@
                 <a class="dropdown-item" href="{% url 'account:lk' %}">Личный кабинет</a>
             </li>
             <li>
-                <a class="dropdown-item" href="#">Создать статью</a>
+                <a class="dropdown-item" href="{% url 'account:post_create' %}">Создать статью</a>
             </li>
 
             {% if user.is_staff %}

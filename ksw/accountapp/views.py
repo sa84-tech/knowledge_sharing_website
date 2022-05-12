@@ -1,11 +1,13 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import PasswordChangeView
 from django.http import HttpResponseRedirect, JsonResponse
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
 
-from mainapp.models import Post, Comment
+from mainapp.models import Post, Comment, StatusArticle
 from authapp.forms import WriterUserEditForm, WriterUserProfileForm, PassChangeForm
+
+from .forms import PostForm
 
 
 @login_required
@@ -54,8 +56,24 @@ class PassChangeView(PasswordChangeView):
         return JsonResponse({'foo': 'bar'})
 
 
-def post_create(request, pk):
-    pass
+@login_required
+def post_create(request):
+    if request.method == 'POST':
+        form = PostForm(request.POST, request.FILES)
+        if form.is_valid():
+            new_post = form.save(commit=False)
+            new_post.author = request.user
+            new_post.status = get_object_or_404(StatusArticle, name='under_review')
+            new_post.save()
+            return redirect('index_page')
+    else:
+        form = PostForm()
+
+    context = {
+        'form': form,
+        'post_list': Post.objects.filter(author=request.user)
+    }
+    return render(request, 'accountapp/post_edit.html', context)
 
 
 def post_read(request, pk):
@@ -63,7 +81,16 @@ def post_read(request, pk):
 
 
 def post_update(request, pk):
-    pass
+    edit_post = get_object_or_404(Post, pk=pk)
+    if request.method == 'POST':
+        edit_form = PostForm(request.POST, request.FILES, instance=edit_post)
+        if edit_form.is_valid():
+            edit_form.save()
+            return redirect('account:post_update')
+    else:
+        edit_form = PostForm(instance=edit_post)
+    context = {'form': edit_form}
+    return render(request, 'accountapp/post_edit.html', context)
 
 
 def post_delete(request, pk):
