@@ -93,15 +93,20 @@ def post_update(request, pk):
     context = {'form': edit_form}
     return render(request, 'accountapp/post_edit.html', context)
 
+
 @login_required
 def post_delete(request, pk):
     delete_post = get_object_or_404(Post, pk=pk)
-    if request.method == 'POST':
-        delete_post.status = get_object_or_404(StatusArticle, name='deleted')
-        delete_post.save()
-        return HttpResponseRedirect(reverse('account:lk'))
-    context = {'form': delete_post}
-    return render(request, 'accountapp/post_delete.html', context)
+    if request.user == delete_post.author or request.user.is_superuser or request.user.is_staff:
+        if request.method == 'POST':
+            delete_post.status = get_object_or_404(StatusArticle, name='deleted')
+            delete_post.save()
+            return HttpResponseRedirect(reverse('account:lk'))
+        context = {'form': delete_post}
+        return render(request, 'accountapp/post_delete.html', context)
+    else:
+        return redirect('account:lk')
+
 
 
 
