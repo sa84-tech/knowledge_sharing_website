@@ -86,7 +86,7 @@
                             {% if 'create' in request.path %}
                             action="{% url 'account:post_create' %}"
                             {% else %}
-                            action="{% url 'account:post_update' post.pk %}"
+                            action="{% url 'account:post_update' %}"
                             {% endif %}
                             method="post" enctype="multipart/form-data"
                         >
