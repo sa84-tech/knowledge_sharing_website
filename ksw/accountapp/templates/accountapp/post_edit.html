@@ -1,0 +1,164 @@
+{% extends 'accountapp/base.html' %}
+{% load static %}
+{% load main_extras %}
+
+{% block content %}
+
+<style>
+    .cke_reset {
+        width: 100% !important;
+    }
+
+    #cke_1_contents {
+        height: 6rem !important;
+    }
+
+    .post-edit .bg-primary {
+        background-color: #3B727D !important;
+    }
+</style>
+
+<div class="post-edit container content_wrapper" data-post="{{post.pk}}">
+    <div class="row pt-4">
+        <div class="col-lg-12 col-xl-9">
+
+            <div class="row g-0 bg-primary flex-md-row h-md-250  shadow">
+                <div class="tab-content col p-3 text-white">
+                    <h1 id="h-pills-posts" class="switchable-tab tab-pane fade show active fw-bold ">
+                        <i class="fa-solid fa-pencil fa-xl me-3"></i>
+                        {% if 'create' in request.path %}
+                        Создание статьи
+                        {% else %}
+                        Редактирование статьи
+                        {% endif %}
+                    </h1>
+                </div>
+
+                <div id="filter-btn-group" class="tab-content m-0 py-0 px-3 bg-white">
+                    <div class="dropdown">
+                        <button
+                            id="filter-btn-subscriptions"
+                            class="btn btn-sm dropdown-toggle"
+                            type="button" data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                        >
+                            Выберите действие
+                        </button>
+
+                        <ul class="dropdown-menu shadow" aria-labelledby="filter-btn-subscriptions">
+                            {% if 'create' in request.path %}
+                            <li>
+                                <button id="filter-subscriptions-all" class="dropdown-item" type="button" data-filter="all">
+                                    Сохранить
+                                </button>
+                            </li>
+                            <li>
+                                <button id="filter-subscriptions-author" class="dropdown-item" type="button" data-filter="author">
+                                    Очистить
+                                </button>
+                            </li>
+                            {% else %}
+                            <li>
+                                <button id="filter-subscriptions-post" class="dropdown-item text-danger" type="button" data-filter="post">
+                                    Удалить
+                                </button>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-0 bg-white overflow-hidden flex-md-row mt-3 h-md-250  shadow">
+                <div class="col p-4 d-flex flex-column position-static">
+                    <div class="d-flex mb-3 text-small align-items-center">
+                        <img class="rounded-circle shadow-1-strong me-3"
+                            src="{% get_avatar user %}" alt="avatar" width="40"
+                            height="40">
+                        <a href="#" class="nav-link p-0 text-muted fw-bold me-2">
+                            {{ user.first_name|capfirst }} {{ user.last_name|capfirst }}
+                        </a>
+                        <span class="date_info text-muted">{% now "SHORT_DATETIME_FORMAT" %}</span>
+                    </div>
+
+                    <div class="my-2">
+                        <form
+                            {% if 'create' in request.path %}
+                            action="{% url 'account:post_create' %}"
+                            {% else %}
+                            action="{% url 'account:post_update' post.pk %}"
+                            {% endif %}
+                            method="post" enctype="multipart/form-data"
+                        >
+                            {% csrf_token %}
+                            {{ form.media }}
+
+                            <div class="mb-4">
+                                <label class="mb-1 text-muted text-small" for="{{ form.topic.id_for_label }}">
+                                    {{ form.topic.label }}
+                                </label>
+                                <span class="text-danger text-small opacity-75 text-decoration-none">
+                                    {{ form.topic.errors.as_text }}
+                                </span>
+                                {{ form.topic }}
+                            </div>
+
+                            <div class="row gx-3 mb-4">
+                                <div class="col-md-6">
+                                    <label class="mb-1 text-muted text-small" for="{{ form.category.id_for_label }}">
+                                        {{ form.category.label }}
+                                    </label>
+                                    <span class="text-danger text-small opacity-75 text-decoration-none">
+                                        {{ form.category.errors.as_text }}
+                                    </span>
+                                    {{ form.category }}
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="mb-1 text-muted text-small" for="{{ form.image.id_for_label }}">
+                                        {{ form.image.label }}
+                                    </label>
+                                    <span class="text-danger text-small opacity-75 text-decoration-none">
+                                        {{ form.image.errors.as_text }}
+                                    </span>
+                                    {{ form.image }}
+                                </div>
+                            </div>
+
+                            <div class="mb-4 d-flex flex-column">
+                                <label class="mb-1 text-muted text-small" for="{{ form.annotation.id_for_label }}">
+                                    {{ form.annotation.label }}
+                                </label>
+                                <span class="text-danger text-small opacity-75 text-decoration-none">
+                                    {{ form.annotation.errors.as_text }}
+                                </span>
+                                {{ form.annotation }}
+                            </div>
+
+                            <div class="mb-4 d-flex flex-column">
+                                <label class="mb-1 text-muted text-small" for="{{ form.article.id_for_label }}">
+                                    {{ form.article.label }}
+                                </label>
+                                <span class="text-danger text-small opacity-75 text-decoration-none">
+                                    {{ form.article.errors.as_text }}
+                                </span>
+                                {{ form.article }}
+                            </div>
+
+                            <div class="text-muted mt-4">
+                                <input type="submit" class="btn btn-primary me-3" value="Отправить">
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        {% include 'accountapp/includes/inc_post_edit_info.html' %}
+    </div>
+</div>
+
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'js/post.js' %}"></script>
+{% endblock %}
