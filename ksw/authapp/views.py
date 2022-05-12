@@ -22,6 +22,8 @@ def login(request):
         username = request.POST['username']
         password = request.POST['password']
         user = auth.authenticate(username=username, password=password)
+        if not request.POST.get('remember_me', None):
+            request.session.set_expiry(0)
         if user and user.is_active:
             auth.login(request, user)
             if 'next' in request.POST.keys():
