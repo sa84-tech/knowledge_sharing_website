@@ -80,6 +80,7 @@ def post_read(request, pk):
     pass
 
 
+@login_required
 def post_update(request, pk):
     edit_post = get_object_or_404(Post, pk=pk)
     if request.method == 'POST':
@@ -92,7 +93,7 @@ def post_update(request, pk):
     context = {'form': edit_form}
     return render(request, 'accountapp/post_edit.html', context)
 
-
+@login_required
 def post_delete(request, pk):
     delete_post = get_object_or_404(Post, pk=pk)
     if request.method == 'POST':
