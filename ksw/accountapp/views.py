@@ -94,4 +94,13 @@ def post_update(request, pk):
 
 
 def post_delete(request, pk):
-    pass
+    delete_post = get_object_or_404(Post, pk=pk)
+    if request.method == 'POST':
+        delete_post.status = get_object_or_404(StatusArticle, name='deleted')
+        delete_post.save()
+        return HttpResponseRedirect(reverse('account:lk'))
+    context = {'form': delete_post}
+    return render(request, 'accountapp/post_delete.html', context)
+
+
+
