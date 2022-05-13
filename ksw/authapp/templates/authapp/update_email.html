@@ -1,0 +1,20 @@
+{% extends 'authapp/base.html' %}
+{% load static %}
+{% block title %}Смена email{% endblock %}
+
+{% block content %}
+    <h1>Смена email</h1>
+    <br>
+    <br>
+    <div class="form-group">
+        <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn btn-secondary">Изменить</button>
+        </form>
+    </div>
+    <p class="mb-0">
+        <a href="{% url 'auth:edit' %}" class="text-primary-50">Назад</a>
+    </p>
+
+{% endblock %}
