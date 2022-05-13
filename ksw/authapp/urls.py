@@ -1,6 +1,7 @@
 from django.urls import path, include, reverse_lazy
 from django.contrib.auth import views as auth_views
-from .views import login, logout, register, edit, verify, PasswordChangeView, password_success
+from .views import login, logout, register, edit, verify, PasswordChangeView, password_success, \
+    email_change, email_success
 from mainapp.views import index_page
 
 
@@ -35,4 +36,6 @@ urlpatterns = [
              auth_views.PasswordResetCompleteView.as_view(
                  template_name='authapp/password_reset/password_reset_completed.html'
              ), name='password_reset_complete'),
+    path('update-email/', email_change, name='update_email'),
+    path('email-success/', email_success, name='email_success'),
 ]

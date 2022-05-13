@@ -54,6 +54,11 @@
                   </p>
                   {{ edit_form.email }}
                 </div>
+                <div class="form-outline mb-4 text-secondary">
+                  <p class="text-danger text-small opacity-75 text-decoration-none">
+                    <a href="{% url 'authapp:update_email' %}">Изменить email</a>
+                  </p>
+                </div>
 
                 <div class="form-outline mb-4 text-secondary text-start">
                   <label for="reg_age" class="col-form-label text-muted">Дата рождения</label>

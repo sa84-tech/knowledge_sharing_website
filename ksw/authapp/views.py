@@ -1,4 +1,5 @@
 from django.contrib import auth, messages
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.views import PasswordChangeView
 
@@ -6,7 +7,8 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
 
-from .forms import WriterUserLoginForm, WriterUserRegisterForm, WriterUserEditForm, WriterUserProfileForm
+from .forms import WriterUserLoginForm, WriterUserRegisterForm, WriterUserEditForm, WriterUserProfileForm, \
+    EmailChangeForm
 from .models import WriterUser
 from .services.email import send_verify_mail
 from .services.queries import make_user_active
@@ -116,3 +118,19 @@ class PasswordChangeView(PasswordChangeView):
 
 def password_success(request):
     return render(request, 'authapp/password_success.html', {})
+
+
+@login_required
+def email_change(request):
+    if request.method == 'GET':
+        form = EmailChangeForm(user=request.user)
+    elif request.method == 'POST':
+        form = EmailChangeForm(user=request.user, data=request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('auth:email_success')
+    return render(request, 'authapp/update_email.html', {'form': form})
+
+
+def email_success(request):
+    return render(request, 'authapp/email_success.html', {})
