@@ -5,46 +5,40 @@
 <div class="row g-0 bg-white overflow-hidden flex-md-row mb-3 h-md-250 position-relative shadow">
     <div class="col p-3 pt-2 d-flex flex-column">
 
+        <a href="#" class="h5 nav-link p-0 text-muted">
+            {{ comment_item.content_object.topic }}
+        </a>
 
-            <div class="d-flex mb-1 text-small align-items-center">
-                <img class="rounded-circle shadow-1-strong me-3"
-                    src="{% get_avatar comment_item.author %}" alt="avatar" width="32"
-                    height="32">
-                <a href="#" class="nav-link p-0 text-muted fw-bold me-2">
-                    {{ comment_item.content_object.author.first_name|capfirst }} {{ comment_item.content_object.author.last_name|capfirst }}
-                </a>
-                <span class="date_info text-muted">{{ comment_item.content_object.created }}</span>
-            </div>
-            <a href="#" class="h5 nav-link p-0 text-muted">
-                {{ comment_item.content_object.topic }}
+        <hr class="border-1 border-top border-secondary mt-0 mb-3">
+
+        <div class="d-flex mb-1 text-small align-items-center">
+            <img class="rounded-circle shadow-1-strong me-3"
+                src="{% get_avatar comment_item.author %}" alt="avatar" width="32"
+                height="32">
+            <a href="#" class="nav-link p-0 text-muted fw-bold me-2">
+                {{ comment_item.content_object.author.first_name|capfirst }} {{ comment_item.content_object.author.last_name|capfirst }}
             </a>
+            <span class="date_info text-muted">{{ comment_item.content_object.created }}</span>
+        </div>
 
-            <hr class="border-1 border-top border-secondary mt-0 mb-2">
-
-
-        <div class="mb-3">
+        <div class="mb-4">
             {{ comment_item.comment }}
         </div>
 
-        <div class="flex-grow-1 d-flex">
+        <div class="mb-3">
             <a
-                class="btn btn-outline-primary btn-sm align-self-end"
-                type="button"
-                href="#"
-                {# href="{% url 'post_page' post.pk %}" #}
-            >
-                Перейти
-            </a>
-        </div>
-    </div>
-    <div class="col-auto d-none d-lg-flex p-3 ps-0 align-items-center">
-        <img
-            src="{% static 'img/comment_image.jpg' %}"
-            class="img-fluid opacity-75"
-            alt="post image"
-            width="132"
-            height="180"
+            class="btn btn-outline-primary btn-sm me-3"
+            type="button"
+            href="#"
         >
+            ПЕРЕЙТИ
+        </a>
+        </div>
+
+        <div class="d-flex flex-grow-1 align-items-end text-small">
+            <span class="me-3 text-muted"><i class="me-1 fa-regular text-primary opacity-75 fa-thumbs-up"></i> 12</span>
+            <span class="me-3 text-muted"><i class="me-1 fa-regular fa-bookmark text-primary opacity-75"></i> 4</span>
+        </div>
     </div>
 </div>
 {% endfor %}
