@@ -21,7 +21,7 @@
             </a>
         </h3>
 
-        <p class="mb-1">
+        <p class="mb-4">
             {% if post.annotation %}
                 {{ post.annotation|safe }}
             {% else %}
@@ -29,38 +29,23 @@
             {% endif %}
         </p>
 
-        <div class="d-flex my-3">
+        <div class="mb-2">
             <a
-                class="btn btn-outline-primary btn-sm me-3"
-                type="button"
-                href="{% url 'post_page' post.pk %}"
-            >
-                Перейти
-            </a>
-
-            <a
-                class="btn btn-outline-primary btn-sm"
-                type="button"
-                href="#!"
-            >
-                <i class="fa-solid opacity-75 fa-trash-can"></i>
-            </a>
+            class="btn btn-outline-primary btn-sm me-3"
+            type="button"
+            href="#"
+        >
+            ПЕРЕЙТИ
+        </a>
         </div>
 
-        <div class="text-muted text-small">
-            <span class="me-3 ">
-                <i class="me-1 fa-solid text-primary opacity-50 fa-eye"></i> {{ post.total_views }}
-            </span>
-            <span class="me-3 ">
-                <i class="me-1 fa-regular text-primary opacity-50 fa-comment"></i> {{ post.total_comment }}
-            </span>
-            <span class="me-3 ">
-                <i class="fa-regular text-primary opacity-50 fa-thumbs-up"></i> {{ post.total_likes }}
-            </span>
-            <span class="me-3">
-                <i class="me-1 fa-regular fa-bookmark text-primary opacity-50"></i> 4
-            </span>
+        <div class="d-flex flex-grow-1 align-items-end text-small">
+            <span class="me-3 text-muted"><i class="me-1 fa-solid text-primary opacity-75 fa-eye"></i> {{ post.total_views }}</span>
+            <span class="me-3 text-muted"><i class="me-1 fa-regular text-primary opacity-75 fa-comment"></i> {{ post.total_comment }}</span>
+            <span class="me-3 text-muted"><i class="me-1 fa-regular text-primary opacity-75 fa-thumbs-up"></i> 12 </span>
+            <span class="me-3 text-muted"><i class="me-1 fa-regular fa-bookmark text-primary opacity-75"></i> 4</span>
         </div>
+
     </div>
 
     <div class="col-auto d-none d-lg-block p-3">
@@ -77,59 +62,42 @@
 
 {% for comment_item in comments %}
 <div class="row g-0 bg-white overflow-hidden flex-md-row mb-3 h-md-250 position-relative shadow">
-    <div class="col p-3 pt-2 d-flex flex-column position-static">
-        <h5 class="h4 mb-0 ">
-            <a href="#" class="nav-link p-0 mb-1 text-secondary">
-                {{ comment_item.content_object.topic }}
-            </a>
-        </h5>
+    <div class="col p-3 pt-2 d-flex flex-column">
 
-        <hr class="border-1 border-top border-secondary mt-1">
+        <a href="#" class="h5 nav-link p-0 text-muted">
+            {{ comment_item.content_object.topic }}
+        </a>
 
-        <div class="d-flex mb-2 align-items-center">
+        <hr class="border-1 border-top border-secondary mt-0 mb-3">
+
+        <div class="d-flex mb-1 text-small align-items-center">
             <img class="rounded-circle shadow-1-strong me-3"
-                src="{% get_avatar comment_item.author %}" alt="avatar"
-                width="32" height="32"
-            >
-            <span class="author_info text-muted fw-bold me-2">
-                <a href="#" class="nav-link p-0 text-secondary text-muted">
-                    {{ comment_item.author.first_name|capfirst }} {{ comment_item.author.last_name|capfirst }}
-                </a>
-            </span>
-            <span class="date_info text-small text-muted">{{ comment_item.created }}</span>
+                src="{% get_avatar comment_item.author %}" alt="avatar" width="32"
+                height="32">
+            <a href="#" class="nav-link p-0 text-muted fw-bold me-2">
+                {{ comment_item.content_object.author.first_name|capfirst }} {{ comment_item.content_object.author.last_name|capfirst }}
+            </a>
+            <span class="date_info text-muted">{{ comment_item.content_object.created }}</span>
         </div>
 
-        <div class="mt-1 mb-2">
+        <div class="mb-4">
             {{ comment_item.comment }}
         </div>
 
-        <div class="d-flex flex-grow-1">
+        <div class="mb-3">
             <a
-                class="btn btn-outline-primary btn-sm me-3 align-self-end"
-                type="button"
-                href="#"
-            >
-                Перейти
-            </a>
-
-            <a
-                class="btn btn-outline-primary btn-sm align-self-end"
-                type="button"
-                href="#!"
-            >
-                <i class="fa-solid opacity-75 fa-trash-can"></i>
-            </a>
-        </div>
-    </div>
-
-    <div class="col-auto d-none d-lg-block p-3 ps-0">
-        <img
-            src="{% static 'img/comment_image.jpg' %}"
-            class="img-fluid"
-            alt="post image"
-            width="154"
-            height="210"
+            class="btn btn-outline-primary btn-sm me-3"
+            type="button"
+            href="#"
         >
+            ПЕРЕЙТИ
+        </a>
+        </div>
+
+        <div class="d-flex flex-grow-1 align-items-end text-small">
+            <span class="me-3 text-muted"><i class="fa-regular text-primary opacity-75 fa-thumbs-up"></i> 12 </span>
+            <span class="me-3 text-muted"><i class="me-1 fa-regular fa-bookmark text-primary opacity-75"></i> 4</span>
+        </div>
     </div>
 </div>
 {% endfor %}

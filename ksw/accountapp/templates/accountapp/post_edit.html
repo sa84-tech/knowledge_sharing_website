@@ -34,39 +34,6 @@
                     </h1>
                 </div>
 
-                <div id="filter-btn-group" class="tab-content m-0 py-0 px-3 bg-white">
-                    <div class="dropdown">
-                        <button
-                            id="filter-btn-subscriptions"
-                            class="btn btn-sm dropdown-toggle"
-                            type="button" data-bs-toggle="dropdown"
-                            aria-expanded="false"
-                        >
-                            Выберите действие
-                        </button>
-
-                        <ul class="dropdown-menu shadow" aria-labelledby="filter-btn-subscriptions">
-                            {% if 'create' in request.path %}
-                            <li>
-                                <button id="filter-subscriptions-all" class="dropdown-item" type="button" data-filter="all">
-                                    Сохранить
-                                </button>
-                            </li>
-                            <li>
-                                <button id="filter-subscriptions-author" class="dropdown-item" type="button" data-filter="author">
-                                    Очистить
-                                </button>
-                            </li>
-                            {% else %}
-                            <li>
-                                <button id="filter-subscriptions-post" class="dropdown-item text-danger" type="button" data-filter="post">
-                                    Удалить
-                                </button>
-                            </li>
-                            {% endif %}
-                        </ul>
-                    </div>
-                </div>
             </div>
 
             <div class="row g-0 bg-white overflow-hidden flex-md-row mt-3 h-md-250  shadow">
@@ -86,7 +53,7 @@
                             {% if 'create' in request.path %}
                             action="{% url 'account:post_create' %}"
                             {% else %}
-                            action="{% url 'account:post_update' %}"
+                            action="{% url 'account:post_update' post.pk %}"
                             {% endif %}
                             method="post" enctype="multipart/form-data"
                         >
@@ -144,9 +111,32 @@
                                 {{ form.article }}
                             </div>
 
-                            <div class="text-muted mt-4">
-                                <input type="submit" class="btn btn-primary me-3" value="Отправить">
+
+                            <div class="d-flex text-muted mt-4">
+                                <div class="dropdown me-3">
+                                    <a
+                                        class="btn btn-primary dropdown-toggle" href="#"
+                                        role="button" id="dropdownMenuLink"
+                                        data-bs-toggle="dropdown" aria-expanded="false"
+                                    >
+                                        Сохранить
+                                    </a>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                        <li>
+                                            <a class="dropdown-item" data-value="publish" href="#">
+                                                Готово к публикации
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" data-value="draft" href="#">
+                                                Сохранить черновик
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <a class="btn btn-outline-primary" href="{% url 'account:post_create' %}">Отмена</a>
                             </div>
+
                         </form>
                     </div>
 
