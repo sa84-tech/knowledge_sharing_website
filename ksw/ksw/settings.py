@@ -90,6 +90,7 @@ TEMPLATES = [
                 'social_django.context_processors.backends',
                 'social_django.context_processors.login_redirect',
                 'mainapp.context_processors.menu',
+                'mainapp.context_processors.top4',
             ],
         },
     },
