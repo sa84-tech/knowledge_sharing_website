@@ -1,4 +1,4 @@
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.views import PasswordChangeView
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
@@ -8,6 +8,7 @@ from mainapp.models import Post, Comment, StatusArticle
 from authapp.forms import WriterUserEditForm, WriterUserProfileForm, PassChangeForm
 
 from .forms import PostForm
+from .services import post_save
 
 
 @login_required
@@ -63,21 +64,16 @@ def post_create(request):
         if form.is_valid():
             new_post = form.save(commit=False)
             new_post.author = request.user
-            new_post.status = get_object_or_404(StatusArticle, name='under_review')
+            new_post.status = post_save(request)
             new_post.save()
-            return redirect('index_page')
+            return redirect('account:lk')
     else:
         form = PostForm()
 
     context = {
         'form': form,
-        'post_list': Post.objects.filter(author=request.user)
     }
     return render(request, 'accountapp/post_edit.html', context)
-
-
-def post_read(request, pk):
-    pass
 
 
 @login_required
@@ -86,11 +82,12 @@ def post_update(request, pk):
     if request.method == 'POST':
         edit_form = PostForm(request.POST, request.FILES, instance=edit_post)
         if edit_form.is_valid():
+            edit_post.status = post_save(request)
             edit_form.save()
-            return redirect('account:post_update')
+            return redirect('account:lk')
     else:
         edit_form = PostForm(instance=edit_post)
-    context = {'form': edit_form}
+    context = {'form': edit_form, 'post': edit_post}
     return render(request, 'accountapp/post_edit.html', context)
 
 
@@ -106,7 +103,3 @@ def post_delete(request, pk):
         return render(request, 'accountapp/post_delete.html', context)
     else:
         return redirect('account:lk')
-
-
-
-
