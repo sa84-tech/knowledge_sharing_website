@@ -26,7 +26,6 @@ def index_page(request, category_id=0, slug=None):
         'title': 'Главная страница',
         'posts': posts,
         'page_obj': page_obj,
-        'most_rated_users': WriterUserProfile.get_most_rated(4)
     }
 
     return render(request, "mainapp/index.html", context)
