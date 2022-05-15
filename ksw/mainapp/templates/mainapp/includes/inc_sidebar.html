@@ -14,7 +14,7 @@
               src="{% get_avatar up.user %}" alt="avatar" width="40"
               height="40" />
             <span class="author_info text-muted fw-bold me-2">
-              <a href="#" class="nav-link p-0 text-secondary text-muted">
+              <a href="{% url 'account:lk' up.user.username %}" class="nav-link p-0 text-secondary text-muted">
                 {{ up.user.first_name|capfirst }} {{ up.user.last_name|capfirst }}
               </a>
             </span>

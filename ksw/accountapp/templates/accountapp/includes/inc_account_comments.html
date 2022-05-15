@@ -5,7 +5,7 @@
 <div class="row g-0 bg-white overflow-hidden flex-md-row mb-3 h-md-250 position-relative shadow">
     <div class="col p-3 pt-2 d-flex flex-column">
 
-        <a href="#" class="h5 nav-link p-0 text-muted">
+        <a href="{% url 'post_page' comment_item.content_object.pk %}" class="h5 nav-link p-0 text-muted">
             {{ comment_item.content_object.topic }}
         </a>
 
@@ -29,9 +29,9 @@
             <a
             class="btn btn-outline-primary btn-sm me-3"
             type="button"
-            href="#"
+            href="{% url 'post_page' comment_item.content_object.pk %}#id_{{ comment_item.pk }}"
         >
-            ПЕРЕЙТИ
+            Перейти
         </a>
         </div>
 

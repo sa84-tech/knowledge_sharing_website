@@ -9,14 +9,14 @@
         <div class="card-body py-4">
             <div class="d-flex align-items-center my-2">
                 <img class="rounded-circle shadow-1-strong me-3"
-                    src="{% get_avatar user %}"
+                    src="{% get_avatar target_user %}"
                     alt="avatar" width="64" height="64">
                 <div class="mb-2 ">
                     <div class="fw-bold">
-                        {{ user.first_name|capfirst }} {{ user.last_name|capfirst }}
+                        {{ target_user.first_name|capfirst }} {{ target_user.last_name|capfirst }}
                     </div>
                     <div class="p-0 text-primary fw-normal">
-                        @{{ user.username }}
+                        @{{ target_user.username }}
                     </div>
                 </div>
             </div>
@@ -26,25 +26,26 @@
             <div class="text-small px-2">
                 <div class="d-flex mb-3">
                     <span class="col-6 fw-bold">Статус</span>
-                    <span class="col-6 ">{{ user.status }}</span>
+                    <span class="col-6 ">{{ target_user.status }}</span>
                 </div>
                 <div class="d-flex mb-3">
                     <span class="col-6 fw-bold">Рейтинг</span>
-                    <span class="col-6">{{ user.writeruserprofile.rating }}</span>
+                    <span class="col-6">{{ target_user.writeruserprofile.rating }}</span>
                 </div>
                 <div class="d-flex mb-3">
                     <span class="col-6 fw-bold">Активность</span>
-                    <span class="col-6">{{ user.writeruserprofile.activity }}</span>
+                    <span class="col-6">{{ target_user.writeruserprofile.activity }}</span>
                 </div>
                 <div class="d-flex mb-3">
                     <span class="col-6 fw-bold">Зарегистрирован</span>
-                    <span class="col-6 ">{{ user.date_joined|date:"d.m.Y h:m" }}</span>
+                    <span class="col-6 ">{{ target_user.date_joined|date:"d.m.Y h:m" }}</span>
                 </div>
                 <div class="d-flex mb-3">
                     <span class="col-6 fw-bold">Последний вход</span>
-                    <span class="col-6 ">{{ user.last_login|date:"d.m.Y h:m" }}</span>
+                    <span class="col-6 ">{{ target_user.last_login|date:"d.m.Y h:m" }}</span>
                 </div>
             </div>
+            {% if user == target_user %}
             <div class="mt-4 mb-2">
                 <a
                     class="btn btn-outline-primary btn-sm float-end"
@@ -54,6 +55,7 @@
                     <i class="fa-solid fa-gear fs-6"></i> Профиль
                 </a>
             </div>
+            {% endif %}
         </div>
 
     </div>

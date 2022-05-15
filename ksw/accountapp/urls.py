@@ -5,6 +5,7 @@ app_name = 'accountapp'
 
 urlpatterns = [
     path('lk/', account, name='lk'),
+    path('<str:username>/', account, name='lk'),
     path('settings/', settings, name='settings'),
     path('post/create/', post_create, name='post_create'),
     path('post/update/<int:pk>/', post_update, name='post_update'),

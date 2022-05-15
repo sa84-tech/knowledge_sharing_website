@@ -6,16 +6,22 @@ from django.urls import reverse, reverse_lazy
 
 from mainapp.models import Post, Comment, StatusArticle
 from authapp.forms import WriterUserEditForm, WriterUserProfileForm, PassChangeForm
-
+from authapp.models import WriterUser
 from .forms import PostForm
+from .models import Bookmark
 from .services import post_save
 
 
 @login_required
-def account(request):
-    posts = Post.objects.all()
-    comments = Comment.objects.all()
-    return render(request, "accountapp/account.html", {'posts': posts, 'comments': comments})
+def account(request, username):
+    user = get_object_or_404(WriterUser, username=username)
+    posts = Post.objects.filter(author=user.pk)
+    if user != request.user:
+        posts = posts.filter(status__name='published')
+    comments = Comment.objects.filter(author=user.pk)
+    bookmarks = Bookmark.objects.filter(author=user.pk)
+    context = {'posts': posts, 'comments': comments, 'bookmarks': bookmarks, 'target_user': user}
+    return render(request, "accountapp/account.html", context)
 
 
 @login_required
