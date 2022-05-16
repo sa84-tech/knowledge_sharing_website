@@ -1,103 +1,103 @@
 {% load static %}
 {% load main_extras %}
 
+<div id="pills-bookmarks" class="tab-pane fade show active">
+    {% for bookmark in bookmarks %}
+    {% if bookmark.content_type.model == 'post' %}
+    <div class="row g-0 bg-white overflow-hidden flex-md-row mb-3 h-md-250 position-relative shadow">
+        <div class="col p-3 pb-2 d-flex flex-column position-static">
+            <div class="d-flex mb-2 text-small align-items-center">
+                <img
+                    class="rounded-circle shadow-1-strong me-3"
+                    src="{% get_avatar bookmark.content_object.author %}" alt="avatar" width="32"
+                    height="32">
+                    <a href="{% url 'account:lk' bookmark.content_object.author.username %}" class="nav-link p-0 fw-bold me-2">
+                        {{ bookmark.content_object.author.first_name|capfirst }} {{ bookmark.content_object.author.last_name|capfirst }}
+                    </a>
+                <span class="date_info text-secondary">{{ bookmark.content_object.created }}</span>
+            </div>
 
-{% for bookmark in bookmarks %}
-{% if bookmark.content_type.model == 'post' %}
-<div class="row g-0 bg-white overflow-hidden flex-md-row mb-3 h-md-250 position-relative shadow">
-    <div class="col p-3 pb-2 d-flex flex-column position-static">
-        <div class="d-flex mb-2 text-small align-items-center">
+            <h3 class="mb-1">
+                <a href="{% url 'post_page' bookmark.content_object.pk %}" class="nav-link p-0 text-secondary">
+                    {{ bookmark.content_object.topic|capfirst }}
+                </a>
+            </h3>
+
+            <p class="mb-4">
+                {{ bookmark.content_object.annotation|safe }}
+            </p>
+
+            <div class="mb-2">
+                <a
+                    class="btn btn-outline-primary btn-sm me-3"
+                    type="button"
+                    href="{% url 'post_page' bookmark.content_object.pk %}"
+                >
+                    Перейти
+                </a>
+            </div>
+
+            <div class="d-flex flex-grow-1 align-items-end text-small">
+                <span class="me-3 text-muted"><i class="me-1 fa-solid text-primary opacity-75 fa-eye"></i> {{ bookmark.content_object.total_views }}</span>
+                <span class="me-3 text-muted"><i class="me-1 fa-regular text-primary opacity-75 fa-comment"></i> {{ bookmark.content_object.total_comments }}</span>
+                <span class="me-3 text-muted"><i class="me-1 fa-regular text-primary opacity-75 fa-thumbs-up"></i> {{ bookmark.content_object.total_likes }} </span>
+                <span class="me-3 text-muted"><i class="me-1 fa-regular fa-bookmark text-primary opacity-75"></i> {{ bookmark.content_object.total_bookmarks }}</span>
+            </div>
+
+        </div>
+
+        <div class="col-auto d-none d-lg-block p-3">
             <img
-                class="rounded-circle shadow-1-strong me-3"
-                src="{% get_avatar bookmark.author %}" alt="avatar" width="32"
-                height="32">
-                <a href="{% url 'account:lk' bookmark.content_object.author.username %}" class="nav-link p-0 fw-bold me-2">
+                src="{{ bookmark.content_object.image.url }}"
+                class="img-fluid"
+                alt="post image"
+                width="154"
+                height="210"
+            >
+        </div>
+    </div>
+
+    {% elif bookmark.content_type.model == 'comment' %}
+
+    <div class="row g-0 bg-white overflow-hidden flex-md-row mb-3 h-md-250 position-relative shadow">
+        <div class="col p-3 pt-2 d-flex flex-column">
+
+            <a href="{% url 'post_page' bookmark.content_object.content_object.pk %}" class="h5 nav-link p-0 text-muted">
+                {{ bookmark.content_object.content_object.topic }}
+            </a>
+
+            <hr class="border-1 border-top border-secondary mt-0 mb-3">
+
+            <div class="d-flex mb-1 text-small align-items-center">
+                <img class="rounded-circle shadow-1-strong me-3"
+                    src="{% get_avatar bookmark.content_object.author %}" alt="avatar" width="32"
+                    height="32">
+                <a href="" class="nav-link p-0 text-muted fw-bold me-2">
                     {{ bookmark.content_object.author.first_name|capfirst }} {{ bookmark.content_object.author.last_name|capfirst }}
                 </a>
-            <span class="date_info text-secondary">{{ bookmark.content_object.created }}</span>
-        </div>
+                <span class="date_info text-muted">{{ bookmark.content_object.created }}</span>
+            </div>
 
-        <h3 class="mb-1">
-            <a href="{% url 'post_page' bookmark.content_object.pk %}" class="nav-link p-0 text-secondary">
-                {{ bookmark.content_object.topic|capfirst }}
+            <div class="mb-4">
+                {{ bookmark.content_object.comment }}
+            </div>
+
+            <div class="mb-3">
+                <a
+                class="btn btn-outline-primary btn-sm me-3"
+                type="button"
+                href="{% url 'post_page' bookmark.content_object.content_object.pk %}#id_{{ bookmark.content_object.pk }}"
+            >
+                Перейти
             </a>
-        </h3>
+            </div>
 
-        <p class="mb-4">
-            {{ bookmark.content_object.annotation|safe }}
-        </p>
-
-        <div class="mb-2">
-            <a
-            class="btn btn-outline-primary btn-sm me-3"
-            type="button"
-            href="{% url 'post_page' bookmark.content_object.pk %}"
-        >
-            Перейти
-        </a>
+            <div class="d-flex flex-grow-1 align-items-end text-small">
+                <span class="me-3 text-muted"><i class="fa-regular text-primary opacity-75 fa-thumbs-up"></i> 12 </span>
+                <span class="me-3 text-muted"><i class="me-1 fa-regular fa-bookmark text-primary opacity-75"></i> 4</span>
+            </div>
         </div>
-
-        <div class="d-flex flex-grow-1 align-items-end text-small">
-            <span class="me-3 text-muted"><i class="me-1 fa-solid text-primary opacity-75 fa-eye"></i> {{ bookmark.content_object.total_views }}</span>
-            <span class="me-3 text-muted"><i class="me-1 fa-regular text-primary opacity-75 fa-comment"></i> {{ bookmark.content_object.total_comments }}</span>
-            <span class="me-3 text-muted"><i class="me-1 fa-regular text-primary opacity-75 fa-thumbs-up"></i> {{ bookmark.content_object.total_likes }} </span>
-            <span class="me-3 text-muted"><i class="me-1 fa-regular fa-bookmark text-primary opacity-75"></i> {{ bookmark.content_object.total_bookmarks }}</span>
-        </div>
-
     </div>
-
-    <div class="col-auto d-none d-lg-block p-3">
-        <img
-            src="{{ bookmark.content_object.image.url }}"
-            class="img-fluid"
-            alt="post image"
-            width="154"
-            height="210"
-        >
-    </div>
+    {% endif %}
+    {% endfor %}
 </div>
-
-{% elif bookmark.content_type.model == 'comment' %}
-
-<div class="row g-0 bg-white overflow-hidden flex-md-row mb-3 h-md-250 position-relative shadow">
-    <div class="col p-3 pt-2 d-flex flex-column">
-
-        <a href="{% url 'post_page' bookmark.content_object.content_object.pk %}" class="h5 nav-link p-0 text-muted">
-            {{ bookmark.content_object.content_object.topic }}
-        </a>
-
-        <hr class="border-1 border-top border-secondary mt-0 mb-3">
-
-        <div class="d-flex mb-1 text-small align-items-center">
-            <img class="rounded-circle shadow-1-strong me-3"
-                src="{% get_avatar bookmark.author %}" alt="avatar" width="32"
-                height="32">
-            <a href="" class="nav-link p-0 text-muted fw-bold me-2">
-                {{ bookmark.content_object.author.first_name|capfirst }} {{ bookmark.content_object.author.last_name|capfirst }}
-            </a>
-            <span class="date_info text-muted">{{ bookmark.content_object.created }}</span>
-        </div>
-
-        <div class="mb-4">
-            {{ bookmark.content_object.comment }}
-        </div>
-
-        <div class="mb-3">
-            <a
-            class="btn btn-outline-primary btn-sm me-3"
-            type="button"
-            href="{% url 'post_page' bookmark.content_object.content_object.pk %}#id_{{ bookmark.content_object.pk }}"
-        >
-            Перейти
-        </a>
-        </div>
-
-        <div class="d-flex flex-grow-1 align-items-end text-small">
-            <span class="me-3 text-muted"><i class="fa-regular text-primary opacity-75 fa-thumbs-up"></i> 12 </span>
-            <span class="me-3 text-muted"><i class="me-1 fa-regular fa-bookmark text-primary opacity-75"></i> 4</span>
-        </div>
-    </div>
-</div>
-{% endif %}
-{% endfor %}
-

@@ -50,7 +50,7 @@
                     <li class="nav-item" role="presentation">
                         <button
                             class="nav-link active" id="pills-posts-tab"
-                            data-bs-toggle="pill" data-bs-target="#pills-posts"
+                            data-bs-toggle="pill" data-bs-target="#h-pills-posts"
                             type="button" role="tab"
                             aria-controls="pills-posts" aria-selected="true"
                         >
@@ -61,7 +61,7 @@
                     <li class="nav-item" role="presentation">
                         <button
                             class="nav-link" id="pills-comments-tab"
-                            data-bs-toggle="pill" data-bs-target="#pills-comments"
+                            data-bs-toggle="pill" data-bs-target="#h-pills-comments"
                             type="button" role="tab"
                             aria-controls="pills-comments" aria-selected="false"
                         >
@@ -72,7 +72,7 @@
                     <li class="nav-item" role="presentation">
                         <button
                             class="nav-link" id="pills-bookmarks-tab"
-                            data-bs-toggle="pill" data-bs-target="#pills-bookmarks"
+                            data-bs-toggle="pill" data-bs-target="#h-pills-bookmarks"
                             type="button" role="tab"
                             aria-controls="pills-bookmarks" aria-selected="false"
                         >
@@ -83,7 +83,7 @@
                     <li class="nav-item" role="presentation">
                         <button
                             class="nav-link" id="pills-contact-tab"
-                            data-bs-toggle="pill" data-bs-target="#pills-subscriptions"
+                            data-bs-toggle="pill" data-bs-target="#h-pills-subscriptions"
                             type="button" role="tab"
                             aria-controls="pills-subscriptions" aria-selected="false"
                         >
@@ -95,7 +95,8 @@
                 {% include 'accountapp/includes/inc_account_filters.html' %}
             </div>
 
-            <div class="tab-content mt-3">
+            <div id="tab-content-block" class="tab-content mt-3">
+                {% comment %}
                 <div id="pills-posts" class="tab-pane fade show active">
                     {% include 'accountapp/includes/inc_account_posts.html' %}
                 </div>
@@ -108,6 +109,7 @@
                 <div id="pills-subscriptions" class="tab-pane fade">
                     {% include 'accountapp/includes/inc_account_subscriptions.html' %}
                 </div>
+                {% endcomment %}
             </div>
 
         </div>
@@ -120,5 +122,6 @@
 {% endblock %}
 
 {% block script %}
-<script src="{% static 'js/account.js' %}"></script>
+{# <script src="{% static 'js/account.js' %}"></script> #}
+<script src="{% static 'js/account_script.js' %}"></script>
 {% endblock %}

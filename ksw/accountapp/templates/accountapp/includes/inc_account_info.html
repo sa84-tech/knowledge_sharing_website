@@ -16,7 +16,7 @@
                         {{ target_user.first_name|capfirst }} {{ target_user.last_name|capfirst }}
                     </div>
                     <div class="p-0 text-primary fw-normal">
-                        @{{ target_user.username }}
+                        @<span id="username">{{ target_user.username }}</span>
                     </div>
                 </div>
             </div>

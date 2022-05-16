@@ -25,9 +25,10 @@
                         </a>
                     </h3>
                     <a href="{% url 'index_page' post.category.slug %}" class="nav-link p-0">
-                        <strong class="d-inline-block px-2 text-primary mb-2 border bg-light">{{ post.category|capfirst }}</strong>
+                        <strong class="d-inline-block px-2 text-primary text-small align-middle mb-2 border bg-light">
+                            {{ post.category|capfirst }}
+                        </strong>
                     </a>
-
 
                     <p class="mb-4 mb-lg-auto">
                         {% if post.annotation %}
