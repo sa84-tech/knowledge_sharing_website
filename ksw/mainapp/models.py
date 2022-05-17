@@ -6,6 +6,7 @@ from django.shortcuts import reverse
 from ckeditor_uploader.fields import RichTextUploadingField
 
 from mainapp.services.helpers import get_cti
+from accountapp.models import Bookmark
 
 
 class Category(models.Model):
@@ -142,6 +143,7 @@ class Post(models.Model):
     )
     likes = GenericRelation(Like)
     comment = GenericRelation(Comment)
+    bookmark = GenericRelation(Bookmark)
     image = models.ImageField(upload_to='uploads/%Y/%m/%d', blank=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -154,8 +156,12 @@ class Post(models.Model):
         return self.likes.count()
 
     @property
-    def total_comment(self):
+    def total_comments(self):
         return self.comment.count()
+
+    @property
+    def total_bookmarks(self):
+        return self.bookmark.count()
 
     def is_liked_by(self, user):
         if user.is_authenticated:

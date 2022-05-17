@@ -26,19 +26,19 @@
 
             <div class="row g-0 bg-primary overflow-hidden flex-md-row h-md-250 position-relative shadow">
                 <div class="tab-content col p-3 text-white">
-                    <h1 id="h-pills-posts" class="switchable-tab tab-pane fade show active fw-bold ">
+                    <h1 id="h-pills-posts" class="tab-pane fade show active fw-bold">
                         <i class="fa-solid fa-pencil fa-xl me-3"></i>
                         Публикации
                     </h1>
-                    <h1 id="h-pills-comments" class="switchable-tab tab-pane fade fw-bold">
+                    <h1 id="h-pills-comments" class="tab-pane fade fw-bold">
                         <i class="fa-solid fa-comments fa-xl me-3"></i>
                         Комментарии
                     </h1>
-                    <h1 id="h-pills-bookmarks" class="switchable-tab tab-pane fade fw-bold" >
+                    <h1 id="h-pills-bookmarks" class="tab-pane fade fw-bold" >
                         <i class="fa-solid fa-bookmark fa-xl me-3"></i>
                         Закладки
                     </h1>
-                    <h1 id="h-pills-subscriptions" class="switchable-tab tab-pane fade fw-bold">
+                    <h1 id="h-pills-subscriptions" class="tab-pane fade fw-bold">
                         <i class="fa-solid fa-hand-pointer fa-xl me-3"></i>
                         Подписки
                     </h1>
@@ -50,7 +50,7 @@
                     <li class="nav-item" role="presentation">
                         <button
                             class="nav-link active" id="pills-posts-tab"
-                            data-bs-toggle="pill" data-bs-target="#pills-posts"
+                            data-bs-toggle="pill" data-bs-target="#h-pills-posts"
                             type="button" role="tab"
                             aria-controls="pills-posts" aria-selected="true"
                         >
@@ -61,7 +61,7 @@
                     <li class="nav-item" role="presentation">
                         <button
                             class="nav-link" id="pills-comments-tab"
-                            data-bs-toggle="pill" data-bs-target="#pills-comments"
+                            data-bs-toggle="pill" data-bs-target="#h-pills-comments"
                             type="button" role="tab"
                             aria-controls="pills-comments" aria-selected="false"
                         >
@@ -72,7 +72,7 @@
                     <li class="nav-item" role="presentation">
                         <button
                             class="nav-link" id="pills-bookmarks-tab"
-                            data-bs-toggle="pill" data-bs-target="#pills-bookmarks"
+                            data-bs-toggle="pill" data-bs-target="#h-pills-bookmarks"
                             type="button" role="tab"
                             aria-controls="pills-bookmarks" aria-selected="false"
                         >
@@ -83,7 +83,7 @@
                     <li class="nav-item" role="presentation">
                         <button
                             class="nav-link" id="pills-contact-tab"
-                            data-bs-toggle="pill" data-bs-target="#pills-subscriptions"
+                            data-bs-toggle="pill" data-bs-target="#h-pills-subscriptions"
                             type="button" role="tab"
                             aria-controls="pills-subscriptions" aria-selected="false"
                         >
@@ -95,7 +95,8 @@
                 {% include 'accountapp/includes/inc_account_filters.html' %}
             </div>
 
-            <div class="tab-content mt-3">
+            <div id="tab-content-block" class="tab-content mt-3">
+                {% comment %}
                 <div id="pills-posts" class="tab-pane fade show active">
                     {% include 'accountapp/includes/inc_account_posts.html' %}
                 </div>
@@ -108,8 +109,8 @@
                 <div id="pills-subscriptions" class="tab-pane fade">
                     {% include 'accountapp/includes/inc_account_subscriptions.html' %}
                 </div>
+                {% endcomment %}
             </div>
-
         </div>
 
         {% include 'accountapp/includes/inc_account_info.html' %}
