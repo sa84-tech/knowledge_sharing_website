@@ -9,7 +9,7 @@ from mainapp.models import Post, Comment, StatusArticle
 from authapp.forms import WriterUserEditForm, WriterUserProfileForm, PassChangeForm
 from authapp.models import WriterUser
 from .forms import PostForm
-from .services import post_save, get_filtered_posts, get_filtered_comments
+from .services import post_save, get_filtered_posts, get_filtered_comments, get_filtered_bookmarks
 
 
 @login_required
@@ -56,7 +56,7 @@ def account_comments(request, username):
 def account_bookmarks(request, username):
     if request.is_ajax():
         user = get_object_or_404(WriterUser, username=username)
-        bookmarks = get_filtered_comments(request, user)
+        bookmarks = get_filtered_bookmarks(request, user)
 
         context = {'bookmarks': bookmarks, 'target_user': user}
 

@@ -111,7 +111,9 @@ const account = {
     onMenuItemSelected(event) {
         if (event.target.nodeName === 'BUTTON') {
             this.activePane = event.target.id.split('-')[1];
-            this.displayPane(this.activePane);
+            const sortingButton = document.querySelector('.sorting.active');
+            const filterButton = document.querySelector(`.${this.activePane} .filters.active`);
+            this.displayPane(this.activePane, filterButton?.dataset.filter, sortingButton?.dataset.sorting);
         }
     },
 
@@ -120,12 +122,12 @@ const account = {
         if (target.classList.contains('filters')) {
             const sortingButton = document.querySelector('.sorting.active');
             this.toggleButtonActivity('.filters', target);
-            this.displayPane(this.activePane, target.dataset.filter, sortingButton.dataset.sorting);
+            this.displayPane(this.activePane, target.dataset.filter, sortingButton?.dataset.sorting);
         }
         else if (target.classList.contains('sorting')) {
-            const filterButton = document.querySelector('.filters.active');
+            const filterButton = document.querySelector(`.${this.activePane} .filters.active`);
             this.toggleButtonActivity('.sorting', target);
-            this.displayPane(this.activePane, filterButton.dataset.filter,  target.dataset.sorting);
+            this.displayPane(this.activePane, filterButton?.dataset.filter,  target.dataset.sorting);
         }
     },
 

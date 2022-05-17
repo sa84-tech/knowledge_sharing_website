@@ -14,13 +14,12 @@ def post_save(request):
     return status
 
 
-def get_sorted_objects(objects, request):
-    sorting_value = request.GET.get('sorting', '-created')
-    if sorting_value and sorting_value in ['created', '-created', 'topic', 'name']:
+def get_sorted_objects(objects, sorting_value):
+    if sorting_value in ['created', '-created', 'topic', 'name', 'comment']:
         try:
             return objects.order_by(sorting_value)
         except FieldError:
-            return objects.order_by('topic')  # временное решение
+            print(' *** EXCEPTION sorting_value *** ', sorting_value)
     return objects
 
 
@@ -28,6 +27,9 @@ def get_filtered_posts(request, user):
     posts = Post.objects.filter(author=user.pk).exclude(status__name='deleted')
 
     filter_value = request.GET.get('filter', None)
+    sorting_value = request.GET.get('sorting', '-created')
+    if sorting_value == 'name':
+        sorting_value = 'topic'
 
     if user != request.user:
         posts = posts.filter(status__name='published')
@@ -35,19 +37,23 @@ def get_filtered_posts(request, user):
     if filter_value and StatusArticle.objects.filter(name=filter_value).exists():
         posts = posts.filter(status__name=filter_value)
 
-    return get_sorted_objects(posts, request)
+    return get_sorted_objects(posts, sorting_value)
 
 
 def get_filtered_comments(request, user):
     comments = Comment.objects.filter(author=user.pk)
-    return get_sorted_objects(comments, request)
+    sorting_value = request.GET.get('sorting', '-created')
+    if sorting_value == 'name':
+        sorting_value = 'comment'
+    return get_sorted_objects(comments, sorting_value)
 
 
 def get_filtered_bookmarks(request, user):
     bookmarks = Bookmark.objects.filter(author=user.pk)
-    filter_value = request.GET.get('filter', None)
+    filter_value = request.GET.get('filter', 'post')
+    sorting_value = request.GET.get('sorting', '-created')
 
     if filter_value and filter_value in ['post', 'comment']:
         bookmarks = bookmarks.filter(content_type__model=filter_value)
 
-    return get_sorted_objects(bookmarks, request)
+    return get_sorted_objects(bookmarks, sorting_value)
