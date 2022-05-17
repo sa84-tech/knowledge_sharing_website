@@ -26,19 +26,19 @@
 
             <div class="row g-0 bg-primary overflow-hidden flex-md-row h-md-250 position-relative shadow">
                 <div class="tab-content col p-3 text-white">
-                    <h1 id="h-pills-posts" class="switchable-tab tab-pane fade show active fw-bold ">
+                    <h1 id="h-pills-posts" class="tab-pane fade show active fw-bold">
                         <i class="fa-solid fa-pencil fa-xl me-3"></i>
                         Публикации
                     </h1>
-                    <h1 id="h-pills-comments" class="switchable-tab tab-pane fade fw-bold">
+                    <h1 id="h-pills-comments" class="tab-pane fade fw-bold">
                         <i class="fa-solid fa-comments fa-xl me-3"></i>
                         Комментарии
                     </h1>
-                    <h1 id="h-pills-bookmarks" class="switchable-tab tab-pane fade fw-bold" >
+                    <h1 id="h-pills-bookmarks" class="tab-pane fade fw-bold" >
                         <i class="fa-solid fa-bookmark fa-xl me-3"></i>
                         Закладки
                     </h1>
-                    <h1 id="h-pills-subscriptions" class="switchable-tab tab-pane fade fw-bold">
+                    <h1 id="h-pills-subscriptions" class="tab-pane fade fw-bold">
                         <i class="fa-solid fa-hand-pointer fa-xl me-3"></i>
                         Подписки
                     </h1>
@@ -111,7 +111,6 @@
                 </div>
                 {% endcomment %}
             </div>
-
         </div>
 
         {% include 'accountapp/includes/inc_account_info.html' %}
@@ -122,6 +121,5 @@
 {% endblock %}
 
 {% block script %}
-{# <script src="{% static 'js/account.js' %}"></script> #}
-<script src="{% static 'js/account_script.js' %}"></script>
+<script src="{% static 'js/account.js' %}"></script>
 {% endblock %}

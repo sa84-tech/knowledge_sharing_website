@@ -18,19 +18,12 @@ ADM_PASSWD = env('INIT_ADM_PSWD')
 USR_PASSWD = env('INIT_USRS_PSWD')
 
 
-def save_if_new(obj, is_created=None):
-    if is_created:
-        obj.save()
-        print(f'** New {type(obj).__name__} with id {obj.id} created **')
-    else:
-        print(f'** {type(obj).__name__} with id {obj.id} already exists **')
-
-
 class Command(BaseCommand):
     def handle(self, *args, **options):
 
         if not WriterUser.objects.filter(is_superuser=True):
-            super_user = WriterUser.objects.create_superuser('admin', 'admin@example.com', ADM_PASSWD)
+            super_user = WriterUser.objects.create_superuser(
+                'admin', 'admin@example.com', ADM_PASSWD, first_name='Иван', last_name='Птичкин')
             print(f'** user created ** ({super_user})')
 
         try:
@@ -49,24 +42,24 @@ class Command(BaseCommand):
 
             if data.get('statuses'):
                 for status in data['statuses']:
-                    save_if_new(*StatusArticle.objects.get_or_create(**status))
+                    self.save(*StatusArticle.objects.get_or_create(**status))
 
             if data.get('categories'):
                 for category in data['categories']:
-                    save_if_new(*Category.objects.get_or_create(**category))
+                    self.save(*Category.objects.get_or_create(**category))
 
             if data.get('posts'):
                 for post in data['posts']:
                     post['category'] = Category.objects.get(pk=post['category'])
                     post['status'] = StatusArticle.objects.get(pk=post['status'])
                     post['author'] = WriterUser.objects.get(username=post['author'])
-                    save_if_new(*Post.objects.get_or_create(**post))
+                    self.save(*Post.objects.get_or_create(**post))
 
             if data.get('comments'):
                 for comment in data['comments']:
                     comment['content_type'] = ContentType.objects.get(model=comment['content_type_name'])
                     del comment['content_type_name']
-                    save_if_new(*Comment.objects.get_or_create(**comment))
+                    self.save(*Comment.objects.get_or_create(**comment))
 
             # Create bookmarks for random posts and comments
             for user in WriterUser.objects.all():
@@ -78,8 +71,15 @@ class Command(BaseCommand):
                         if bool(getrandbits(1)):
                             continue
                         bookmark['object_id'] = obj.id
-                        save_if_new(*Bookmark.objects.get_or_create(**bookmark))
+                        self.save(*Bookmark.objects.get_or_create(**bookmark))
 
         except IOError:
             print(str(IOError))
             return
+
+    def save(self, obj, is_created=None):
+        if is_created:
+            obj.save()
+            print(f'** New {type(obj).__name__} with id {obj.id} created **')
+        else:
+            print(f'** {type(obj).__name__} with id {obj.id} already exists **')

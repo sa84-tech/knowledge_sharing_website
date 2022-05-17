@@ -1,7 +1,7 @@
-from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import PasswordChangeView
 from django.http import HttpResponseRedirect, JsonResponse
-from django.shortcuts import render, get_object_or_404, redirect, get_list_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.template.loader import render_to_string
 from django.urls import reverse, reverse_lazy
 
@@ -9,8 +9,7 @@ from mainapp.models import Post, Comment, StatusArticle
 from authapp.forms import WriterUserEditForm, WriterUserProfileForm, PassChangeForm
 from authapp.models import WriterUser
 from .forms import PostForm
-from .models import Bookmark
-from .services import post_save
+from .services import post_save, get_filtered_posts, get_filtered_comments
 
 
 @login_required
@@ -20,20 +19,10 @@ def account(request, username):
 
 
 @login_required
-def account_posts(request, username, filter_value=None, sort_value=None):
+def account_posts(request, username):
     if request.is_ajax():
         user = get_object_or_404(WriterUser, username=username)
-        posts = Post.objects.filter(author=user.pk)
-
-        if user != request.user:
-            posts = posts.filter(status__name='published')
-
-        elif filter_value and StatusArticle.objects.filter(name=filter_value).exists():
-            posts = posts.filter(status__name=filter_value)
-
-        if sort_value:
-            if sort_value in ['created', '-created', 'topic']:
-                posts = posts.order_by(sort_value)
+        posts = get_filtered_posts(request, user)
 
         context = {'posts': posts, 'target_user': user}
 
@@ -47,10 +36,10 @@ def account_posts(request, username, filter_value=None, sort_value=None):
 
 
 @login_required
-def account_comments(request, username, filter_value=None, sort_value=None):
+def account_comments(request, username):
     if request.is_ajax():
         user = get_object_or_404(WriterUser, username=username)
-        comments = Comment.objects.filter(author=user.pk)
+        comments = get_filtered_comments(request, user)
 
         context = {'comments': comments, 'target_user': user}
 
@@ -64,17 +53,10 @@ def account_comments(request, username, filter_value=None, sort_value=None):
 
 
 @login_required
-def account_bookmarks(request, username, filter_value=None, sort_value=None):
+def account_bookmarks(request, username):
     if request.is_ajax():
         user = get_object_or_404(WriterUser, username=username)
-        bookmarks = Bookmark.objects.filter(author=user.pk)
-
-        if filter_value and filter_value in ['post', 'comment']:
-            bookmarks = bookmarks.filter(content_type__model=filter_value)
-
-        if sort_value:
-            if sort_value in ['created', '-created', 'topic']:
-                bookmarks = bookmarks.order_by(sort_value)
+        bookmarks = get_filtered_comments(request, user)
 
         context = {'bookmarks': bookmarks, 'target_user': user}
 
