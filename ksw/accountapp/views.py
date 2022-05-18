@@ -6,7 +6,7 @@ from django.template.loader import render_to_string
 from django.urls import reverse, reverse_lazy
 
 from mainapp.models import Post, Comment, StatusArticle
-from authapp.forms import WriterUserEditForm, WriterUserProfileForm, PassChangeForm
+from authapp.forms import WriterUserEditForm, WriterUserProfileForm, PassChangeForm, EmailChangeForm
 from authapp.models import WriterUser
 from .forms import PostForm
 from .services import post_save, get_filtered_posts, get_filtered_comments, get_filtered_bookmarks
@@ -74,22 +74,34 @@ def settings(request):
 
     title = 'профиль'
 
+    # temporary for check
     if request.method == 'POST':
         edit_form = WriterUserEditForm(request.POST, request.FILES, instance=request.user)
         profile_form = WriterUserProfileForm(request.POST, instance=request.user.writeruserprofile)
+        # password_form = PassChangeForm(request.user, request.POST)
+        # email_form = EmailChangeForm(user=request.user, data=request.POST)
+
         if edit_form.is_valid() and profile_form.is_valid():
             edit_form.save()
+            profile_form.save()
+            # password_form.save()
+            # email_form.save()
+
             return HttpResponseRedirect(reverse('account:settings'))
     else:
         edit_form = WriterUserEditForm(instance=request.user)
         profile_form = WriterUserProfileForm(instance=request.user.writeruserprofile)
-    password_form = PassChangeForm(request.user)
+        password_form = PassChangeForm(request.user)
+        email_form = EmailChangeForm(user=request.user)
+
     context = {
         'title': title,
         'edit_form': edit_form,
         'profile_form': profile_form,
         'password_form': password_form,
+        'email_form': email_form,
     }
+
     return render(request, 'accountapp/settings.html', context)
 
 

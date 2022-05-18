@@ -1,12 +1,17 @@
-from django.db import models
+from datetime import timedelta, datetime
+
 from django.contrib.auth.models import AbstractUser
+from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils.timezone import now
-from datetime import timedelta, datetime
-
 from django_countries.fields import CountryField
+
+from .services.images import crop_and_resize
 from mainapp.models import Like, Comment, Post
+
+
+AVATAR_SIZE = 150
 
 
 class WriterUser(AbstractUser):
@@ -23,6 +28,12 @@ class WriterUser(AbstractUser):
         else:
             return True
 
+    def save(self, *args, **kwargs):
+        super().save()
+        if self.avatar:
+            img = crop_and_resize(self.avatar.path, AVATAR_SIZE)
+            img.save(self.avatar.path, 'png')
+
     @property
     def status(self):
         print('DATETIME: ', datetime.now() - self.date_joined)
@@ -30,8 +41,6 @@ class WriterUser(AbstractUser):
             return 'суперпользователь'
         if self.is_staff:
             return 'модератор'
-        # if (datetime.now() - self.date_joined) > 12:
-        #     return 'постоянный пользователь'
         return 'пользователь'
 
 
