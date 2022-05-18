@@ -1,12 +1,14 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.views import PasswordChangeView
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.template.loader import render_to_string
 from django.urls import reverse, reverse_lazy
+from django.views.generic import TemplateView, FormView
 
 from mainapp.models import Post, Comment, StatusArticle
-from authapp.forms import WriterUserEditForm, WriterUserProfileForm, PassChangeForm, EmailChangeForm
+from authapp.forms import WriterUserEditForm, WriterUserProfileForm, PasswordChangeForm, EmailChangeForm
 from authapp.models import WriterUser
 from .forms import PostForm
 from .services import post_save, get_filtered_posts, get_filtered_comments, get_filtered_bookmarks
@@ -69,6 +71,86 @@ def account_bookmarks(request, username):
         return JsonResponse({'result': result})
 
 
+def get_context(context, items_tup):
+    for item in items_tup:
+        context.update(dict(item=item))
+    print(context)
+    return context
+
+
+class SettingsView(TemplateView):
+    template_name = 'accountapp/settings.html'
+
+    def get(self, request, *args, **kwargs):
+        edit_form = WriterUserEditForm(instance=request.user)
+        profile_form = WriterUserProfileForm(instance=request.user.writeruserprofile)
+        password_form = PasswordChangeForm(request.user)
+        email_form = EmailChangeForm(user=request.user)
+        context = get_context(self.get_context_data(**kwargs), (edit_form, profile_form, password_form, email_form))
+        context['edit_form'] = edit_form
+        context['profile_form'] = profile_form
+        context['password_form'] = password_form
+        context['email_form'] = email_form
+        return self.render_to_response(context)
+
+
+class UserProfileFormView(FormView):
+    form_class = WriterUserEditForm
+    template_name = 'accountapp/settings.html'
+    success_url = 'settings'
+
+    def post(self, request, *args, **kwargs):
+        edit_form = WriterUserEditForm(request.POST, request.FILES, instance=request.user)
+        profile_form = WriterUserProfileForm(request.POST, instance=request.user.writeruserprofile)
+        password_form = PasswordChangeForm(request.user)
+        email_form = EmailChangeForm(user=request.user)
+        if edit_form.is_valid() and profile_form.is_valid():
+            edit_form.save()
+            profile_form.save()
+            return self.render_to_response(
+                self.get_context_data(
+                    success=True
+                )
+            )
+        else:
+            context = self.get_context_data(**kwargs)
+            context['edit_form'] = edit_form
+            context['profile_form'] = profile_form
+            context['password_form'] = password_form
+            context['email_form'] = email_form
+            return self.render_to_response(context)
+
+
+class PasswordChangeFormView(PasswordChangeView):
+    from_class = PasswordChangeForm
+    success_url = reverse_lazy('auth:password_success')
+    template_name = 'accountapp/settings.html'
+
+    def post(self, request, *args, **kwargs):
+        edit_form = WriterUserEditForm(instance=request.user)
+        profile_form = WriterUserProfileForm(instance=request.user.writeruserprofile)
+        password_form = PasswordChangeForm(request.user, request.POST)
+        email_form = EmailChangeForm(user=request.user)
+        if password_form.is_valid():
+            password_form.save()
+            return self.render_to_response(
+                self.get_context_data(
+                    success=True
+                )
+            )
+        else:
+            context = self.get_context_data(**kwargs)
+            context['edit_form'] = edit_form
+            context['profile_form'] = profile_form
+            context['password_form'] = password_form
+            context['email_form'] = email_form
+            return self.render_to_response(context)
+
+
+class EmailChangeFormView(FormView):
+    pass
+
+
 @login_required
 def settings(request):
 
@@ -78,8 +160,8 @@ def settings(request):
     if request.method == 'POST':
         edit_form = WriterUserEditForm(request.POST, request.FILES, instance=request.user)
         profile_form = WriterUserProfileForm(request.POST, instance=request.user.writeruserprofile)
-        # password_form = PassChangeForm(request.user, request.POST)
-        # email_form = EmailChangeForm(user=request.user, data=request.POST)
+        password_form = PasswordChangeForm(request.user, request.POST)
+        email_form = EmailChangeForm(user=request.user, data=request.POST)
 
         if edit_form.is_valid() and profile_form.is_valid():
             edit_form.save()
@@ -91,7 +173,7 @@ def settings(request):
     else:
         edit_form = WriterUserEditForm(instance=request.user)
         profile_form = WriterUserProfileForm(instance=request.user.writeruserprofile)
-        password_form = PassChangeForm(request.user)
+        password_form = PasswordChangeForm(request.user)
         email_form = EmailChangeForm(user=request.user)
 
     context = {
@@ -105,17 +187,17 @@ def settings(request):
     return render(request, 'accountapp/settings.html', context)
 
 
-class PassChangeView(PasswordChangeView):
-    from_class = PassChangeForm
-    success_url = reverse_lazy('auth:password_success')
-
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs.update(user=self.request.user)
-        return kwargs
-
-    def form_valid(self, form):
-        return JsonResponse({'foo': 'bar'})
+# class PassChangeView(PasswordChangeView):
+#     from_class = PassChangeForm
+#     success_url = reverse_lazy('auth:password_success')
+#
+#     def get_form_kwargs(self):
+#         kwargs = super().get_form_kwargs()
+#         kwargs.update(user=self.request.user)
+#         return kwargs
+#
+#     def form_valid(self, form):
+#         return JsonResponse({'foo': 'bar'})
 
 
 @login_required

@@ -5,7 +5,7 @@
         <div class="card mb-4 shadow">
             <div class="card-header text-secondary">Информация</div>
             <div class="card-body">
-                <form id="profileForm" action="{% url 'account:settings' %}" method="post" enctype="multipart/form-data">
+                <form id="profileForm" action="{% url 'account:settings_profile' %}" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
 
                     <span class="text-danger text-small opacity-75 text-decoration-none">

@@ -24,7 +24,7 @@
                     data-bs-parent="#accordionFlushExample"
                 >
                     <div class="accordion-body pb-4">
-                        <form action="{% url 'auth:edit' %}" method="post" enctype="multipart/form-data">
+                        <form action="{% url 'account:settings_password' %}" method="post" enctype="multipart/form-data">
                             {% csrf_token %}
                             <span class="text-danger text-small opacity-75 text-decoration-none">
                                 {{ password_form.non_field_errors.as_text }}
@@ -76,7 +76,7 @@
                     data-bs-parent="#accordionFlushExample"
                 >
                     <div class="accordion-body pb-4">
-                        <form action="{% url 'auth:edit' %}" method="post" enctype="multipart/form-data">
+                        <form action="{% url 'accountapp:settings_email' %}" method="post" enctype="multipart/form-data">
                             {% csrf_token %}
                             <span class="text-danger text-small opacity-75 text-decoration-none">
                                 {{ email_form.non_field_errors.as_text }}
