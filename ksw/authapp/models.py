@@ -11,7 +11,7 @@ from .services.images import crop_and_resize
 from mainapp.models import Like, Comment, Post
 
 
-AVATAR_SIZE = 150
+AVATAR_SIZE = 200
 
 
 class WriterUser(AbstractUser):

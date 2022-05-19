@@ -1,6 +1,6 @@
 from django.urls import path
-from .views import account, settings, post_create, post_update, post_delete, account_posts, account_comments, \
-    account_bookmarks, SettingsView, UserProfileFormView, PasswordChangeFormView, EmailChangeFormView
+from .views import account, post_create, post_update, post_delete, account_posts, account_comments, \
+    account_bookmarks, SettingsView, UserProfileFormView, PasswordChangeFormView, EmailChangeFormView, settings_success
 
 app_name = 'accountapp'
 
@@ -14,6 +14,7 @@ urlpatterns = [
     path('settings/profile', UserProfileFormView.as_view(), name='settings_profile'),
     path('settings/password', PasswordChangeFormView.as_view(), name='settings_password'),
     path('settings/email', EmailChangeFormView.as_view(), name='settings_email'),
+    path('settings/success/<str:page>', settings_success, name='settings_success'),
     # path('settings/', settings, name='settings'),
     path('post/create/', post_create, name='post_create'),
     path('post/update/<int:pk>/', post_update, name='post_update'),

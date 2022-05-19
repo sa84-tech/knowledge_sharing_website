@@ -86,6 +86,7 @@ class PassChangeForm(PasswordChangeForm):
         super(PasswordChangeForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'
+            field.widget.attrs['placeholder'] = field.label
 
 
 class EmailChangeForm(forms.Form):
@@ -116,6 +117,9 @@ class EmailChangeForm(forms.Form):
     def __init__(self, user, *args, **kwargs):
         self.user = user
         super(EmailChangeForm, self).__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs['class'] = 'form-control'
+            field.widget.attrs['placeholder'] = field.label
 
     def clean_current_password(self):
         current_password = self.cleaned_data["current_password"]

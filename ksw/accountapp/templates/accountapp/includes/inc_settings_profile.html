@@ -81,9 +81,9 @@
     <div class="col-xl-3">
         <div class="card mb-4 mb-xl-0 shadow">
             <div class="card-header text-secondary">Аватар</div>
-            <div class="card-body pt-5 p-4 text-center">
+            <div class="card-body p-4 text-center">
                 <form action="{% url 'account:settings' %}" method="post" enctype="multipart/form-data">
-                    <img class="rounded-circle mb-3" src="{% get_avatar user %}" alt="avatar" style="width: 12rem; height: 12rem;">
+                    <img class="img-fluid rounded-circle p-3 mb-3 w-100" src="{% get_avatar user %}" alt="avatar" >
                     <div class="font-italic text-muted text-small text-center opacity-75 mb-3">Размер изображения не более 2 Мб</div>
                     <div class="form-outline text-start">
                         <span class="text-danger text-small opacity-75 text-decoration-none">

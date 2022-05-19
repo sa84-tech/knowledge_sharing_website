@@ -1,6 +1,6 @@
 from django.contrib import auth, messages
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import PasswordChangeForm
+# from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.views import PasswordChangeView
 
 from django.http import HttpResponseRedirect
@@ -8,7 +8,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
 
 from .forms import WriterUserLoginForm, WriterUserRegisterForm, WriterUserEditForm, WriterUserProfileForm, \
-    EmailChangeForm
+    EmailChangeForm, PassChangeForm
 from .models import WriterUser
 from .services.email import send_verify_mail
 from .services.queries import make_user_active
@@ -112,7 +112,7 @@ def verify(request, email, activation_key):
 
 
 class PasswordChangeView(PasswordChangeView):
-    from_class = PasswordChangeForm
+    from_class = PassChangeForm
     success_url = reverse_lazy('auth:password_success')
 
 

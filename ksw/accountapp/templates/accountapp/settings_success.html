@@ -1,0 +1,69 @@
+{% extends 'accountapp/base.html' %}
+{% load static %}
+{% load main_extras %}
+
+{% block content %}
+
+<style>
+    .settings .bg-primary {
+        background-color: #3B727D !important;
+    }
+    .btn-primary {
+        color: #fff;
+        background-color: #3B727D;
+        border-color: #3B727D;
+    }
+    .btn-primary:hover {
+        color: #fff;
+        background-color: #105D6C;
+        border-color: #105D6C;
+    }
+</style>
+
+<div class="settings container content_wrapper">
+    <div class="row pt-4">
+        <div class="col-12">
+
+            <div class="row g-0 my-3 bg-primary shadow">
+                <div class="col p-3 text-light">
+                    {% if page == 'profile' %}
+                    <h1 class="fw-bold ">
+                        <i class="fa-solid fa-gear fa-xl me-3"></i>
+                        Профиль
+                    </h1>
+                    {% elif page == 'password' or page == 'email' %}
+                    <h1 class="fw-bold">
+                        <i class="fa-solid fa-shield-halved fa-xl me-3"></i>
+                        Безопасность
+                    </h1>
+                    {% elif page == 'notifications' %}
+                    <h1 class="fw-bold">
+                        <i class="fa-solid fa-bell fa-xl me-3"></i>
+                        Уведомления
+                    </h1>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="p-4 bg-white shadow">
+                <div class="fs-5 mt-2 text-secondary">
+                    {% if page == 'profile' %}
+                        Данные пользователя {{ user }} успешно изменены.
+                    {% elif page == 'password' %}
+                        Пароль успешно изменен. Необходимо заново пройти авторизацию.
+                    {% elif page == 'email' %}
+                        Email успешно изменен.
+                    {% elif page == 'notifications' %}
+                        Настройки уведомлений сохранены.
+                    {% endif %}
+                </div>
+                <div class="mt-4">
+                    <a href="{% url 'account:settings' %}" class="btn btn-outline-primary">Назад</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

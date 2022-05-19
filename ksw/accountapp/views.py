@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import PasswordChangeView
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
@@ -7,11 +8,12 @@ from django.template.loader import render_to_string
 from django.urls import reverse, reverse_lazy
 from django.views.generic import TemplateView, FormView
 
-from mainapp.models import Post, Comment, StatusArticle
-from authapp.forms import WriterUserEditForm, WriterUserProfileForm, PasswordChangeForm, EmailChangeForm
-from authapp.models import WriterUser
 from .forms import PostForm
 from .services import post_save, get_filtered_posts, get_filtered_comments, get_filtered_bookmarks
+from authapp.forms import WriterUserEditForm, WriterUserProfileForm, PasswordChangeForm, EmailChangeForm
+from authapp.models import WriterUser
+from authapp.forms import PassChangeForm
+from mainapp.models import Post, Comment, StatusArticle
 
 
 @login_required
@@ -71,133 +73,77 @@ def account_bookmarks(request, username):
         return JsonResponse({'result': result})
 
 
-def get_context(context, items_tup):
-    for item in items_tup:
-        context.update(dict(item=item))
-    print(context)
-    return context
-
-
-class SettingsView(TemplateView):
+class SettingsView(LoginRequiredMixin, TemplateView):
     template_name = 'accountapp/settings.html'
 
     def get(self, request, *args, **kwargs):
-        edit_form = WriterUserEditForm(instance=request.user)
-        profile_form = WriterUserProfileForm(instance=request.user.writeruserprofile)
-        password_form = PasswordChangeForm(request.user)
-        email_form = EmailChangeForm(user=request.user)
-        context = get_context(self.get_context_data(**kwargs), (edit_form, profile_form, password_form, email_form))
-        context['edit_form'] = edit_form
-        context['profile_form'] = profile_form
-        context['password_form'] = password_form
-        context['email_form'] = email_form
+        context = self.get_context_data(edit_form=WriterUserEditForm(instance=request.user),
+                                        profile_form=WriterUserProfileForm(instance=request.user.writeruserprofile),
+                                        password_form=PassChangeForm(request.user),
+                                        email_form=EmailChangeForm(user=request.user), **kwargs)
         return self.render_to_response(context)
 
 
-class UserProfileFormView(FormView):
+class UserProfileFormView(LoginRequiredMixin, FormView):
     form_class = WriterUserEditForm
     template_name = 'accountapp/settings.html'
-    success_url = 'settings'
+    success_url = reverse_lazy('account:settings')
 
     def post(self, request, *args, **kwargs):
         edit_form = WriterUserEditForm(request.POST, request.FILES, instance=request.user)
         profile_form = WriterUserProfileForm(request.POST, instance=request.user.writeruserprofile)
-        password_form = PasswordChangeForm(request.user)
+        password_form = PassChangeForm(request.user)
         email_form = EmailChangeForm(user=request.user)
         if edit_form.is_valid() and profile_form.is_valid():
             edit_form.save()
             profile_form.save()
-            return self.render_to_response(
-                self.get_context_data(
-                    success=True
-                )
-            )
+            return HttpResponseRedirect(self.success_url)
         else:
-            context = self.get_context_data(**kwargs)
-            context['edit_form'] = edit_form
-            context['profile_form'] = profile_form
-            context['password_form'] = password_form
-            context['email_form'] = email_form
+            context = self.get_context_data(edit_form=edit_form, profile_form=profile_form,
+                                            password_form=password_form, email_form=email_form, **kwargs)
             return self.render_to_response(context)
 
 
-class PasswordChangeFormView(PasswordChangeView):
-    from_class = PasswordChangeForm
-    success_url = reverse_lazy('auth:password_success')
+class PasswordChangeFormView(LoginRequiredMixin, PasswordChangeView):
+    form_class = PasswordChangeForm
     template_name = 'accountapp/settings.html'
+    success_url = reverse_lazy('account:settings_success', args=('password',))
 
     def post(self, request, *args, **kwargs):
         edit_form = WriterUserEditForm(instance=request.user)
         profile_form = WriterUserProfileForm(instance=request.user.writeruserprofile)
-        password_form = PasswordChangeForm(request.user, request.POST)
+        password_form = PassChangeForm(request.user, request.POST)
         email_form = EmailChangeForm(user=request.user)
         if password_form.is_valid():
             password_form.save()
-            return self.render_to_response(
-                self.get_context_data(
-                    success=True
-                )
-            )
+            return HttpResponseRedirect(self.success_url)
         else:
-            context = self.get_context_data(**kwargs)
-            context['edit_form'] = edit_form
-            context['profile_form'] = profile_form
-            context['password_form'] = password_form
-            context['email_form'] = email_form
+            context = self.get_context_data(edit_form=edit_form, profile_form=profile_form,
+                                            password_form=password_form, email_form=email_form, **kwargs)
             return self.render_to_response(context)
 
 
-class EmailChangeFormView(FormView):
-    pass
+class EmailChangeFormView(LoginRequiredMixin, FormView):
+    form_class = EmailChangeForm
+    template_name = 'accountapp/settings.html'
+    success_url = reverse_lazy('account:settings_success', args=('email',))
 
-
-@login_required
-def settings(request):
-
-    title = 'профиль'
-
-    # temporary for check
-    if request.method == 'POST':
-        edit_form = WriterUserEditForm(request.POST, request.FILES, instance=request.user)
-        profile_form = WriterUserProfileForm(request.POST, instance=request.user.writeruserprofile)
-        password_form = PasswordChangeForm(request.user, request.POST)
-        email_form = EmailChangeForm(user=request.user, data=request.POST)
-
-        if edit_form.is_valid() and profile_form.is_valid():
-            edit_form.save()
-            profile_form.save()
-            # password_form.save()
-            # email_form.save()
-
-            return HttpResponseRedirect(reverse('account:settings'))
-    else:
+    def post(self, request, *args, **kwargs):
         edit_form = WriterUserEditForm(instance=request.user)
         profile_form = WriterUserProfileForm(instance=request.user.writeruserprofile)
-        password_form = PasswordChangeForm(request.user)
-        email_form = EmailChangeForm(user=request.user)
-
-    context = {
-        'title': title,
-        'edit_form': edit_form,
-        'profile_form': profile_form,
-        'password_form': password_form,
-        'email_form': email_form,
-    }
-
-    return render(request, 'accountapp/settings.html', context)
+        password_form = PassChangeForm(request.user)
+        email_form = EmailChangeForm(user=request.user, data=request.POST)
+        if email_form.is_valid():
+            email_form.save()
+            return HttpResponseRedirect(self.success_url)
+        else:
+            context = self.get_context_data(**kwargs, edit_form=edit_form, profile_form=profile_form,
+                                            password_form=password_form, email_form=email_form)
+            return self.render_to_response(context)
 
 
-# class PassChangeView(PasswordChangeView):
-#     from_class = PassChangeForm
-#     success_url = reverse_lazy('auth:password_success')
-#
-#     def get_form_kwargs(self):
-#         kwargs = super().get_form_kwargs()
-#         kwargs.update(user=self.request.user)
-#         return kwargs
-#
-#     def form_valid(self, form):
-#         return JsonResponse({'foo': 'bar'})
+def settings_success(request, page):
+    return render(request, 'accountapp/settings_success.html', {'page': page})
 
 
 @login_required
