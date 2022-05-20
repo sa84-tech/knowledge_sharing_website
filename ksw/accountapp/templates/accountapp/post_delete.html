@@ -1,7 +1,52 @@
+{% extends 'accountapp/base.html' %}
+{% load static %}
+{% load main_extras %}
+
 {% block content %}
-    <h1>Delete post</h1>
-    <form action="" method="post">{% csrf_token %}
-      <p>Are you sure you want to delete "{{ form.topic }}"?</p>
-      <input type="submit" value="Confirm" />
-    </form>
-{% endblock content %}
+
+<style>
+    .account .bg-primary {
+        background-color: #3B727D !important;
+    }
+    .btn-outline-primary {
+        color: #fff;
+        color: #3B727D;
+        border-color: #3B727D;
+    }
+    .btn-outline-primary:hover {
+        color: #fff;
+        background-color: #3B727D;
+        border-color: #3B727D;
+    }
+</style>
+
+<div class="account container content_wrapper">
+    <div class="row pt-4">
+        <div class="col-12">
+
+            <div class="row g-0 bg-white overflow-hidden flex-md-row mb-1 h-md-250 position-relative shadow overflow-visible">
+                <div class="p-4">
+                    <h1 class="mb-4">Удалить статью</h1>
+                    <div>
+                        <form action="" method="post">
+                            {% csrf_token %}
+                            <div class="fs-5 mb-5">Вы подтверждаете удаление статьи "{{ form.topic }}"?</div>
+                            <div class="d-flex mt-3">
+                                <input class="btn btn-primary me-4" type="submit" value="Подтвердить" />
+                                <a class="btn btn-outline-primary" href="{% url 'account:lk' user %}">
+                                    Отмена
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'js/account.js' %}"></script>
+{% endblock %}

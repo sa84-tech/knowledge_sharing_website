@@ -6,7 +6,7 @@
         <div class="accordion my-5" id="accordionFlushExample">
             <div class="accordion-item bg-white mb-4 shadow-sm">
                 <button
-                    class="accordion-button collapsed "
+                    class="accordion-button {% if page != 'password' %} collapsed {% endif %}"
                     type="button" data-bs-toggle="collapse"
                     data-bs-target="#flush-collapseOne"
                     aria-expanded="false"
@@ -19,12 +19,12 @@
 
                 <div
                     id="flush-collapseOne"
-                    class="accordion-collapse collapse"
+                    class="accordion-collapse collapse {% if page == 'password' %} show {% endif %}"
                     aria-labelledby="flush-headingOne"
                     data-bs-parent="#accordionFlushExample"
                 >
                     <div class="accordion-body pb-4">
-                        <form action="{% url 'auth:edit' %}" method="post" enctype="multipart/form-data">
+                        <form action="{% url 'account:settings_password' %}" method="post" enctype="multipart/form-data">
                             {% csrf_token %}
                             <span class="text-danger text-small opacity-75 text-decoration-none">
                                 {{ password_form.non_field_errors.as_text }}
@@ -58,7 +58,7 @@
 
             <div class="accordion-item border shadow-sm">
                 <button
-                    class="accordion-button collapsed"
+                    class="accordion-button {% if page != 'email' %} collapsed {% endif %}"
                     type="button" data-bs-toggle="collapse"
                     data-bs-target="#flush-collapseTwo"
                     aria-expanded="false"
@@ -71,46 +71,44 @@
 
                 <div
                     id="flush-collapseTwo"
-                    class="accordion-collapse collapse"
+                    class="accordion-collapse collapse {% if page == 'email' %} show {% endif %}"
                     aria-labelledby="flush-headingTwo"
                     data-bs-parent="#accordionFlushExample"
                 >
                     <div class="accordion-body pb-4">
-                        <form action="{% url 'auth:edit' %}" method="post" enctype="multipart/form-data">
+                        <form action="{% url 'accountapp:settings_email' %}" method="post" enctype="multipart/form-data">
                             {% csrf_token %}
                             <span class="text-danger text-small opacity-75 text-decoration-none">
                                 {{ email_form.non_field_errors.as_text }}
                             </span>
 
                             <div class="mb-3">
-                                <label class="small mb-1" for="id_new_email1">Введите новый email</label>
+                                <label class="small mb-1" for="inputNotificationEmail">Текущий Email</label>
+                                <input class="form-control" id="inputNotificationEmail" type="email" value="{{ user.email }}" disabled="">
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="small mb-1" for="{{ email_form.new_email1.id_for_label }}">Введите новый Email</label>
                                 <span class="text-danger text-small opacity-75 text-decoration-none">
                                     {{ email_form.new_email1.errors.as_text }}
                                 </span>
-                                <!-- у input'a обязательно должен быть добавлен класс form-control   -->
                                 {{ email_form.new_email1 }}
-                                <!-- ДЛЯ ПРИМЕРА. УДАЛИТЬ СТРОКУ С INPUT  -->
-                                <input class="form-control" id="id_new_email1" type="text" placeholder="" value="">
                             </div>
 
                             <div class="mb-4">
-                                <label class="small mb-1" for="id_new_email2">Введите email еще раз</label>
+                                <label class="small mb-1" for="{{ email_form.new_email2.id_for_label }}">Введите Email еще раз</label>
                                 <span class="text-danger text-small opacity-75 text-decoration-none">
                                     {{ email_form.new_email2.errors.as_text }}
                                 </span>
                                 {{ email_form.new_email2 }}
-                                <!-- ДЛЯ ПРИМЕРА. УДАЛИТЬ СТРОКУ С INPUT  -->
-                                <input class="form-control" id="id_new_email2" type="text" placeholder="" value="">
                             </div>
 
                             <div class="mb-4">
-                                <label class="small mb-2" for="id_password">Текущий пароль</label>
+                                <label class="small mb-2" for="{{ email_form.current_password.id_for_label }}">Текущий пароль</label>
                                 <span class="text-danger text-small opacity-75 text-decoration-none">
-                                    {{ email_form.password.errors.as_text }}
+                                    {{ email_form.current_password.errors.as_text }}
                                 </span>
-                                {{ email_form.password }}
-                                <!-- ДЛЯ ПРИМЕРА. УДАЛИТЬ СТРОКУ С INPUT  -->
-                                <input class="form-control" id="id_password" type="text" placeholder="" value="">
+                                {{ email_form.current_password }}
                             </div>
 
                             <button class="btn btn-primary">Сохранить</button>

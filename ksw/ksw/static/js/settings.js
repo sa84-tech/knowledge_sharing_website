@@ -4,8 +4,12 @@ document.addEventListener('DOMContentLoaded', function (event) {
     const triggerTabList = [...document.querySelectorAll('#pills-tab button')];
     const triggeredTabPanes = [...document.querySelectorAll('.switchable-tab')];
     const filterBtnGroup = document.querySelector('#filter-btn-group')
+    const triggeredToast = document.querySelector('.showSuccess')
 
-    console.log(filterBtnGroup)
+    if (triggeredToast) {
+        const toast = new bootstrap.Toast(triggeredToast)
+        toast.show()
+    }
 
     triggerTabList.forEach(function (triggerEl) {
         const tabTrigger = new bootstrap.Tab(triggerEl);
@@ -23,24 +27,4 @@ document.addEventListener('DOMContentLoaded', function (event) {
             });
         });
     });
-
-
-
-//    filterBtnGroup.addEventListener('click', function (event) {
-//        if (event.target.id.includes('filter-posts')) {
-//            console.log(event.target.dataset.filter)
-//        }
-//        else if (event.target.id.includes('filter-comments')) {
-//            console.log(event.target.dataset.filter)
-//        }
-//        else if (event.target.id.includes('filter-bookmarks')) {
-//            console.log(event.target.dataset.filter)
-//        }
-//        else if (event.target.id.includes('filter-subscriptions')) {
-//            console.log(event.target.dataset.filter)
-//        }
-//    });
-
 });
-
-

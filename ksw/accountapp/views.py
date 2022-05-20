@@ -1,15 +1,19 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import PasswordChangeView
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.template.loader import render_to_string
 from django.urls import reverse, reverse_lazy
+from django.views.generic import TemplateView, FormView
 
-from mainapp.models import Post, Comment, StatusArticle
-from authapp.forms import WriterUserEditForm, WriterUserProfileForm, PassChangeForm
-from authapp.models import WriterUser
 from .forms import PostForm
 from .services import post_save, get_filtered_posts, get_filtered_comments, get_filtered_bookmarks
+from authapp.forms import WriterUserEditForm, WriterUserProfileForm, PasswordChangeForm, EmailChangeForm
+from authapp.models import WriterUser
+from authapp.forms import PassChangeForm
+from mainapp.models import Post, Comment, StatusArticle
 
 
 @login_required
@@ -69,41 +73,81 @@ def account_bookmarks(request, username):
         return JsonResponse({'result': result})
 
 
-@login_required
-def settings(request):
+class SettingsView(LoginRequiredMixin, TemplateView):
+    template_name = 'accountapp/settings.html'
 
-    title = 'профиль'
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(edit_form=WriterUserEditForm(instance=request.user),
+                                        profile_form=WriterUserProfileForm(instance=request.user.writeruserprofile),
+                                        password_form=PassChangeForm(request.user),
+                                        email_form=EmailChangeForm(user=request.user), **kwargs)
+        return self.render_to_response(context)
 
-    if request.method == 'POST':
+
+class UserProfileView(LoginRequiredMixin, FormView):
+    form_class = WriterUserEditForm
+    template_name = 'accountapp/settings.html'
+    success_url = reverse_lazy('account:settings', args=('profile-success',))
+
+    def post(self, request, *args, **kwargs):
         edit_form = WriterUserEditForm(request.POST, request.FILES, instance=request.user)
         profile_form = WriterUserProfileForm(request.POST, instance=request.user.writeruserprofile)
+        password_form = PassChangeForm(request.user)
+        email_form = EmailChangeForm(user=request.user)
         if edit_form.is_valid() and profile_form.is_valid():
             edit_form.save()
-            return HttpResponseRedirect(reverse('account:settings'))
-    else:
+            profile_form.save()
+            return HttpResponseRedirect(self.success_url)
+        else:
+            context = self.get_context_data(**kwargs, edit_form=edit_form, profile_form=profile_form,
+                                            password_form=password_form, email_form=email_form, page='profile')
+            return self.render_to_response(context)
+
+
+class PassChangeView(LoginRequiredMixin, PasswordChangeView):
+    form_class = PasswordChangeForm
+    template_name = 'accountapp/settings.html'
+    success_url = reverse_lazy('account:settings', args=('password-success',))
+
+    def post(self, request, *args, **kwargs):
         edit_form = WriterUserEditForm(instance=request.user)
         profile_form = WriterUserProfileForm(instance=request.user.writeruserprofile)
-    password_form = PassChangeForm(request.user)
-    context = {
-        'title': title,
-        'edit_form': edit_form,
-        'profile_form': profile_form,
-        'password_form': password_form,
-    }
-    return render(request, 'accountapp/settings.html', context)
+        password_form = PassChangeForm(request.user, request.POST)
+        email_form = EmailChangeForm(user=request.user)
+        if password_form.is_valid():
+            password_form.save()
+            return HttpResponseRedirect(self.success_url)
+        else:
+            context = self.get_context_data(**kwargs, edit_form=edit_form, profile_form=profile_form,
+                                            password_form=password_form, email_form=email_form, page='password')
+            return self.render_to_response(context)
 
 
-class PassChangeView(PasswordChangeView):
-    from_class = PassChangeForm
-    success_url = reverse_lazy('auth:password_success')
+class EmailChangeView(LoginRequiredMixin, FormView):
+    form_class = EmailChangeForm
+    template_name = 'accountapp/settings.html'
+    # success_url = reverse_lazy('account:settings_success', args=('email',))
+    success_url = reverse_lazy('account:settings', args=('email-success',))
 
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs.update(user=self.request.user)
-        return kwargs
+    def post(self, request, *args, **kwargs):
+        edit_form = WriterUserEditForm(instance=request.user)
+        profile_form = WriterUserProfileForm(instance=request.user.writeruserprofile)
+        password_form = PassChangeForm(request.user)
+        email_form = EmailChangeForm(user=request.user, data=request.POST)
+        if email_form.is_valid():
+            email_form.save()
+            return HttpResponseRedirect(self.success_url)
+        else:
+            context = {'edit_form': edit_form,
+                       'profile_form': profile_form,
+                       'password_form': password_form,
+                       'email_form': email_form,
+                       'page': 'email'}
+            return self.render_to_response(context)
 
-    def form_valid(self, form):
-        return JsonResponse({'foo': 'bar'})
+
+def settings_success(request, page):
+    return render(request, 'accountapp/settings_success.html', {'page': page})
 
 
 @login_required
@@ -147,8 +191,8 @@ def post_delete(request, pk):
         if request.method == 'POST':
             delete_post.status = get_object_or_404(StatusArticle, name='deleted')
             delete_post.save()
-            return HttpResponseRedirect(reverse('account:lk', request.user))
-        context = {'form': delete_post}
+            return redirect('account:lk', request.user)
+        context = {'form': delete_post, 'target_user': request.user}
         return render(request, 'accountapp/post_delete.html', context)
     else:
         return redirect('account:lk', request.user)

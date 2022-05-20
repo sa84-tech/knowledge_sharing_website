@@ -6,8 +6,6 @@ from django import forms
 import hashlib
 import random
 
-# from django.utils.translation import gettext as _
-
 
 class WriterUserLoginForm(AuthenticationForm):
     class Meta:
@@ -15,7 +13,7 @@ class WriterUserLoginForm(AuthenticationForm):
         fields = ('username', 'password')
 
     def __init__(self, *args, **kwargs):
-        super(WriterUserLoginForm, self).__init__(*args,**kwargs)
+        super(WriterUserLoginForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control form-control-lg'
 
@@ -41,35 +39,36 @@ class WriterUserRegisterForm(UserCreationForm):
         return user
 
 
-class DatesInput(forms.DateInput):
+class DateInput(forms.DateInput):
     input_type = 'date'
 
 
 class WriterUserEditForm(UserChangeForm):
     class Meta:
         model = WriterUser
-        fields = ('username', 'first_name', 'last_name', 'email', 'avatar', 'password', 'birthday')
-        widgets = {'birthday': DatesInput()}
+        fields = ('username', 'first_name', 'last_name', 'avatar', 'birthday')
+        widgets = {'birthday': DateInput(format='%Y-%m-%d'), 'avatar': forms.FileInput(attrs={'form': 'profileForm'})}
 
     def __init__(self, *args, **kwargs):
         super(WriterUserEditForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'
             field.widget.attrs['placeholder'] = field.label
-            field.widget.attrs['id'] = f'reg_{field_name}'
 
-    # def clean_age(self):
-    #     data = self.cleaned_data['age']
-    #     if data < 0:
-    #         raise forms.ValidationError("Возраст указан не верно")
-    #     return data
+    def clean_avatar(self):
+        image = self.cleaned_data.get('avatar', False)
+        if image:
+            if image.size > 2 * 1024 * 1024:
+                raise forms.ValidationError('Слишком большой размер файла')
+            return image
+        raise forms.ValidationError('Неверный формат файла')
 
 
 class WriterUserProfileForm(forms.ModelForm):
 
     class Meta:
         model = WriterUserProfile
-        fields = ('tagline', 'about_me', 'country', 'gender')
+        fields = ('about_me', 'country', 'gender')
         country = CountryField(blank_label='(select country)')
 
     def __init__(self, *args, **kwargs):
@@ -77,7 +76,6 @@ class WriterUserProfileForm(forms.ModelForm):
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'
             field.widget.attrs['placeholder'] = field.label
-            field.widget.attrs['id'] = f'reg_{field_name}'
 
 
 class PassChangeForm(PasswordChangeForm):
@@ -85,9 +83,10 @@ class PassChangeForm(PasswordChangeForm):
         model = WriterUser
 
     def __init__(self, *args, **kwargs):
-        super(PasswordChangeForm, self).__init__(*args, **kwargs)
+        super(PassChangeForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'
+            field.widget.attrs['placeholder'] = field.label
 
 
 class EmailChangeForm(forms.Form):
@@ -118,6 +117,9 @@ class EmailChangeForm(forms.Form):
     def __init__(self, user, *args, **kwargs):
         self.user = user
         super(EmailChangeForm, self).__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs['class'] = 'form-control'
+            field.widget.attrs['placeholder'] = field.label
 
     def clean_current_password(self):
         current_password = self.cleaned_data["current_password"]
