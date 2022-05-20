@@ -5,8 +5,12 @@ from django.conf import settings
 from django.shortcuts import reverse
 from ckeditor_uploader.fields import RichTextUploadingField
 
-from mainapp.services.helpers import get_cti
+from .services.helpers import get_cti
+from .services.images import crop_rect
 from accountapp.models import Bookmark
+
+
+WIDTH_RATIO = 0.75
 
 
 class Category(models.Model):
@@ -144,12 +148,18 @@ class Post(models.Model):
     likes = GenericRelation(Like)
     comment = GenericRelation(Comment)
     bookmark = GenericRelation(Bookmark)
-    image = models.ImageField(upload_to='uploads/%Y/%m/%d', blank=True)
+    image = models.ImageField(upload_to='uploads/%Y/%m/%d', blank=False)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.topic
+
+    def save(self, *args, **kwargs):
+        super().save()
+        if self.image:
+            img = crop_rect(self.image.path, WIDTH_RATIO)
+            img.save(self.image.path, 'png')
 
     @property
     def total_likes(self):

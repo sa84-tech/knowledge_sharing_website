@@ -6,7 +6,7 @@
         <div class="accordion my-5" id="accordionFlushExample">
             <div class="accordion-item bg-white mb-4 shadow-sm">
                 <button
-                    class="accordion-button collapsed "
+                    class="accordion-button {% if page != 'password' %} collapsed {% endif %}"
                     type="button" data-bs-toggle="collapse"
                     data-bs-target="#flush-collapseOne"
                     aria-expanded="false"
@@ -19,7 +19,7 @@
 
                 <div
                     id="flush-collapseOne"
-                    class="accordion-collapse collapse"
+                    class="accordion-collapse collapse {% if page == 'password' %} show {% endif %}"
                     aria-labelledby="flush-headingOne"
                     data-bs-parent="#accordionFlushExample"
                 >
@@ -58,7 +58,7 @@
 
             <div class="accordion-item border shadow-sm">
                 <button
-                    class="accordion-button collapsed"
+                    class="accordion-button {% if page != 'email' %} collapsed {% endif %}"
                     type="button" data-bs-toggle="collapse"
                     data-bs-target="#flush-collapseTwo"
                     aria-expanded="false"
@@ -71,7 +71,7 @@
 
                 <div
                     id="flush-collapseTwo"
-                    class="accordion-collapse collapse"
+                    class="accordion-collapse collapse {% if page == 'email' %} show {% endif %}"
                     aria-labelledby="flush-headingTwo"
                     data-bs-parent="#accordionFlushExample"
                 >

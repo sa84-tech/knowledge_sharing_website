@@ -26,15 +26,18 @@
 
             <div class="row g-0 bg-primary overflow-hidden flex-md-row h-md-250 position-relative shadow">
                 <div class="tab-content col p-3 text-light">
-                    <h1 id="h-pills-profile" class="switchable-tab tab-pane fade show active fw-bold ">
+                    <h1
+                        id="h-pills-profile"
+                        class="switchable-tab tab-pane fw-bold fade {% if 'profile' in page %} show active {% endif %}"
+                    >
                         <i class="fa-solid fa-gear fa-xl me-3"></i>
                         Профиль
                     </h1>
-                    <h1 id="h-pills-security" class="switchable-tab tab-pane fade fw-bold">
+                    <h1 id="h-pills-security" class="switchable-tab tab-pane fade fw-bold {% if 'email' in page or 'password' in page %} show active {% endif %}">
                         <i class="fa-solid fa-shield-halved fa-xl me-3"></i>
                         Безопасность
                     </h1>
-                        <h1 id="h-pills-notifications" class="switchable-tab tab-pane fade fw-bold">
+                        <h1 id="h-pills-notifications" class="switchable-tab tab-pane fade fw-bold {% if 'notifications' in page %} show active {% endif %}">
                         <i class="fa-solid fa-bell fa-xl me-3"></i>
                         Уведомления
                     </h1>
@@ -45,7 +48,7 @@
                 <ul class="nav nav-pills" id="pills-tab" role="tablist">
                     <li class="nav-item" role="presentation">
                         <button
-                            class="nav-link active" id="pills-profile-tab"
+                            class="nav-link  {% if 'profile' in page %} active {% endif %}" id="pills-profile-tab"
                             data-bs-toggle="pill" data-bs-target="#pills-profile"
                             type="button" role="tab"
                             aria-controls="pills-profile" aria-selected="true"
@@ -56,7 +59,7 @@
 
                     <li class="nav-item" role="presentation">
                         <button
-                            class="nav-link" id="pills-security-tab"
+                            class="nav-link  {% if 'email' in page or 'password' in page %} active {% endif %}" id="pills-security-tab"
                             data-bs-toggle="pill" data-bs-target="#pills-security"
                             type="button" role="tab"
                             aria-controls="pills-security" aria-selected="false"
@@ -67,7 +70,7 @@
 
                     <li class="nav-item" role="presentation">
                         <button
-                            class="nav-link" id="pills-notifications-tab"
+                            class="nav-link  {% if 'notifications' in page %} show active {% endif %}" id="pills-notifications-tab"
                             data-bs-toggle="pill" data-bs-target="#pills-notifications"
                             type="button" role="tab"
                             aria-controls="pills-notifications" aria-selected="false"
@@ -79,13 +82,13 @@
             </div>
 
             <div class="tab-content mt-3">
-                <div id="pills-profile" class="tab-pane fade show active">
+                <div id="pills-profile" class="tab-pane fade {% if 'profile' in page %} show active {% endif %}">
                     {% include 'accountapp/includes/inc_settings_profile.html' %}
                 </div>
-                <div id="pills-security" class="tab-pane fade">
+                <div id="pills-security" class="tab-pane fade {% if 'email' in page or 'password' in page %} show active {% endif %}">
                     {% include 'accountapp/includes/inc_settings_security.html' %}
                 </div>
-                <div id="pills-notifications" class="tab-pane fade">
+                <div id="pills-notifications" class="tab-pane fade {% if 'notifications' in page %} show active {% endif %}">
                     {% include 'accountapp/includes/inc_settings_notifications.html' %}
                 </div>
             </div>
@@ -93,6 +96,27 @@
         </div>
     </div>
 </div>
+
+
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div class="toast align-items-center text-white bg-danger border-0 {% if 'success' in page %} showSuccess {% endif %}"
+         data-bs-animation="true" data-bs-autohide="true" data-bs-delay="5000"
+         role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body fs-5">
+                {% if 'profile' in page %}
+                Данные пользователя успешно обновлены.
+                {% elif 'email' in page %}
+                Email пользователя успешно обновлен.
+                {% elif 'password' in page %}
+                Пароль пользователя успешно обновлен.
+                {% endif %}
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Закрыть"></button>
+        </div>
+    </div>
+</div>
+
 
 {% endblock %}
 

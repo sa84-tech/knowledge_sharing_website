@@ -7,8 +7,8 @@ from django.dispatch import receiver
 from django.utils.timezone import now
 from django_countries.fields import CountryField
 
-from .services.images import crop_and_resize
 from mainapp.models import Like, Comment, Post
+from mainapp.services.images import crop_square
 
 
 AVATAR_SIZE = 200
@@ -31,7 +31,7 @@ class WriterUser(AbstractUser):
     def save(self, *args, **kwargs):
         super().save()
         if self.avatar:
-            img = crop_and_resize(self.avatar.path, AVATAR_SIZE)
+            img = crop_square(self.avatar.path, AVATAR_SIZE)
             img.save(self.avatar.path, 'png')
 
     @property

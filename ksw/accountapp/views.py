@@ -84,10 +84,10 @@ class SettingsView(LoginRequiredMixin, TemplateView):
         return self.render_to_response(context)
 
 
-class UserProfileFormView(LoginRequiredMixin, FormView):
+class UserProfileView(LoginRequiredMixin, FormView):
     form_class = WriterUserEditForm
     template_name = 'accountapp/settings.html'
-    success_url = reverse_lazy('account:settings')
+    success_url = reverse_lazy('account:settings', args=('profile-success',))
 
     def post(self, request, *args, **kwargs):
         edit_form = WriterUserEditForm(request.POST, request.FILES, instance=request.user)
@@ -99,15 +99,15 @@ class UserProfileFormView(LoginRequiredMixin, FormView):
             profile_form.save()
             return HttpResponseRedirect(self.success_url)
         else:
-            context = self.get_context_data(edit_form=edit_form, profile_form=profile_form,
-                                            password_form=password_form, email_form=email_form, **kwargs)
+            context = self.get_context_data(**kwargs, edit_form=edit_form, profile_form=profile_form,
+                                            password_form=password_form, email_form=email_form, page='profile')
             return self.render_to_response(context)
 
 
-class PasswordChangeFormView(LoginRequiredMixin, PasswordChangeView):
+class PassChangeView(LoginRequiredMixin, PasswordChangeView):
     form_class = PasswordChangeForm
     template_name = 'accountapp/settings.html'
-    success_url = reverse_lazy('account:settings_success', args=('password',))
+    success_url = reverse_lazy('account:settings', args=('password-success',))
 
     def post(self, request, *args, **kwargs):
         edit_form = WriterUserEditForm(instance=request.user)
@@ -118,15 +118,16 @@ class PasswordChangeFormView(LoginRequiredMixin, PasswordChangeView):
             password_form.save()
             return HttpResponseRedirect(self.success_url)
         else:
-            context = self.get_context_data(edit_form=edit_form, profile_form=profile_form,
-                                            password_form=password_form, email_form=email_form, **kwargs)
+            context = self.get_context_data(**kwargs, edit_form=edit_form, profile_form=profile_form,
+                                            password_form=password_form, email_form=email_form, page='password')
             return self.render_to_response(context)
 
 
-class EmailChangeFormView(LoginRequiredMixin, FormView):
+class EmailChangeView(LoginRequiredMixin, FormView):
     form_class = EmailChangeForm
     template_name = 'accountapp/settings.html'
-    success_url = reverse_lazy('account:settings_success', args=('email',))
+    # success_url = reverse_lazy('account:settings_success', args=('email',))
+    success_url = reverse_lazy('account:settings', args=('email-success',))
 
     def post(self, request, *args, **kwargs):
         edit_form = WriterUserEditForm(instance=request.user)
@@ -137,8 +138,11 @@ class EmailChangeFormView(LoginRequiredMixin, FormView):
             email_form.save()
             return HttpResponseRedirect(self.success_url)
         else:
-            context = self.get_context_data(**kwargs, edit_form=edit_form, profile_form=profile_form,
-                                            password_form=password_form, email_form=email_form)
+            context = {'edit_form': edit_form,
+                       'profile_form': profile_form,
+                       'password_form': password_form,
+                       'email_form': email_form,
+                       'page': 'email'}
             return self.render_to_response(context)
 
 
@@ -187,8 +191,8 @@ def post_delete(request, pk):
         if request.method == 'POST':
             delete_post.status = get_object_or_404(StatusArticle, name='deleted')
             delete_post.save()
-            return HttpResponseRedirect(reverse('account:lk', request.user))
-        context = {'form': delete_post}
+            return redirect('account:lk', request.user)
+        context = {'form': delete_post, 'target_user': request.user}
         return render(request, 'accountapp/post_delete.html', context)
     else:
         return redirect('account:lk', request.user)

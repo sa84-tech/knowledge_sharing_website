@@ -1,7 +1,7 @@
 {% load main_extras %}
 
 <div class="row">
-    <div class="col-xl-9">
+    <div class="col-lg-9">
         <div class="card mb-4 shadow">
             <div class="card-header text-secondary">Информация</div>
             <div class="card-body">
@@ -78,20 +78,20 @@
         </div>
     </div>
 
-    <div class="col-xl-3">
+    <div class="col-md-6 col-lg-3">
         <div class="card mb-4 mb-xl-0 shadow">
             <div class="card-header text-secondary">Аватар</div>
             <div class="card-body p-4 text-center">
-                <form action="{% url 'account:settings' %}" method="post" enctype="multipart/form-data">
-                    <img class="img-fluid rounded-circle p-3 mb-3 w-100" src="{% get_avatar user %}" alt="avatar" >
-                    <div class="font-italic text-muted text-small text-center opacity-75 mb-3">Размер изображения не более 2 Мб</div>
-                    <div class="form-outline text-start">
-                        <span class="text-danger text-small opacity-75 text-decoration-none">
-                            {{ edit_form.avatar.errors.as_text }}
-                        </span>
-                        {{ edit_form.avatar }}
+
+                <img class="img-fluid rounded-circle p-3 mb-3 w-100" src="{% get_avatar user %}" alt="avatar" >
+                <div class="font-italic text-muted text-small text-center opacity-75 mb-2">Размер изображения не более 2 Мб</div>
+                <div class="form-outline text-start">
+                    <div class="text-danger text-small opacity-75 text-decoration-none mb-2">
+                        {{ edit_form.avatar.errors.as_text }}
                     </div>
-                </form>
+                    {{ edit_form.avatar }}
+                </div>
+
             </div>
         </div>
     </div>
