@@ -65,16 +65,16 @@
             {% endfor %}
 
             {% if page_obj.paginator.num_pages > 1 %}
-                <div class="row justify-content-center mt-3 mb-5">
+                <div class="row justify-content-start mt-4 mb-5">
                     <div class="col-auto">
                         <div class="paginator list-group list-group-horizontal shadow">
                             {% if page_obj.has_previous %}
                             <a class="list-group-item nav_prev_page" href="?page={{ page_obj.previous_page_number }}">
-                                <
+                                <i class="fa-solid fa-caret-left"></i>
                             </a>
                             {% else %}
-                            <div class="list-group-item" style="cursor: pointer;">
-                                <span style="opacity: 0.4;"><</span>
+                            <div class="list-group-item disabled" style="cursor: pointer;">
+                                <span class="opacity-50"><i class="fa-solid fa-caret-left"></i></span>
                             </div>
                             {% endif %}
                             <span class="current list-group-item">
@@ -83,11 +83,11 @@
                             </span>
                             {% if page_obj.has_next %}
                             <a class="list-group-item nav_next_page" href="?page={{ page_obj.next_page_number }}">
-                                >
+                                <i class="fa-solid fa-caret-right"></i>
                             </a>
                             {% else %}
-                            <div class="list-group-item" style="cursor: pointer;">
-                                <span style="opacity: 0.4;">></span>
+                            <div class="list-group-item disabled" style="cursor: pointer;">
+                                <span class="opacity-50"><i class="fa-solid fa-caret-right"></i></span>
                             </div>
                             {% endif %}
                         </div>

@@ -10,7 +10,7 @@ from .services.images import crop_rect
 from accountapp.models import Bookmark
 
 
-WIDTH_RATIO = 0.75
+WIDTH_TO_HEIGHT_RATIO = 0.72
 
 
 class Category(models.Model):
@@ -158,7 +158,7 @@ class Post(models.Model):
     def save(self, *args, **kwargs):
         super().save()
         if self.image:
-            img = crop_rect(self.image.path, WIDTH_RATIO)
+            img = crop_rect(self.image.path, WIDTH_TO_HEIGHT_RATIO)
             img.save(self.image.path, 'png')
 
     @property
