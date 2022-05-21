@@ -9,7 +9,7 @@ from django.urls import reverse, reverse_lazy
 from django.views.generic import TemplateView, FormView
 
 from .forms import PostForm
-from .services import post_save, get_filtered_posts, get_filtered_comments, get_filtered_bookmarks
+from .services import post_save, get_filtered_posts, get_filtered_comments, get_filtered_bookmarks, check_user
 from authapp.forms import WriterUserEditForm, WriterUserProfileForm, PasswordChangeForm, EmailChangeForm
 from authapp.models import WriterUser
 from authapp.forms import PassChangeForm
@@ -172,22 +172,24 @@ def post_create(request):
 @login_required
 def post_update(request, pk):
     edit_post = get_object_or_404(Post, pk=pk)
-    if request.method == 'POST':
-        edit_form = PostForm(request.POST, request.FILES, instance=edit_post)
-        if edit_form.is_valid():
-            edit_post.status = post_save(request)
-            edit_form.save()
-            return redirect('account:lk', request.user)
+    if check_user(request, edit_post.author):
+        if request.method == 'POST':
+            edit_form = PostForm(request.POST, request.FILES, instance=edit_post)
+            if edit_form.is_valid():
+                edit_post.status = post_save(request)
+                edit_form.save()
+                return redirect('account:lk', request.user)
+        else:
+            edit_form = PostForm(instance=edit_post)
+        context = {'form': edit_form, 'post': edit_post}
+        return render(request, 'accountapp/post_edit.html', context)
     else:
-        edit_form = PostForm(instance=edit_post)
-    context = {'form': edit_form, 'post': edit_post}
-    return render(request, 'accountapp/post_edit.html', context)
-
+        return redirect('account:lk', request.user)
 
 @login_required
 def post_delete(request, pk):
     delete_post = get_object_or_404(Post, pk=pk)
-    if request.user == delete_post.author or request.user.is_superuser or request.user.is_staff:
+    if check_user(request, delete_post.author):
         if request.method == 'POST':
             delete_post.status = get_object_or_404(StatusArticle, name='deleted')
             delete_post.save()

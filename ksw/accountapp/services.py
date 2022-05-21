@@ -14,6 +14,11 @@ def post_save(request):
     return status
 
 
+def check_user(request, post_author):
+    if request.user == post_author or request.user.is_superuser or request.user.is_staff:
+        return True
+
+
 def get_sorted_objects(objects, sorting_value):
     if sorting_value in ['created', '-created', 'topic', 'name', 'comment']:
         try:
