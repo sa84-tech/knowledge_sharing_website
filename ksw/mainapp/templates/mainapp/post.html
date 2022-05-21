@@ -3,6 +3,7 @@
 {% load main_extras %}
 
 {% block content %}
+
   <div class="container content_wrapper" data-post="{{post.pk}}">
     <div class="row pt-4">
       <div class="col-md-9">
@@ -30,9 +31,8 @@
             <div class="text-muted">
               <span class="me-3"><i class="me-1 fa-solid fa-eye text-primary opacity-50"></i> {{ post.total_views }}</span>
               <span class="me-3"><a href="#add_comment" class="text-decoration-none"><i class="me-1 fa-regular fa-comment opacity-50"></i></a> {{ post.total_comments }}</span>
-              <span class="me-3 post_like " style="cursor: pointer;" data-csrf="{{ csrf_token }}"><i class="me-1 fa-thumbs-up opacity-50 text-primary {% check_like post user %}" style="pointer-events: none;"></i>
-                {{ post.total_likes }}</span>
-              <span class="me-3"><i class="me-1 fa-regular fa-bookmark text-primary opacity-50"></i> 4</span>
+              <span class="me-3 post_like" style="cursor: pointer;" data-csrf="{{ csrf_token }}"><i class="me-1 fa-thumbs-up opacity-50 text-primary {% check_like post user %}" style="pointer-events: none;"></i> <span>{{ post.total_likes }}</span></span>
+              <span class="me-3 post_bookmark" style="cursor: pointer;" data-csrf="{{ csrf_token }}"><i class="me-1 fa-bookmark text-primary opacity-50 {% check_bookmark post user %}" style="pointer-events: none;"></i>  <span>{{ post.total_bookmarks }}</span></span>
             </div>
           </div>
         </div>
@@ -110,12 +110,6 @@
                       </div>
 
                       <div class="small d-flex justify-content-start">
-
-<!--                        <a href="#!" class="d-flex align-items-center text-decoration-none">-->
-<!--                          <span class="{% if forloop.counter == 2 %} fw-bold {% endif %} text-success fs-6">-->
-<!--                            <i class="fa-solid fa-plus fa-2xs"></i>2</span>-->
-<!--                        </a>-->
-
                         <a href="#!" class="d-flex align-items-center me-4">
                           <div class="mb-0">Ответить</div>
                         </a>

@@ -179,6 +179,12 @@ class Post(models.Model):
                                      author_id=user.pk,
                                      content_type_id=get_cti('post')).exists()
 
+    def has_user_bookmark(self, user):
+        if user.is_authenticated:
+            return self.bookmark.filter(object_id=self.pk,
+                                        author_id=user.pk,
+                                        content_type_id=get_cti('post')).exists()
+
         return False
 
     class Meta:
