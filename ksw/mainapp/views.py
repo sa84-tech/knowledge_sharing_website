@@ -8,7 +8,7 @@ from django.core.paginator import Paginator
 from authapp.models import WriterUserProfile
 from .forms import CommentForm, LikeForm
 from .models import Post
-from .services.queries import toggle_like, get_user_rating, create_comment, increase_total_views
+from .services.queries import toggle_like, get_user_rating, create_comment, increase_total_views, toggle_bookmark
 
 POSTS_PER_PAGE = 5
 
@@ -71,5 +71,20 @@ def add_like(request):
             toggle_like(request.user.pk, post.pk, form_data['target_type'])
 
             return JsonResponse({'total_likes': post.total_likes, 'user_rating': get_user_rating(post.author)})
+
+    return JsonResponse({'status': 'false', 'message': 'Bad request'}, status=400)
+
+
+def add_bookmark(request):
+
+    if request.user.is_authenticated:
+        form = LikeForm(json.loads(request.body))
+
+        if form.is_valid():
+            form_data = form.cleaned_data
+            post = get_object_or_404(Post, pk=form_data['target_id'])
+            toggle_bookmark(request.user.pk, post.pk, form_data['target_type'])
+
+            return JsonResponse({'total_bookmarks': post.total_bookmarks, 'user_rating': get_user_rating(post.author)})
 
     return JsonResponse({'status': 'false', 'message': 'Bad request'}, status=400)

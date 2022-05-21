@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 
-from mainapp.views import index_page, post_page, add_comment, add_like
+from mainapp.views import index_page, post_page, add_comment, add_like, add_bookmark
 
 
 urlpatterns = [
@@ -28,6 +28,7 @@ urlpatterns = [
     path('post/<int:pk>', post_page, name='post_page'),
     path('comment/<str:target_type>/<int:pk>', add_comment, name='comment'),
     path('like/', add_like, name='like'),
+    path('bookmark/', add_bookmark, name='bookmark'),
     path('ckeditor/', include('ckeditor_uploader.urls')),
     path('auth/', include('authapp.urls', namespace='auth'), name='auth'),
     path('account/', include('accountapp.urls', namespace='account'), name='account'),

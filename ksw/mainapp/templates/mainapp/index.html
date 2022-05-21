@@ -50,7 +50,7 @@
                     <span class="me-3"><i class="me-1 fa-solid text-primary opacity-50 fa-eye"></i> {{ post.total_views }}</span>
                     <span class="me-3"><i class="me-1 fa-regular text-primary opacity-50 fa-comment"></i> {{ post.total_comments }}</span>
                     <span class="me-3"><i class="text-primary opacity-50 fa-thumbs-up {% check_like post user %}"></i> {{ post.total_likes }}</span>
-                    <span class="me-3"><i class="me-1 fa-regular fa-bookmark text-primary opacity-50"></i> {{ post.total_bookmarks }}</span>
+                    <span class="me-3"><i class="me-1 fa-bookmark {% check_bookmark post user %} text-primary opacity-50"></i> {{ post.total_bookmarks }}</span>
                 </div>
                 </div>
                 <div class="col-auto d-none d-lg-block p-3">

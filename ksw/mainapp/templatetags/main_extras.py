@@ -13,5 +13,12 @@ def check_like(post, user):
 
 
 @register.simple_tag
+def check_bookmark(post, user):
+    if post.has_user_bookmark(user):
+        return 'fa-solid'
+    return 'fa-regular'
+
+
+@register.simple_tag
 def get_avatar(user):
     return user.avatar.url if user.avatar else f'{MEDIA_URL}seeder/users/no_avatar.jpg'
