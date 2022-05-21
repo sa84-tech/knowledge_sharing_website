@@ -97,8 +97,7 @@
     </div>
 </div>
 
-
-<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+<div class="position-absolute bottom-0 end-0 p-5" style="z-index: 11">
     <div class="toast align-items-center text-white bg-danger border-0 {% if 'success' in page %} showSuccess {% endif %}"
          data-bs-animation="true" data-bs-autohide="true" data-bs-delay="5000"
          role="alert" aria-live="assertive" aria-atomic="true">
@@ -117,9 +116,8 @@
     </div>
 </div>
 
-
 {% endblock %}
 
 {% block script %}
-<script src="{% static 'js/settings.js' %}"></script>
+    <script src="{% static 'js/settings.js' %}"></script>
 {% endblock %}

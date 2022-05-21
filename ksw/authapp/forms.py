@@ -1,4 +1,5 @@
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, UserChangeForm, PasswordChangeForm
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, UserChangeForm, PasswordChangeForm, \
+    PasswordResetForm
 from django_countries.fields import CountryField
 
 from .models import WriterUser, WriterUserProfile
@@ -84,6 +85,14 @@ class PassChangeForm(PasswordChangeForm):
 
     def __init__(self, *args, **kwargs):
         super(PassChangeForm, self).__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs['class'] = 'form-control'
+            field.widget.attrs['placeholder'] = field.label
+
+
+class PassResetForm(PasswordResetForm):
+    def __init__(self, *args, **kwargs):
+        super(PassResetForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'
             field.widget.attrs['placeholder'] = field.label
