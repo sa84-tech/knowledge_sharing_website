@@ -1,6 +1,6 @@
 {% load static %}
 {% load main_extras %}
-
+{% load filter_extras %}
 
 <div id="pills-posts" class="tab-pane fade show active">
     {% for post in posts %}
@@ -15,7 +15,7 @@
                         {{ post.author.first_name|capfirst }} {{ post.author.last_name|capfirst }}
                     </a>
                 <span class="date_info text-secondary me-5">{{ post.created }}</span>
-                <span class="py-0 px-2 text-primary fw-bold me-2 border bg-light">{{ post.status|capfirst }}</span>
+                <span class="py-0 px-2 text-primary fw-bold me-2 border bg-light">{{ post.status|filter_post_status }}</span>
             </div>
 
             <h3 class="mb-1">
