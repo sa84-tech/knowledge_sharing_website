@@ -1,5 +1,7 @@
 import json
 
+import calendar
+
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
@@ -88,3 +90,70 @@ def add_bookmark(request):
             return JsonResponse({'total_bookmarks': post.total_bookmarks, 'user_rating': get_user_rating(post.author)})
 
     return JsonResponse({'status': 'false', 'message': 'Bad request'}, status=400)
+
+
+def archive_filter(request, pk):
+    if pk == 1:
+        archive_year = '2022'
+        archive_month = '04'
+
+    elif pk == 2:
+        archive_year = '2022'
+        archive_month = '03'
+
+    elif pk == 3:
+        archive_year = '2022'
+        archive_month = '02'
+
+    elif pk == 4:
+        archive_year = '2022'
+        archive_month = '01'
+
+    elif pk == 5:
+        archive_year = '2021'
+        archive_month = '12'
+
+    elif pk == 6:
+        archive_year = '2021'
+        archive_month = '11'
+
+    elif pk == 7:
+        archive_year = '2021'
+        archive_month = '10'
+
+    elif pk == 8:
+        archive_year = '2021'
+        archive_month = '09'
+
+    elif pk == 9:
+        archive_year = '2021'
+        archive_month = '08'
+
+    elif pk == 10:
+        archive_year = '2021'
+        archive_month = '07'
+
+    elif pk == 11:
+        archive_year = '2021'
+        archive_month = '06'
+
+    elif pk == 12:
+        archive_year = '2021'
+        archive_month = '05'
+
+    posts = Post.objects.filter(status__name='published', created__year=archive_year, created__month=archive_month)
+
+    archive_month = calendar.month_name[int(archive_month)]
+    title = archive_month + " " + archive_year
+
+    paginator = Paginator(posts, POSTS_PER_PAGE)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    context = {
+        'title': title,
+        'posts': posts,
+        'page_obj': page_obj,
+    }
+
+    return render(request, "mainapp/index.html", context)

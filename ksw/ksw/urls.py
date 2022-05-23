@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 
-from mainapp.views import index_page, post_page, add_comment, add_like, add_bookmark
+from mainapp.views import index_page, post_page, add_comment, add_like, add_bookmark, archive_filter
 
 
 urlpatterns = [
@@ -33,4 +33,5 @@ urlpatterns = [
     path('auth/', include('authapp.urls', namespace='auth'), name='auth'),
     path('account/', include('accountapp.urls', namespace='account'), name='account'),
     path('', include('social_django.urls', namespace='social')),
+    path('index/archive/<int:pk>', archive_filter, name='archive_filter'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
