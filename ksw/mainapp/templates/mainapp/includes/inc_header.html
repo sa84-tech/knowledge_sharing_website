@@ -13,9 +13,10 @@
           KSW
         </a>
 
-        <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-5">
+        <form role="search" method="get" id="searchform" action="{% url 'search' %}" class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-5">
           <div class="input-group">
             <input
+              name="q"
               type="search"
               class="form-control form-control-dark border-end-0"
               placeholder="Поиск..."
