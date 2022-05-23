@@ -8,7 +8,7 @@ from django.db import IntegrityError
 import environ
 
 from ksw.settings import BASE_DIR
-from mainapp.models import StatusArticle, Category, Post, Comment
+from mainapp.models import StatusArticle, Category, Post, Comment, View, Like
 from authapp.models import WriterUser
 from accountapp.models import Bookmark
 
@@ -42,44 +42,63 @@ class Command(BaseCommand):
 
             if data.get('statuses'):
                 for status in data['statuses']:
-                    self.save(*StatusArticle.objects.get_or_create(**status))
+                    self.save_object(*StatusArticle.objects.get_or_create(**status))
 
             if data.get('categories'):
                 for category in data['categories']:
-                    self.save(*Category.objects.get_or_create(**category))
+                    self.save_object(*Category.objects.get_or_create(**category))
 
             if data.get('posts'):
                 for post in data['posts']:
                     post['category'] = Category.objects.get(pk=post['category'])
                     post['status'] = StatusArticle.objects.get(pk=post['status'])
                     post['author'] = WriterUser.objects.get(username=post['author'])
-                    self.save(*Post.objects.get_or_create(**post))
+                    self.save_object(*Post.objects.get_or_create(**post))
 
             if data.get('comments'):
                 for comment in data['comments']:
                     comment['content_type'] = ContentType.objects.get(model=comment['content_type_name'])
                     del comment['content_type_name']
-                    self.save(*Comment.objects.get_or_create(**comment))
+                    self.save_object(*Comment.objects.get_or_create(**comment))
 
-            # Create bookmarks for random posts and comments
+            # Create views, bookmarks and likes for random posts and comments
+            bookmarks = []
+            likes = []
+            views = []
             for user in WriterUser.objects.all():
                 target_types = [Post, Comment]
                 for target_type in target_types:
-                    content_type = ContentType.objects.get_for_models(target_type)[target_type]
+                    content_type = ContentType.objects.get_for_model(target_type)
                     bookmark = {'author': user, 'content_type': content_type}
+                    like = {'author': user, 'content_type': content_type}
+                    view = {'author': user, 'content_type': content_type}
                     for obj in target_type.objects.all():
                         if bool(getrandbits(1)):
-                            continue
-                        bookmark['object_id'] = obj.id
-                        self.save(*Bookmark.objects.get_or_create(**bookmark))
+                            bookmark['object_id'] = obj.id
+                            bookmarks.append(Bookmark(**bookmark))
+                        if bool(getrandbits(1)):
+                            like['object_id'] = obj.id
+                            likes.append(Like(**like))
+                        if target_type == Post and bool(getrandbits(1)):
+                            view['object_id'] = obj.id
+                            views.append(View(**view))
+
+            for obj_list in views, bookmarks, likes:
+                self.bulk_save_objects(obj_list)
+                del obj_list
 
         except IOError:
             print(str(IOError))
             return
 
-    def save(self, obj, is_created=None):
+    def save_object(self, obj: object, is_created: bool = None):
         if is_created:
             obj.save()
             print(f'** New {type(obj).__name__} with id {obj.id} created **')
         else:
             print(f'** {type(obj).__name__} with id {obj.id} already exists **')
+
+    def bulk_save_objects(self, objects: list):
+        obj_model = type(objects[0])
+        obj_model.objects.bulk_create(objects, ignore_conflicts=True)
+        print(f'{len(objects)} objects for model {obj_model.__name__} created.')

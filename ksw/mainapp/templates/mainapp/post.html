@@ -29,8 +29,8 @@
               <hr class="border-1 border-top border-secondary">
             </div>
             <div class="text-muted">
-              <span class="me-3"><i class="me-1 fa-solid fa-eye text-primary opacity-50"></i> {{ post.total_views }}</span>
-              <span class="me-3"><a href="#add_comment" class="text-decoration-none"><i class="me-1 fa-regular fa-comment opacity-50"></i></a> {{ post.total_comments }}</span>
+              <span class="me-3"><i class="me-1 text-primary opacity-50 fa-eye {% check_view post user %}"></i> {{ post.total_views }}</span>
+              <span class="me-3"><a href="#add_comment" class="text-decoration-none"><i class="me-1 opacity-50 fa-comment {% check_comment post user %}"></i></a> {{ post.total_comments }}</span>
               <span class="me-3 post_like" style="cursor: pointer;" data-csrf="{{ csrf_token }}"><i class="me-1 fa-thumbs-up opacity-50 text-primary {% check_like post user %}" style="pointer-events: none;"></i> <span>{{ post.total_likes }}</span></span>
               <span class="me-3 post_bookmark" style="cursor: pointer;" data-csrf="{{ csrf_token }}"><i class="me-1 fa-bookmark text-primary opacity-50 {% check_bookmark post user %}" style="pointer-events: none;"></i>  <span>{{ post.total_bookmarks }}</span></span>
             </div>

@@ -5,7 +5,7 @@ from django.conf import settings
 from django.shortcuts import reverse
 from ckeditor_uploader.fields import RichTextUploadingField
 
-from .services.helpers import get_cti
+# from .services.helpers import get_cti
 from .services.images import crop_rect
 from accountapp.models import Bookmark
 
@@ -76,8 +76,29 @@ class Like(models.Model):
     updated = models.DateTimeField(auto_now=True)
 
     class Meta:
+        unique_together = ('content_type', 'object_id', 'author')
         verbose_name = 'Лайк'
         verbose_name_plural = 'Лайки'
+
+
+class View(models.Model):
+    content_type = models.ForeignKey(
+        ContentType,
+        on_delete=models.CASCADE,
+    )
+
+    object_id = models.PositiveIntegerField()
+    content_object = GenericForeignKey('content_type', 'object_id')
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+    )
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = ('content_type', 'object_id', 'author')
+        verbose_name = 'Количество Просмотров'
 
 
 class Comment(models.Model):
@@ -97,8 +118,32 @@ class Comment(models.Model):
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
     )
+    like = GenericRelation(Like)
+    bookmark = GenericRelation(Bookmark)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+
+    def _get_content_obj(self, content_obj_name: str):
+        content_objects = {
+            'like': self.like,
+            'bookmark': self.bookmark,
+        }
+
+        if content_objects[content_obj_name]:
+            return content_objects[content_obj_name]
+        return None
+
+    def has_relation_with(self, user, content_obj_name: str) -> bool:
+        """ Проверяет, есть ли у 'user' один из 'content_obj' для статьи
+        :parm content_obj_name: view, like, comment, bookmark
+        """
+        content_obj = self._get_content_obj(content_obj_name)
+        if user.is_authenticated and content_obj:
+            related_objects = content_obj.filter(object_id=self.pk,
+                                                 author_id=user.pk,
+                                                 content_type=ContentType.objects.get_for_model(self))
+            return related_objects.exists()
+        return False
 
     class Meta:
         verbose_name = 'Коментарий'
@@ -124,11 +169,6 @@ class Post(models.Model):
         null=True,
     )
 
-    total_views = models.PositiveIntegerField(
-        verbose_name='количество просмотров',
-        default=0
-    )
-
     category = models.ForeignKey(
         Category,
         on_delete=models.CASCADE,
@@ -145,9 +185,10 @@ class Post(models.Model):
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
     )
-    likes = GenericRelation(Like)
+    like = GenericRelation(Like)
     comment = GenericRelation(Comment)
     bookmark = GenericRelation(Bookmark)
+    view = GenericRelation(View)
     image = models.ImageField(upload_to='uploads/%Y/%m/%d', blank=False)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -163,7 +204,7 @@ class Post(models.Model):
 
     @property
     def total_likes(self):
-        return self.likes.count()
+        return self.like.count()
 
     @property
     def total_comments(self):
@@ -173,18 +214,32 @@ class Post(models.Model):
     def total_bookmarks(self):
         return self.bookmark.count()
 
-    def is_liked_by(self, user):
-        if user.is_authenticated:
-            return self.likes.filter(object_id=self.pk,
-                                     author_id=user.pk,
-                                     content_type_id=get_cti('post')).exists()
+    @property
+    def total_views(self):
+        return self.view.count()
 
-    def has_user_bookmark(self, user):
-        if user.is_authenticated:
-            return self.bookmark.filter(object_id=self.pk,
-                                        author_id=user.pk,
-                                        content_type_id=get_cti('post')).exists()
+    def _get_content_obj(self, content_obj_name: str):
+        content_objects = {
+            'view': self.view,
+            'comment': self.comment,
+            'like': self.like,
+            'bookmark': self.bookmark,
+        }
 
+        if content_objects[content_obj_name]:
+            return content_objects[content_obj_name]
+        return None
+
+    def has_relation_with(self, user, content_obj_name: str) -> bool:
+        """ Проверяет, есть ли у 'user' один из 'content_obj' для статьи
+        :parm content_obj_name: view, like, comment, bookmark
+        """
+        content_obj = self._get_content_obj(content_obj_name)
+        if user.is_authenticated and content_obj:
+            related_objects = content_obj.filter(object_id=self.pk,
+                                                 author_id=user.pk,
+                                                 content_type=ContentType.objects.get_for_model(self))
+            return related_objects.exists()
         return False
 
     class Meta:

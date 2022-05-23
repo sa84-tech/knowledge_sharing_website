@@ -8,3 +8,8 @@ class CommentForm(forms.Form):
 class LikeForm(forms.Form):
     target_type = forms.CharField()
     target_id = forms.IntegerField()
+
+
+class ContentForm(forms.Form):
+    target_type = forms.CharField()
+    target_id = forms.IntegerField()

@@ -6,9 +6,9 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator
 
 from authapp.models import WriterUserProfile
-from .forms import CommentForm, LikeForm
+from .forms import CommentForm, LikeForm, ContentForm
 from .models import Post
-from .services.queries import toggle_like, get_user_rating, create_comment, increase_total_views, toggle_bookmark
+from .services.queries import toggle_like, get_user_rating, create_comment, toggle_bookmark, create_post_view
 
 POSTS_PER_PAGE = 5
 
@@ -35,7 +35,7 @@ def post_page(request, pk):
 
     post = get_object_or_404(Post, pk=pk)
     author_info = get_object_or_404(WriterUserProfile, user=post.author)
-    increase_total_views(post)
+    create_post_view(post, request.user)
 
     context = {
         'post': post,
@@ -88,3 +88,18 @@ def add_bookmark(request):
             return JsonResponse({'total_bookmarks': post.total_bookmarks, 'user_rating': get_user_rating(post.author)})
 
     return JsonResponse({'status': 'false', 'message': 'Bad request'}, status=400)
+
+
+# def add_view(request):
+#     if request.is_ajax() and request.user.is_authenticated:
+#         form = ContentForm(json.loads(request.body))
+#
+#         if form.is_valid():
+#             form_data = form.cleaned_data
+#             target_object = get_object_or_404(Post, pk=form_data['target_id'])
+#             create_post_view(request.user.pk, target_object.pk, form_data['target_type'])
+#
+#             return JsonResponse({'total_bookmarks': target_object.total_bookmarks,
+#                                  'user_rating': get_user_rating(target_object.author)})
+#
+#     return JsonResponse({'status': 'false', 'message': 'Bad request'}, status=400)

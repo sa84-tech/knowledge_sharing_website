@@ -20,5 +20,6 @@ class Bookmark(models.Model):
     updated = models.DateTimeField(auto_now=True)
 
     class Meta:
+        unique_together = ('content_type', 'object_id', 'author')
         verbose_name = 'Закладка'
         verbose_name_plural = 'Закладки'
