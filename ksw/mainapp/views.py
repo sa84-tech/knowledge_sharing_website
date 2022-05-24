@@ -93,6 +93,10 @@ def add_bookmark(request):
 
 
 def archive_filter(request, pk):
+
+    ''' Принимает число pk с кнопок блока архива на боковой панели сайта,
+    возвращает список всех статей, отсортированных по дате создания, в диапазоне месяца и выбранного года'''
+
     if pk == 1:
         archive_year = '2022'
         archive_month = '04'
@@ -137,14 +141,16 @@ def archive_filter(request, pk):
         archive_year = '2021'
         archive_month = '06'
 
-    elif pk == 12:
+    else:
         archive_year = '2021'
         archive_month = '05'
 
-    posts = Post.objects.filter(status__name='published', created__year=archive_year, created__month=archive_month)
+    posts = Post.objects.filter(status__name='published',
+                                created__year=archive_year,
+                                created__month=archive_month)  # фильтрация по дате и статусу публикации
 
-    archive_month = calendar.month_name[int(archive_month)]
-    title = archive_month + " " + archive_year
+    archive_month = calendar.month_name[int(archive_month)]  # переводим номер месяца в его название
+    title = archive_month + " " + archive_year  # составляем название месяца и год для названия страницы
 
     paginator = Paginator(posts, POSTS_PER_PAGE)
     page_number = request.GET.get('page')
