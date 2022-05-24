@@ -38,10 +38,10 @@
             </div>
 
             <div class="d-flex flex-grow-1 align-items-end text-small">
-                <span class="me-3 text-muted"><i class="me-1 fa-solid text-primary opacity-75 fa-eye"></i> {{ bookmark.content_object.total_views }}</span>
-                <span class="me-3 text-muted"><i class="me-1 fa-regular text-primary opacity-75 fa-comment"></i> {{ bookmark.content_object.total_comments }}</span>
-                <span class="me-3 text-muted"><i class="me-1 fa-regular text-primary opacity-75 fa-thumbs-up"></i> {{ bookmark.content_object.total_likes }} </span>
-                <span class="me-3 text-muted"><i class="me-1 fa-regular fa-bookmark text-primary opacity-75"></i> {{ bookmark.content_object.total_bookmarks }}</span>
+                <span class="me-3 text-muted"><i class="me-1 text-primary opacity-75 fa-eye {% check_view bookmark.content_object user %}"></i> {{ bookmark.content_object.total_views }}</span>
+                <span class="me-3 text-muted"><i class="me-1 text-primary opacity-75 fa-comment {% check_comment bookmark.content_object user %}"></i> {{ bookmark.content_object.total_comments }}</span>
+                <span class="me-3 text-muted"><i class="me-1 text-primary opacity-75 fa-thumbs-up {% check_like bookmark.content_object user %}"></i> {{ bookmark.content_object.total_likes }} </span>
+                <span class="me-3 text-muted"><i class="me-1 text-primary opacity-75 fa-bookmark {% check_bookmark bookmark.content_object user %}"></i> {{ bookmark.content_object.total_bookmarks }}</span>
             </div>
 
         </div>
@@ -93,8 +93,8 @@
             </div>
 
             <div class="d-flex flex-grow-1 align-items-end text-small">
-                <span class="me-3 text-muted"><i class="fa-regular text-primary opacity-75 fa-thumbs-up"></i> 12 </span>
-                <span class="me-3 text-muted"><i class="me-1 fa-regular fa-bookmark text-primary opacity-75"></i> 4</span>
+                <span class="me-3 text-muted"><i class="me-1 text-primary opacity-75 fa-thumbs-up {% check_like bookmark.content_object user %}"></i> {{ bookmark.content_object.total_likes }}</span>
+                <span class="me-3 text-muted"><i class="me-1 text-primary opacity-75 fa-bookmark {% check_bookmark bookmark.content_object user %}"></i> {{ bookmark.content_object.total_bookmarks }}</span>
             </div>
         </div>
     </div>

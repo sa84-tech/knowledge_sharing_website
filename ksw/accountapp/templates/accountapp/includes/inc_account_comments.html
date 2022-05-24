@@ -37,8 +37,8 @@
             </div>
 
             <div class="d-flex flex-grow-1 align-items-end text-small">
-                <span class="me-3 text-muted"><i class="me-1 fa-regular text-primary opacity-75 fa-thumbs-up"></i> {{ comment_item.total_likes }}</span>
-                <span class="me-3 text-muted"><i class="me-1 fa-regular fa-bookmark text-primary opacity-75"></i> {{ comment_item.total_bookmarks }}</span>
+                <span class="me-3 text-muted"><i class="me-1 text-primary opacity-75 fa-thumbs-up {% check_like comment_item user %}"></i> {{ comment_item.total_likes }}</span>
+                <span class="me-3 text-muted"><i class="me-1 text-primary opacity-75 fa-bookmark {% check_bookmark comment_item user %}"></i> {{ comment_item.total_bookmarks }}</span>
             </div>
         </div>
     </div>

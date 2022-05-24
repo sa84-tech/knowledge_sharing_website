@@ -4,7 +4,17 @@
 
 {% block content %}
 
-  <div class="container content_wrapper" data-post="{{post.pk}}">
+<style>
+  span.point-events-none {
+    cursor: pointer;
+  }
+  .point-events-none > i {
+    pointer-events: none;
+  }
+
+</style>
+
+  <div class="container content_wrapper" data-post="{{post.pk}}" data-csrf="{{ csrf_token }}">
     <div class="row pt-4">
       <div class="col-md-9">
         <div class="row g-0 bg-white overflow-hidden flex-md-row mb-4 h-md-250 position-relative shadow">
@@ -29,10 +39,20 @@
               <hr class="border-1 border-top border-secondary">
             </div>
             <div class="text-muted">
-              <span class="me-3"><i class="me-1 fa-solid fa-eye text-primary opacity-50"></i> {{ post.total_views }}</span>
-              <span class="me-3"><a href="#add_comment" class="text-decoration-none"><i class="me-1 fa-regular fa-comment opacity-50"></i></a> {{ post.total_comments }}</span>
-              <span class="me-3 post_like" style="cursor: pointer;" data-csrf="{{ csrf_token }}"><i class="me-1 fa-thumbs-up opacity-50 text-primary {% check_like post user %}" style="pointer-events: none;"></i> <span>{{ post.total_likes }}</span></span>
-              <span class="me-3 post_bookmark" style="cursor: pointer;" data-csrf="{{ csrf_token }}"><i class="me-1 fa-bookmark text-primary opacity-50 {% check_bookmark post user %}" style="pointer-events: none;"></i>  <span>{{ post.total_bookmarks }}</span></span>
+              <span class="me-3"><i class="me-1 text-primary opacity-50 fa-eye {% check_view post user %}"></i> {{ post.total_views }}</span>
+              <span class="me-3"><a href="#add_comment" class="text-decoration-none"><i class="me-1 opacity-50 fa-comment {% check_comment post user %}"></i></a> {{ post.total_comments }}</span>
+              <span
+                class="me-3 point-events-none addLike"
+                data-target="{{ post.id }}"
+                data-type="post"
+              >
+                <i class="me-1 fa-thumbs-up opacity-50 text-primary {% check_like post user %}"></i> <span>{{ post.total_likes }}</span></span>
+              <span
+                class="me-3 point-events-none addBookmark"
+                data-target="{{ post.id }}"
+                data-type="post"
+              >
+                <i class="me-1 fa-bookmark text-primary opacity-50 {% check_bookmark post user %}"></i>  <span>{{ post.total_bookmarks }}</span></span>
             </div>
           </div>
         </div>
@@ -105,14 +125,26 @@
                         <span class="date_info">{{ comment_item.created }}</span>
                       </a>
 
-                      <div class="mt-1 mb-2">
+                      <div class="mt-1 mb-3">
                         {{ comment_item.comment }}
                       </div>
 
-                      <div class="small d-flex justify-content-start">
-                        <a href="#!" class="d-flex align-items-center me-4">
-                          <div class="mb-0">Ответить</div>
-                        </a>
+                      <div class="small d-flex justify-content-start mb-3 ">
+                        <a href="#!" class="d-flex align-items-center me-4">Ответить</a>
+                        <span
+                          class="ms-1 me-3 text-muted point-events-none addLike"
+                          data-target="{{ comment_item.id }}"
+                          data-type="comment"
+                        >
+                          <i class="me-1 text-primary opacity-75 fa-thumbs-up {% check_like comment_item user %}" data-target="{{ comment_item.id }}"></i> <span>{{ comment_item.total_likes }}</span>
+                        </span>
+                        <span
+                          class="me-3 text-muted point-events-none addBookmark"
+                          data-target="{{ comment_item.id }}"
+                          data-type="comment"
+                        >
+                          <i class="me-1 text-primary opacity-75 fa-bookmark {% check_bookmark comment_item user %}" data-target="{{ comment_item.id }}"></i> <span>{{ comment_item.total_bookmarks }}</span>
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -140,7 +172,6 @@
         </div>
 
       </div>
-
 
       {% include 'mainapp/includes/inc_sidebar.html' %}
     </div>

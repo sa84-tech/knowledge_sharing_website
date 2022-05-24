@@ -82,7 +82,7 @@ class WriterUserProfile(models.Model):
     def rating(self):
         idx = 0
         for post in Post.objects.filter(author=self.user, status__name='published'):
-            idx += post.likes.count() + post.comment.count()
+            idx += post.like.count() + post.comment.count()
         return idx
 
     @classmethod

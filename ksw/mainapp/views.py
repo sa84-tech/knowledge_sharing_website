@@ -7,9 +7,9 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator
 
 from authapp.models import WriterUserProfile
-from .forms import CommentForm, LikeForm
+from .forms import CommentForm, ContentForm
 from .models import Post
-from .services.queries import toggle_like, get_user_rating, create_comment, increase_total_views, toggle_bookmark
+from .services.queries import get_user_rating, create_comment, create_post_view, toggle_content_object
 
 POSTS_PER_PAGE = 5
 
@@ -36,7 +36,7 @@ def post_page(request, pk):
 
     post = get_object_or_404(Post, pk=pk)
     author_info = get_object_or_404(WriterUserProfile, user=post.author)
-    increase_total_views(post)
+    create_post_view(post, request.user)
 
     context = {
         'post': post,
@@ -61,32 +61,22 @@ def add_comment(request, target_type, pk):
     return redirect(f'/post/{post.pk}#add_comment')
 
 
-def add_like(request):
+def content_btn_handler(request):
+    if request.is_ajax():
+        if request.user.is_authenticated:
+            form = ContentForm(json.loads(request.body))
 
-    if request.user.is_authenticated:
-        form = LikeForm(json.loads(request.body))
-
-        if form.is_valid():
-            form_data = form.cleaned_data
-            post = get_object_or_404(Post, pk=form_data['target_id'])
-            toggle_like(request.user.pk, post.pk, form_data['target_type'])
-
-            return JsonResponse({'total_likes': post.total_likes, 'user_rating': get_user_rating(post.author)})
-
-    return JsonResponse({'status': 'false', 'message': 'Bad request'}, status=400)
-
-
-def add_bookmark(request):
-
-    if request.user.is_authenticated:
-        form = LikeForm(json.loads(request.body))
-
-        if form.is_valid():
-            form_data = form.cleaned_data
-            post = get_object_or_404(Post, pk=form_data['target_id'])
-            toggle_bookmark(request.user.pk, post.pk, form_data['target_type'])
-
-            return JsonResponse({'total_bookmarks': post.total_bookmarks, 'user_rating': get_user_rating(post.author)})
+            if form.is_valid():
+                form_data = form.cleaned_data
+                print('form_data', form_data)
+                post = get_object_or_404(Post, pk=form_data['post_id'])
+                counter_value = toggle_content_object(request.user, form_data['target_type'],
+                                                      form_data['target_id'], form_data['btn_type'])
+                if counter_value:
+                    return JsonResponse({'counter_value': counter_value,
+                                         'user_rating': get_user_rating(post.author)})
+        else:
+            return JsonResponse({'status': 'false', 'message': 'Unauthorized'}, status=401)
 
     return JsonResponse({'status': 'false', 'message': 'Bad request'}, status=400)
 
