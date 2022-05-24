@@ -1,6 +1,7 @@
 import json
 
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator
@@ -88,3 +89,16 @@ def add_bookmark(request):
             return JsonResponse({'total_bookmarks': post.total_bookmarks, 'user_rating': get_user_rating(post.author)})
 
     return JsonResponse({'status': 'false', 'message': 'Bad request'}, status=400)
+
+
+
+def search(request):
+    q = request.GET.get('q')
+    error_msg = ''
+
+    if not q:
+        error_msg = "Пожалуйста, введите ключевое слово"
+        return render(request, 'mainapp/search.html', {'error_msg': error_msg})
+
+    post_list = Post.objects.filter(Q(topic__icontains=q) | Q(article__icontains=q))
+    return render(request, 'mainapp/search.html', {'error_msg': error_msg, 'post_list': post_list})
