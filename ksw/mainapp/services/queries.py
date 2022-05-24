@@ -27,30 +27,22 @@ def get_user_rating(user):
     return user_profile.rating
 
 
-def toggle_like(user_id, target_id, target_type):
+def toggle_content_object(user, target_type: str, target_id: str, model_name: str) -> int:
+    """Создает новый объект (тип Like/Bookmark) для статьи или комментария,
+       если объект уже существует, удаляет его.
+    """
+    models = {'like': Like, 'bookmark': Bookmark}
 
-    like = {
-        'object_id': target_id,
-        'author_id': user_id,
-        'content_type': get_object_or_404(ContentType, model=target_type)
-    }
-
-    new_like, is_created = Like.objects.get_or_create(**like)
-
-    return new_like.save() if is_created else new_like.delete()
-
-
-def toggle_bookmark(user_id, target_id, target_type):
-
-    bookmark = {
-        'object_id': target_id,
-        'author_id': user_id,
-        'content_type': get_object_or_404(ContentType, model=target_type)
-    }
-
-    new_bookmark, is_created = Bookmark.objects.get_or_create(**bookmark)
-
-    return new_bookmark.save() if is_created else new_bookmark.delete()
+    target_ct = get_object_or_404(ContentType, model=target_type)
+    target_obj = get_object_or_404(target_ct.model_class(), pk=target_id)
+    new_obj, is_created = models[model_name].objects.get_or_create(object_id=target_obj.pk,
+                                                                   author=user,
+                                                                   content_type=target_ct)
+    if is_created:
+        new_obj.save()
+    else:
+        new_obj.delete()
+    return target_obj.total_bookmarks if model_name == 'bookmark' else target_obj.total_likes
 
 
 def create_post_view(post, user) -> None:

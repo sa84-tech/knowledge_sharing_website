@@ -5,9 +5,8 @@ from django.conf import settings
 from django.shortcuts import reverse
 from ckeditor_uploader.fields import RichTextUploadingField
 
-# from .services.helpers import get_cti
-from .services.images import crop_rect
 from accountapp.models import Bookmark
+from .services.images import crop_rect
 
 
 WIDTH_TO_HEIGHT_RATIO = 0.72
@@ -122,6 +121,14 @@ class Comment(models.Model):
     bookmark = GenericRelation(Bookmark)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+
+    @property
+    def total_likes(self):
+        return self.like.count()
+
+    @property
+    def total_bookmarks(self):
+        return self.bookmark.count()
 
     def _get_content_obj(self, content_obj_name: str):
         content_objects = {

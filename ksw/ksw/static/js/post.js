@@ -5,80 +5,74 @@ const settings = {
     commentInput: '#add_comment',
     rating: '.rating',
     commentCancelBtn: '.cancel',
-    postLike: '.post_like',
-    postBookmark: '.post_bookmark',
+    likeBtnClass: 'likeBtn',
+    bookmarkBtnClass: 'bookmarkBtn'
 }
 
 const post = {
     contentBlock: null,
     commentInput: null,
     commentCancelBtn: null,
-    postLike: null,
-    postBookmark: null,
     rating: null,
 
-    init({contentBlock, commentInput, commentCancelBtn, postLike, postBookmark, rating}) {
+    init({contentBlock, commentInput, commentCancelBtn, rating}) {
         this.contentBlock = document.querySelector(contentBlock)
         this.commentInput = document.querySelector(commentInput)
         this.commentCancelBtn = document.querySelector(commentCancelBtn)
-        this.postLike = document.querySelector(postLike)
-        this.postBookmark = document.querySelector(postBookmark)
         this.rating = document.querySelector(rating)
-        this.contentBlock.addEventListener('click', this.onLikeClicked.bind(this));
+        this.contentBlock.addEventListener('click', this.onContentBlockClicked.bind(this));
     },
-
 
     addBookmark(postPk) {
         console.log('ADD BOOKMARK', postPk)
     },
 
-    onLikeClicked(e) {
-
+    onContentBlockClicked(e) {
         if (e.target == this.commentCancelBtn) {
-            console.log('comment', e.target)
             this.commentInput.value = '';
         }
-        else if (e.target == this.postLike) {
-            console.log('like', e.target)
-            const post_pk = this.contentBlock.dataset.post;
-            this.addLike(e.target, post_pk);
+        else if (e.target.classList.contains('addLike')) {
+            const target_id = e.target.dataset.target;
+            const target_type = e.target.dataset.type;
+            this.addLike(e.target, target_type, target_id);
         }
-        else if (e.target == this.postBookmark) {
-            console.log('bookmark', e.target)
-            const post_pk = this.contentBlock.dataset.post;
-            this.addBookmark(e.target, post_pk);
+        else if (e.target.classList.contains('addBookmark')) {
+            const target_id = e.target.dataset.target;
+            const target_type = e.target.dataset.type;
+            this.addBookmark(e.target, target_type, target_id);
         }
     },
 
-    async addLike(clickedBtn, postPk) {
+    async addLike(clickedBtn, target_type, target_id) {
+        const postId = this.contentBlock.dataset.post;
         const params = {
-            csrf: clickedBtn.dataset.csrf,
-            body: {target_type: 'post', target_id: postPk},
+            csrf: this.contentBlock.dataset.csrf,
+            body: {target_type: target_type, target_id: target_id, post_id: postId, btn_type: 'like'},
         }
-        const data = await this.fetchData('/like/', params, 'POST');
+        const data = await this.fetchData('/icon-btn/', params, 'POST');
 
         if (data) {
-            const {total_likes, user_rating} = data;
-            this.postLike.lastChild.innerText = total_likes;
-            this.postLike.firstChild.classList.toggle('fa-regular');
-            this.postLike.firstChild.classList.toggle('fa-solid');
+            const {counter_value, user_rating} = data;
+            clickedBtn.lastElementChild.innerText = counter_value;
+            clickedBtn.firstElementChild.classList.toggle('fa-regular');
+            clickedBtn.firstElementChild.classList.toggle('fa-solid');
             this.rating.innerText = user_rating;
         }
     },
 
-    async addBookmark(clickedBtn, postPk) {
-
+    async addBookmark(clickedBtn, target_type, target_id) {
+        const postId = this.contentBlock.dataset.post;
         const params = {
-            csrf: clickedBtn.dataset.csrf,
-            body: {target_type: 'post', target_id: postPk},
+            csrf: this.contentBlock.dataset.csrf,
+            body: {target_type: target_type, target_id: target_id, post_id: postId, btn_type: 'bookmark'},
         }
-        const data = await this.fetchData('/bookmark/', params, 'POST');
+        const data = await this.fetchData('/icon-btn/', params, 'POST');
 
         if (data) {
-            const {total_bookmarks, user_rating} = data;
-            this.postBookmark.lastChild.innerText = total_bookmarks;
-            this.postBookmark.firstChild.classList.toggle('fa-regular');
-            this.postBookmark.firstChild.classList.toggle('fa-solid');
+            const {counter_value, user_rating} = data;
+            clickedBtn.lastElementChild.innerText = counter_value;
+            clickedBtn.firstElementChild.classList.toggle('fa-regular');
+            clickedBtn.firstElementChild.classList.toggle('fa-solid');
             this.rating.innerText = user_rating;
         }
     },
@@ -94,13 +88,10 @@ const post = {
             headers: myHeaders
         }
 
-        console.log('method', method)
-
         if (method === 'GET')
             url += '?' + new URLSearchParams(params).toString();
         else
             options.body = JSON.stringify(params?.body);
-            console.log(options)
 
         try {
             const response = await fetch(url, options);
