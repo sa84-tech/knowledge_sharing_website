@@ -1,0 +1,21 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+{% load main_extras %}
+
+{% block content %}
+	{% if error_msg %}
+		<p>{{ error_msg }}</p>
+	{% endif %}
+
+	{% for post in post_list %}
+		<div>
+			<a href="{% url 'post_page' post.pk %}">
+				<h3>{{post.topic}}</h3>
+			</a>
+			<p>{{post.author}}</p>
+			<p>{{post.annotation|safe}}</p>
+		</div>
+		{% empty %}
+		<p>Не найдено публикаций по вашему запросу<br>Попробуйте повторить запрос с другой формулировкой</p>
+    {% endfor %}
+{% endblock %}
