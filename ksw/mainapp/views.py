@@ -68,13 +68,13 @@ def content_btn_handler(request):
 
             if form.is_valid():
                 form_data = form.cleaned_data
-                print('form_data', form_data)
                 post = get_object_or_404(Post, pk=form_data['post_id'])
                 counter_value = toggle_content_object(request.user, form_data['target_type'],
                                                       form_data['target_id'], form_data['btn_type'])
-                if counter_value:
+                if counter_value is not None:
+                    user_rating = get_user_rating(post.author)
                     return JsonResponse({'counter_value': counter_value,
-                                         'user_rating': get_user_rating(post.author)})
+                                         'user_rating': user_rating})
         else:
             return JsonResponse({'status': 'false', 'message': 'Unauthorized'}, status=401)
 
