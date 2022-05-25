@@ -81,7 +81,6 @@ def content_btn_handler(request):
     return JsonResponse({'status': 'false', 'message': 'Bad request'}, status=400)
 
 
-
 def search(request):
     q = request.GET.get('q')
     error_msg = ''
