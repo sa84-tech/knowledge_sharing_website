@@ -18,12 +18,13 @@ from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 
-from mainapp.views import index_page, post_page, add_comment, content_btn_handler, search
+from mainapp.views import index_page, post_page, add_comment, content_btn_handler, search, help_doc
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index_page, name='index_page'),
+    path('help/', help_doc, name='help'),
     path('category/<slug:slug>', index_page, name='index_page'),
     path('post/<int:pk>', post_page, name='post_page'),
     path('comment/<str:target_type>/<int:pk>', add_comment, name='comment'),

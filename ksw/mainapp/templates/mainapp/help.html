@@ -1,0 +1,234 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+{% load main_extras %}
+
+{% block content %}
+
+<style>
+  span.point-events-none {
+    cursor: pointer;
+  }
+  .point-events-none > i {
+    pointer-events: none;
+  }
+
+</style>
+
+  <div class="container content_wrapper">
+    <div class="row pt-4">
+      <div class="col-md-9">
+        <div class="row g-0 bg-white overflow-hidden flex-md-row mb-4 h-md-250 position-relative shadow">
+          <div class="col p-3 d-flex flex-column position-static">
+            <div data-bs-spy="scroll" data-bs-target="#list-example" data-bs-offset="0" class="scrollspy-example" tabindex="0">
+            <h1 id="list-item-1" class="mb-4 text-primary">Помощь</h1>
+<!--              Правила сайта-->
+            <div class="row">
+              <hr class="border-1 border-top border-secondary">
+              <h3 class="mb-4 text-primary active">Правила сайта</h3>
+            </div>
+            <div class="list-group">
+              <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                <div class="d-flex w-100 justify-content-between">
+                  <h5 class="mb-1">Заниматься плагиатом</h5>
+                </div>
+                <p class="mb-1">Не следует копировать тексты, опубликованные другими людьми на других ресурсах,
+                              но можно копировать собственные тексты, если они не нарушают правила ресурса.</p>
+              </a>
+              <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                <div class="d-flex w-100 justify-content-between">
+                  <h5 class="mb-1">Путать сайт с Твиттером</h5>
+                </div>
+                <p class="mb-1">Односложные публикации вида «Смотрите, какую я нашел ссылку»,
+                              «Chrome обновился, вот тут чейнджлог» и подобное не приветствуются.
+                              Даже если новость изначально короткая, постарайтесь сопроводить её развёрнутым комментарием.
+                </p>
+              </a>
+              <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                <div class="d-flex w-100 justify-content-between">
+                  <h5 class="mb-1">Путать сайт с жалобной книгой</h5>
+                </div>
+                <p class="mb-1">Если у вас проблемы с сотовым оператором, с провайдером интернета или хостинга,
+                  или с чем-то ещё, всегда можно связаться со службой поддержки нужного вам ресурса.
+                  Или с компетентными органами.</p>
+              </a>
+              <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                <div class="d-flex w-100 justify-content-between">
+                  <h5 class="mb-1">Путать сайт с имиджбордом</h5>
+                </div>
+                <p class="mb-1">У нас не принято общаться изображениями. Изображение, иллюстрирующее вашу мысль,
+                  должно сопровождаться текстовым комментарием, исключающим неоднозначность его трактовки.
+                  Крупные изображения следует помещать под спойлер,
+                  чтобы пользователям не приходилось тратить время на их пролистывание.</p>
+              </a>
+              <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                <div class="d-flex w-100 justify-content-between">
+                  <h5 class="mb-1">Инициировать политические дискуссии и участвовать в них</h5>
+                </div>
+                <p class="mb-1">Тематика нашего ресурса определена довольно чётко.
+                  Для рассуждений о политике есть куда более подходящие сайты. </p>
+              </a>
+              <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                <div class="d-flex w-100 justify-content-between">
+                  <h5 class="mb-1">Игнорировать правила русского языка, коверкать слова, злоупотреблять смайликами</h5>
+                </div>
+                <p class="mb-1">Даже если русский язык был не самым вашим любимым предметом в школе
+                  или не является родным — проверка орфографии в браузере у вас наверняка есть,
+                  не стоит ею пренебрегать. Это сохранит как вашу карму от минусов, так и ваш аккаунт.
+                  Смайлики и emoji допустимы в статьях (в умеренных количествах), но в заголовках их лучше не использовать.</p>
+              </a>
+              <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                <div class="d-flex w-100 justify-content-between">
+                  <h5 class="mb-1">Оскорблять других пользователей, не следить за эмоциями</h5>
+                </div>
+                <p class="mb-1">Мат, оскорбления, переходы на личности, эвфемизмы, троллинг — неприемлимо.
+                  Пользователь лишается прав на публикации постов, коментариев.</p>
+              </a>
+              <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                <div class="d-flex w-100 justify-content-between">
+                  <h5 class="mb-1">Создавать виртуалов</h5>
+                </div>
+                <p class="mb-1">Всегда приятно поговорить с умным человеком, но создавать для этого добавочные аккаунты
+                  и накручивать с них активность и рейтинг за публикации не стоит.</p>
+              </a>
+            </div>
+<!--            Главная страница-->
+            <hr class="border-1 border-top border-secondary">
+            <h3 id="list-item-2" class="mb-4 text-primary active">Главная страница</h3>
+            <div class="list-group">
+              <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                <p class="mb-1">Когда вы заходите на главную страницу сайта, вам по умолчанию выводится список
+                  последних опубликованных публикаций, которые были написаны пользователями. Главная страница состоит
+                  из трех лент публикаций: лента последних постов, раздел топ авторов и архив,
+                  где вы можете фильтровать по временному периоду. </p>
+              </a>
+            </div>
+<!--            Регистрация учётной записи-->
+            <hr id="list-item-3" class="border-1 border-top border-secondary">
+            <h3 class="mb-4 text-primary active">Регистрация учётной записи</h3>
+            <div class="list-group">
+              <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                <p class="mb-1">Вы всегда можете пользоваться сайтом в режиме чтения, но регистрация учётной записи
+                  откроет перед вами дополнительные возможности. <br> В процессе регистрации каждому пользователю
+                  необходимо придумать уникальное имя (username), не занятое другими пользователями.
+                  Помимо букв латинского алфавита username может содержать символ подчеркивания или дефис,
+                  но не может начинаться или заканчиваться такими символами и не может содержать символ «.».<br>
+                  При авторизации будет создан отдельный профиль с той информацией о пользователе, которую он посчитает
+                  необходимым указать.</p>
+              </a>
+            </div>
+<!--            Полномочия учётной записи-->
+            <hr id="list-item-4" class="border-1 border-top border-secondary">
+            <h3 class="mb-4 text-primary active">Полномочия учётной записи</h3>
+            <div class="list-group">
+              <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                <p class="mb-1">Читать материалы, опубликованные на сайте, добавлять их в закладки </p>
+              </a>
+              <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                <p class="mb-1">Оставлять комментарии к статьям, так же добавлять комментарии в закладки</p>
+              </a>
+              <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                <p class="mb-1">Ставить лайки статьям и комментариям </p>
+              </a>
+            </div>
+<!--            Личный Кабинет-->
+            <hr id="list-item-5" class="border-1 border-top border-secondary">
+            <h3 class="mb-4 text-primary active">Личный Кабинет</h3>
+            <div class="list-group">
+              <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                <p class="mb-1"> В Личном Кабинете пользователь может создать черновик статьи, отредактировать,
+                  опубликовать, удалить, а так же просматривать список всех своих постов, комментариев и
+                  закладок с быстрым переходом к первоисточнику. <br>
+                  У каждого пользователя после регистрации появляется
+                  рейтинг и активность.<br>
+                  Рейтинг — это динамичный показатель, зависящий от активности пользователя на
+                  сайте: все плюсы и минусы к публикациям и комментариям пользователя непосредственно отражаются
+                  на суммарном показателе его рейтинга. При этом, оценки публикаций пользователя сказываются
+                  на его рейтинге сильнее, чем оценки его комментариев.<br>
+                  По сути, рейтинг это параметр, отражающий интерес сообщества к деятельности пользователя на ресурсе.
+                  Если кто-то положительно оценивает публикации и комментарии пользователя,
+                  то его рейтинг будет расти, но справедливо и обратное. Чем больше рейтинг участника,
+                  тем выше он находится в общем рейтинге пользователей и рейтингах авторов
+                  по отдельно взятым постам.<br>
+                  Самые популярные авторы отображаются на главной странице в разделе «Лучшие Блоги».</p>
+              </a>
+            </div>
+<!--            Настройки-->
+            <hr id="list-item-6" class="border-1 border-top border-secondary">
+            <h3 class="mb-4 text-primary active">Настройки</h3>
+            <div class="list-group">
+              <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                <div class="d-flex w-100 justify-content-between">
+                  <h5 class="mb-1">Безопастность</h5>
+                </div>
+                <p class="mb-1">Здесь можно сменить свой пароль, указать новую почту </p>
+              </a>
+              <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                <div class="d-flex w-100 justify-content-between">
+                  <h5 class="mb-1">Профиль</h5>
+                </div>
+                <p class="mb-1">Именно эта страница поможет установить аватар, задать отображаемое имя,
+                  написать «О себе» ряд информации из профиля могут видеть другие пользователи. </p>
+              </a>
+              <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                <div class="d-flex w-100 justify-content-between">
+                  <h5 class="mb-1">Уведомления</h5>
+                </div>
+                <p class="mb-1">Всё, что связано с уведомлениями, которые сайт посылает вам на почту или в трекер. </p>
+              </a>
+            </div>
+<!--            Админка-->
+            <hr id="list-item-7" class="border-1 border-top border-secondary">
+            <h3 class="mb-4 text-primary active">Админка</h3>
+            <div class="list-group">
+              <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                <div class="d-flex w-100 justify-content-between">
+                </div>
+                <p class="mb-1">Раздел доступный для модераторов и администраторов для манипуляций со статьями,
+                  комментариями и пользователям.</p>
+              </a>
+            </div>
+<!--              Комментарии-->
+            <hr id="list-item-8" class="border-1 border-top border-secondary">
+            <h3 class="mb-4 text-primary active">Комментарии</h3>
+            <div class="list-group">
+              <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                <div class="d-flex w-100 justify-content-between">
+                </div>
+                <p class="mb-1">Комментировать публикации могут только зарегистрированные пользователи.
+                  Комментарии к публикациям сортируются в хронологическом порядке.
+                  Пользователь не может удалить отправленный комментарий и отредактировать.
+                  Удалить опубликованный комментарий могут только модераторы и только в случае выявления факта
+                  нарушения правил сайта. Если под удаляемым комментарием есть другие комментарии, то удаляется вся ветка.</p>
+              </a>
+            </div>
+          </div>
+          </div>
+        </div>
+      </div>
+
+      <!--          Навигация-->
+<!--  <div class="d-none d-lg-block col-3">-->
+<!--  <div class="" style="top: 2rem">-->
+<!--    <div class="p-4 bg-white mb-3 shadow">-->
+<!--      <h3 class="mb-4 text-primary">Навигация</h3>-->
+<!--          <div id="list-example" class="list-group">-->
+<!--              <a class="list-group-item list-group-item-action " href="#list-item-1">Правила сайта</a>-->
+<!--              <a class="list-group-item list-group-item-action" href="#list-item-2">Главная страница</a>-->
+<!--              <a class="list-group-item list-group-item-action" href="#list-item-3">Регистрация учётной записи</a>-->
+<!--              <a class="list-group-item list-group-item-action" href="#list-item-4">Личный Кабинет</a>-->
+<!--              <a class="list-group-item list-group-item-action" href="#list-item-5">Настройки</a>-->
+<!--              <a class="list-group-item list-group-item-action" href="#list-item-6">Админка</a>-->
+<!--              <a class="list-group-item list-group-item-action" href="#list-item-7">Комментарии</a>-->
+<!--            </div>-->
+<!--    </div>-->
+<!--    </div>-->
+<!--  </div>-->
+{% include 'mainapp/includes/inc_sidebar.html' %}
+    </div>
+ </div>
+
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'js/post.js' %}"></script>
+{% endblock %}
