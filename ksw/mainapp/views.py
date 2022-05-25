@@ -91,3 +91,7 @@ def search(request):
 
     post_list = Post.objects.filter(Q(topic__icontains=q) | Q(article__icontains=q))
     return render(request, 'mainapp/search.html', {'error_msg': error_msg, 'post_list': post_list})
+
+
+def help_doc(request):
+    return render(request, "mainapp/help.html")
