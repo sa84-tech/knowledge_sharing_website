@@ -106,7 +106,7 @@
                 <span class="h6 text-primary fw-bold">{{ post.total_comment }}</span>
             </div>
 
-            <div class="card-body">
+            <div class="card-body px-0">
 
               {% if post.total_comment == 0 %}
                 <div class="text-center my-4">
@@ -114,8 +114,8 @@
                 </div>
               {% else %}
                 {% for comment_item in comments %}
-                  <div id="id_{{ comment_item.id }}" class="row mb-4">
-                    <div class="col">
+                  <div id="id_{{ comment_item.id }}" class="commentBlock mb-4" data-target="{{ comment_item.id }}" data-type="comment">
+                    <div class="col px-3 ">
 
                       <a href="{% url 'account:lk' comment_item.author.username %}" class="d-flex align-items-center nav-link p-0 text-small text-muted">
                         <img class="rounded-circle shadow-1-strong me-2"
@@ -129,8 +129,8 @@
                         {{ comment_item.comment }}
                       </div>
 
-                      <div class="small d-flex justify-content-start mb-3 ">
-                        <a href="#!" class="d-flex align-items-center me-4">Ответить</a>
+                      <div class="small d-flex justify-content-start mb-3">
+                        <a href="#" class="reply d-flex align-items-center me-4">Ответить</a>
                         <span
                           class="ms-1 me-3 text-muted point-events-none addLike"
                           data-target="{{ comment_item.id }}"
@@ -147,6 +147,7 @@
                         </span>
                       </div>
                     </div>
+
                   </div>
                 {% endfor %}
               {% endif %}

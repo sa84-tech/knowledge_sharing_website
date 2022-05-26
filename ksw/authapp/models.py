@@ -35,6 +35,10 @@ class WriterUser(AbstractUser):
             img.save(self.avatar.path, 'png')
 
     @property
+    def full_name(self):
+        return self.get_full_name()
+
+    @property
     def status(self):
         print('DATETIME: ', datetime.now() - self.date_joined)
         if self.is_superuser:
