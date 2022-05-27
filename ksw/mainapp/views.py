@@ -1,14 +1,15 @@
 import json
 
 from django.contrib.auth.decorators import login_required
+from django.core.serializers import serialize
 from django.db.models import Q
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator
 
 from authapp.models import WriterUserProfile
 from .forms import CommentForm, ContentForm
-from .models import Post
+from .models import Post, Comment
 from .services.queries import get_user_rating, create_comment, create_post_view, toggle_content_object
 
 POSTS_PER_PAGE = 5
@@ -67,20 +68,21 @@ def add_comment_ajax(request):
             form = CommentForm(json.loads(request.body))
             if form.is_valid():
                 form_data = form.cleaned_data
+                post = get_object_or_404(Post, pk=form_data['post_id'])
                 new_comment = create_comment(request.user.pk,
                                              form_data['target_id'],
                                              form_data['target_type'],
                                              form_data['text'])
-                print('*** new_comment:', new_comment)
                 if new_comment is not None:
-                    return JsonResponse({'new_comment': new_comment.body})
+                    data = serialize('json', [new_comment])
+                    return HttpResponse(data, content_type="application/json")
         else:
             return JsonResponse({'status': 'false', 'message': 'Unauthorized'}, status=401)
 
     return JsonResponse({'status': 'false', 'message': 'Bad request'}, status=400)
 
 
-def content_btn_ajax(request):
+def add_mark_ajax(request):
     if request.is_ajax():
         if request.user.is_authenticated:
             form = ContentForm(json.loads(request.body))

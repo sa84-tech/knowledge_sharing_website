@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 
-from mainapp.views import index_page, post_page, add_comment, content_btn_ajax, search, add_comment_ajax
+from mainapp.views import index_page, post_page, add_comment, add_mark_ajax, search, add_comment_ajax
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,8 +26,8 @@ urlpatterns = [
     path('category/<slug:slug>', index_page, name='index_page'),
     path('post/<int:pk>', post_page, name='post_page'),
     path('comment/<str:target_type>/<int:pk>', add_comment, name='comment_prev'),
-    path('comment/', add_comment_ajax, name='comment'),
-    path('icon-btn/', content_btn_ajax, name='icon_btn'),
+    path('comment/', add_comment_ajax, name='add_comment'),
+    path('mark/', add_mark_ajax, name='add_mark'),
     path('ckeditor/', include('ckeditor_uploader.urls')),
     path('auth/', include('authapp.urls', namespace='auth'), name='auth'),
     path('account/', include('accountapp.urls', namespace='account'), name='account'),

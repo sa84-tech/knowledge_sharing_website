@@ -11,13 +11,12 @@ def create_comment(user_id, target_id, target_type, text):
     comment = {
         'object_id': target_id,
         'author_id': user_id,
-        'content': text,
+        'body': text,
         'content_type_id': get_cti_404(target_type)
     }
 
-    new_comment, is_created = Comment.objects.get_or_create(**comment)
-    if is_created:
-        new_comment.save()
+    new_comment = Comment(**comment)
+    new_comment.save()
 
     return new_comment
 

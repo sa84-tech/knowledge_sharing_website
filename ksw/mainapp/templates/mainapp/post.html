@@ -191,7 +191,7 @@
       var id = '{{ request.user.pk }}';
       var name = '{{ request.user.full_name }}';
       var avatar = '{% get_avatar request.user %}';
-      var formActionUrl = '{% url 'comment' %}'
+      var formActionUrl = '{% url 'add_comment' %}'
     </script>
     <script src="{% static 'js/post.js' %}"></script>
 {% endif %}

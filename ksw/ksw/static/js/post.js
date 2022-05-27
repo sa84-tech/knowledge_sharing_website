@@ -54,12 +54,12 @@ const comment = {
                     <img class="rounded-circle shadow-1-strong me-2"
                         src="${comment.author.avatar}"
                         alt="avatar" width="32" height="32">
-                    <span class="fw-bold me-2">${comment.author.fullname}</span>
+                    <span class="fw-bold me-2">${comment.author.name}</span>
                     <span class="date_info">${comment.created}</span>
                 </a>
 
                 <div class="mt-1 mb-3">
-                    ${comment.text}
+                    ${comment.body}
                 </div>
 
                 <div class="small d-flex justify-content-start mb-3">
@@ -92,13 +92,14 @@ const comment = {
     },
     getComment(comment) {
         //  <div id="comment_${comment.id}" class="commentBlock mb-4" data-target="${comment.id}" data-type="comment">
-        const commentHtmlString = this._getCommentHtml(comment)
+        const commentHtmlString = this._getCommentHtml(comment);
+        console.log('commentHtmlString', commentHtmlString);
         const newComment = document.createElement('div');
         newComment.id = `comment_${comment.id}`;
         newComment.classList.add('commentBlock', 'mb-4');
         newComment.setAttribute('data-target', comment.id);
         newComment.setAttribute('data-type', 'comment');
-        newComment.innerHtml = commentHtmlString;
+        newComment.innerHTML = commentHtmlString;
         return newComment;
     }
 }
@@ -163,7 +164,7 @@ const postPage = {
             csrf: this.contentBlock.dataset.csrf,
             body: {target_type: target_type, target_id: target_id, post_id: postId, btn_type: 'like'},
         }
-        const data = await this.fetchData('/icon-btn/', params, 'POST');
+        const data = await this.fetchData('/mark/', params, 'POST');
 
         if (data) {
             const {counter_value, user_rating} = data;
@@ -180,7 +181,7 @@ const postPage = {
             csrf: this.contentBlock.dataset.csrf,
             body: {target_type: target_type, target_id: target_id, post_id: postId, btn_type: 'bookmark'},
         }
-        const data = await this.fetchData('/icon-btn/', params, 'POST');
+        const data = await this.fetchData('/mark/', params, 'POST');
 
         if (data) {
             const {counter_value, user_rating} = data;
@@ -191,8 +192,10 @@ const postPage = {
         }
     },
 
-    addComment(comment) {
+    addComment(comment, commentBlock) {
         const newComment = this.commentBlock.getComment(comment);
+        console.log('getComment(comment)', newComment)
+        this.renderElement(newComment, commentBlock, this.currentCommentForm);
     },
 
     onReplyButtonClicked(clickedBtn, commentBlock) {
@@ -230,7 +233,11 @@ const postPage = {
         const data = await this.fetchData(form.action, params, 'POST');
 
         if (data) {
-            this.addComment(data.comment);
+            const comment = data[0].fields
+            comment.author = this.user;
+            comment.id = data[0].pk;
+//            console.log('*** NEW COMMENT', comment)
+            this.addComment(comment, curCommentBlock);
         }
 
     },
@@ -248,8 +255,13 @@ const postPage = {
     },
 
     renderElement(domElement, wrapper, clearBlock=null) {
+        console.log('clearBlock', clearBlock)
         if (clearBlock) this.clearBlock(clearBlock, true);
-        wrapper.append(domElement);
+        console.log('domElement', domElement)
+        console.log('wrapper', wrapper)
+
+        wrapper.insertAdjacentElement('beforeend', domElement);
+//        wrapper.append(domElement);
     },
 
     renderErrorAlert(error) {
