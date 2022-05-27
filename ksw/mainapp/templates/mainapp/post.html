@@ -113,37 +113,39 @@
                   <span class="text-muted">Пока нет ни одного комментария</span>
                 </div>
               {% else %}
-                {% for comment_item in comments %}
-                  <div id="id_{{ comment_item.id }}" class="commentBlock mb-4" data-target="{{ comment_item.id }}" data-type="comment">
+                {% for comment in comments %}
+                  <div id="id_{{ comment.id }}" class="commentBlock mb-4" data-target="{{ comment.id }}" data-type="comment">
                     <div class="col px-3 ">
 
-                      <a href="{% url 'account:lk' comment_item.author.username %}" class="d-flex align-items-center nav-link p-0 text-small text-muted">
+                      <a href="{% url 'account:lk' comment.author.username %}" class="d-flex align-items-center nav-link p-0 text-small text-muted">
                         <img class="rounded-circle shadow-1-strong me-2"
-                        src="{% get_avatar comment_item.author %}" alt="avatar" width="32"
+                        src="{% get_avatar comment.author %}" alt="avatar" width="32"
                         height="32">
-                        <span class="fw-bold me-2">{{ comment_item.author.first_name|capfirst }} {{ comment_item.author.last_name|capfirst }}</span>
-                        <span class="date_info">{{ comment_item.created }}</span>
+                        <span class="fw-bold me-2">{{ comment.author.first_name|capfirst }} {{ comment.author.last_name|capfirst }}</span>
+                        <span class="date_info">{{ comment.created }}</span>
                       </a>
 
                       <div class="mt-1 mb-3">
-                        {{ comment_item.comment }}
+                        {{ comment.body }}
                       </div>
 
                       <div class="small d-flex justify-content-start mb-3">
-                        <a href="#" class="reply d-flex align-items-center me-4">Ответить</a>
+                        {% if request.user.is_authenticated %}
+                        <a href="#" class="reply-form d-flex align-items-center me-4">Ответить</a>
+                        {% endif %}
                         <span
                           class="ms-1 me-3 text-muted point-events-none addLike"
-                          data-target="{{ comment_item.id }}"
+                          data-target="{{ comment.id }}"
                           data-type="comment"
                         >
-                          <i class="me-1 text-primary opacity-75 fa-thumbs-up {% check_like comment_item user %}" data-target="{{ comment_item.id }}"></i> <span>{{ comment_item.total_likes }}</span>
+                          <i class="me-1 text-primary opacity-75 fa-thumbs-up {% check_like comment user %}" data-target="{{ comment.id }}"></i> <span>{{ comment.total_likes }}</span>
                         </span>
                         <span
                           class="me-3 text-muted point-events-none addBookmark"
-                          data-target="{{ comment_item.id }}"
+                          data-target="{{ comment.id }}"
                           data-type="comment"
                         >
-                          <i class="me-1 text-primary opacity-75 fa-bookmark {% check_bookmark comment_item user %}" data-target="{{ comment_item.id }}"></i> <span>{{ comment_item.total_bookmarks }}</span>
+                          <i class="me-1 text-primary opacity-75 fa-bookmark {% check_bookmark comment user %}" data-target="{{ comment.id }}"></i> <span>{{ comment.total_bookmarks }}</span>
                         </span>
                       </div>
                     </div>
@@ -154,7 +156,7 @@
             </div>
 {#            {% if request.user.is_authenticated %} #}
             <div class="card-footer py-3 border-0" style="background-color: #f8f9fa;">
-              <form action="{% url 'comment' 'post' post.pk %}" method="post" class="form-outline w-100">
+              <form action="{% url 'comment_prev' 'post' post.pk %}" method="post" class="form-outline w-100">
                 {% csrf_token %}
                 <label for="add_comment" class="h6 text-muted fw-bold form-label">Написать комментарий</label>
                 <textarea class="form-control" id="add_comment" name="comment_text" rows="5" style="background: #fff;"></textarea>
@@ -178,8 +180,19 @@
     </div>
   </div>
 
+
+
 {% endblock %}
 
 {% block script %}
+  {% if request.user.is_authenticated %}
+    <script>
+      'use strict'
+      var id = '{{ request.user.pk }}';
+      var name = '{{ request.user.full_name }}';
+      var avatar = '{% get_avatar request.user %}';
+      var formActionUrl = '{% url 'comment' %}'
+    </script>
     <script src="{% static 'js/post.js' %}"></script>
+{% endif %}
 {% endblock %}

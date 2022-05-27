@@ -61,7 +61,26 @@ def add_comment(request, target_type, pk):
     return redirect(f'/post/{post.pk}#add_comment')
 
 
-def content_btn_handler(request):
+def add_comment_ajax(request):
+    if request.is_ajax():
+        if request.user.is_authenticated:
+            form = CommentForm(json.loads(request.body))
+            if form.is_valid():
+                form_data = form.cleaned_data
+                new_comment = create_comment(request.user.pk,
+                                             form_data['target_id'],
+                                             form_data['target_type'],
+                                             form_data['text'])
+                print('*** new_comment:', new_comment)
+                if new_comment is not None:
+                    return JsonResponse({'new_comment': new_comment.body})
+        else:
+            return JsonResponse({'status': 'false', 'message': 'Unauthorized'}, status=401)
+
+    return JsonResponse({'status': 'false', 'message': 'Bad request'}, status=400)
+
+
+def content_btn_ajax(request):
     if request.is_ajax():
         if request.user.is_authenticated:
             form = ContentForm(json.loads(request.body))

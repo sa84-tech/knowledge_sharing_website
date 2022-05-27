@@ -11,54 +11,127 @@ const settings = {
 }
 
 const replyForm = {
-    getReplyFormHtml(actionUrl='', targetId, imgSource='', fullName='', csrfTokenValue) {
+    _getReplyFormHtml(avatarSource='', userFullName='', csrfTokenValue) {
         return `
-            <form id="comment_form_${targetId}" action="${actionUrl}" method="post" class="px-3 py-2 my-2 form-outline ps-4 bg-light">
             <input type="hidden" name="csrfmiddlewaretoken" value="${csrfTokenValue}">
-                <div class="text-muted form-label">Ответить <span class="text-primary">@${fullName}</span></div>
-                <div class="d-flex">
-                    <img class="rounded-circle shadow-1-strong me-3"
-                        src="${imgSource}" alt="avatar" width="42"
-                        height="42">
-                    <div class="w-100">
-                        <textarea class="form-control" id="add_comment" name="comment_text" rows="4" style="background: #fff;"></textarea>
-                        <div class="mt-3 d-flex justify-content-end">
-                            <input type="submit" class="btn btn-primary btn-sm opacity-75 me-2" value="Отправить">
-                            <input type="button" class="cancel btn btn-outline-primary btn-sm opacity-75" value="Отмена">
-                        </div>
+            <div class="text-muted form-label">Ответить <span class="text-primary">@${userFullName}</span></div>
+            <div class="d-flex">
+                <img class="rounded-circle shadow-1-strong me-3"
+                    src="${avatarSource}" alt="avatar" width="42"
+                    height="42">
+                <div class="w-100">
+                    <textarea
+                        class="form-control" id="add_comment"
+                        name="comment_text" rows="4" style="background: #fff;"
+                    ></textarea>
+                    <div class="mt-3 d-flex justify-content-end">
+                        <input type="submit" class="btn btn-primary btn-sm opacity-75 me-2" value="Отправить">
+                        <input type="button" class="reply-cancel btn btn-outline-primary btn-sm opacity-75" value="Отмена">
                     </div>
                 </div>
-            </form>
+            </div>
         `
-    }
+    },
+
+    getReplyForm(actionUrl='', targetCommentId, avatarSource='', userFullName='', csrfTokenValue) {
+        const formHtmlString = this._getReplyFormHtml(avatarSource, userFullName, csrfTokenValue)
+        const form = document.createElement('form');
+        form.id = `comment_form_${targetCommentId}`;
+        form.method = 'POST';
+        form.action = actionUrl;
+        form.classList.add('px-3', 'py-2', 'my-2', 'form-outline', 'ps-4', 'bg-light');
+        form.innerHTML = formHtmlString;
+        return form;
+    },
 
 };
 
-const post = {
-    contentBlock: null,
-    commentInput: null,
-    commentCancelBtn: null,
-    rating: null,
-    csrfBlock: null,
-    currentCommentBlock: null,
-    replyForm: {},
+const comment = {
+    _getCommentHtml(comment) {
+        return `
+            <div class="col px-3 ">
+                <a href="${comment.author.url}" class="d-flex align-items-center nav-link p-0 text-small text-muted">
+                    <img class="rounded-circle shadow-1-strong me-2"
+                        src="${comment.author.avatar}"
+                        alt="avatar" width="32" height="32">
+                    <span class="fw-bold me-2">${comment.author.fullname}</span>
+                    <span class="date_info">${comment.created}</span>
+                </a>
 
-    init({contentBlock, commentInput, commentCancelBtn, rating, csrfBlockClass}, replyForm) {
+                <div class="mt-1 mb-3">
+                    ${comment.text}
+                </div>
+
+                <div class="small d-flex justify-content-start mb-3">
+                <a href="#" class="reply-form d-flex align-items-center me-4">Ответить</a>
+                <span
+                    class="ms-1 me-3 text-muted point-events-none addLike"
+                    data-target="${comment.id}"
+                    data-type="comment"
+                >
+                    <i
+                        class="me-1 text-primary opacity-75 fa-thumbs-up fa-regular"
+                        data-target="${comment.id}"
+                    ></i>
+                    <span>0</span>
+                </span>
+                <span
+                    class="me-3 text-muted point-events-none addBookmark"
+                    data-target="${comment.id}"
+                    data-type="comment"
+                >
+                    <i
+                        class="me-1 text-primary opacity-75 fa-bookmark fa-regular"
+                        data-target="{{ comment.id }}"
+                    ></i>
+                    <span>0</span>
+                </span>
+                </div>
+            </div>
+        `
+    },
+    getComment(comment) {
+        //  <div id="comment_${comment.id}" class="commentBlock mb-4" data-target="${comment.id}" data-type="comment">
+        const commentHtmlString = this._getCommentHtml(comment)
+        const newComment = document.createElement('div');
+        newComment.id = `comment_${comment.id}`;
+        newComment.classList.add('commentBlock', 'mb-4');
+        newComment.setAttribute('data-target', comment.id);
+        newComment.setAttribute('data-type', 'comment');
+        newComment.innerHtml = commentHtmlString;
+        return newComment;
+    }
+}
+
+const postPage = {
+    contentBlock: {},
+    commentInput: {},
+    commentCancelBtn: {},
+    rating: {},
+    csrfBlock: {},
+    currentCommentForm: null,
+    replyForm: {},
+    commentBlock: {},
+    user: {},
+    formActionUrl: '',
+
+    init({contentBlock, commentInput, commentCancelBtn, rating, csrfBlockClass},replyForm, comment, currentUser, formActionUrl) {
         this.contentBlock = document.querySelector(contentBlock)
         this.commentInput = document.querySelector(commentInput)
         this.commentCancelBtn = document.querySelector(commentCancelBtn)
         this.csrfBlock = document.querySelector(csrfBlockClass)
         this.rating = document.querySelector(rating)
+        this.user = currentUser
+        this.formActionUrl = formActionUrl
         this.replyForm = replyForm
+        this.commentBlock = comment
         this.contentBlock.addEventListener('click', this.onContentBlockClicked.bind(this));
-    },
-
-    addBookmark(postPk) {
-        console.log('ADD BOOKMARK', postPk)
+        this.contentBlock.addEventListener('submit', this.onCommentFormSubmit.bind(this));
+        console.log('user', this.user)
     },
 
     onContentBlockClicked(e) {
-        console.log(e)
+        console.log(e.target)
         if (e.target == this.commentCancelBtn) {
             this.commentInput.value = '';
         }
@@ -72,10 +145,15 @@ const post = {
             const target_type = e.target.dataset.type;
             this.addBookmark(e.target, target_type, target_id);
         }
-        else if (e.target.classList.contains('reply')) {
+        else if (e.target.classList.contains('reply-form')) {
             e.preventDefault();
             const commentBlock = e.target.closest('.commentBlock')
             this.onReplyButtonClicked(e.target, commentBlock);
+        }
+        else if (e.target.classList.contains('reply-cancel')) {
+            e.preventDefault();
+            console.log('onReplyCancelClicked', e.target)
+            this.onReplyCancelClicked();
         }
     },
 
@@ -113,25 +191,65 @@ const post = {
         }
     },
 
-    onReplyButtonClicked(clickedBtn, commentBlock) {
-        console.log('commentBlock', commentBlock)
-        const postId = this.contentBlock.dataset.post;
-        const targetId = commentBlock.dataset.target;
-        const formElement = this.replyForm.getReplyFormHtml(`#`, targetId, '/media/seeder/users/f_4.webp', 'Иван Иванов', this.csrfBlock.value);
-        console.log('formElement', formElement)
-
-        this.renderHtml(formElement, commentBlock)
+    addComment(comment) {
+        const newComment = this.commentBlock.getComment(comment);
     },
 
-    clearBlock(wrapper) {
+    onReplyButtonClicked(clickedBtn, commentBlock) {
+        console.log('this.user', this.user)
+        const postId = this.contentBlock.dataset.post;
+        const targetId = commentBlock.dataset.target;
+        const formElement = this.replyForm.getReplyForm(this.formActionUrl, targetId, this.user.avatar,
+                                                        this.user.name, this.csrfBlock.value);
+
+        this.renderElement(formElement, commentBlock, this.currentCommentForm);
+        this.currentCommentForm = formElement;
+
+    },
+
+    onReplyCancelClicked() {
+        this.clearBlock(this.currentCommentForm, true)
+        console.log(this.currentCommentForm)
+
+    },
+
+    async onCommentFormSubmit(e) {
+        e.preventDefault();
+        const form = e.target
+        console.log('action', form.action);
+        console.log('comment_text', form.comment_text.value);
+        const postId = this.contentBlock.dataset.post;
+        const curCommentBlock = form.closest('.commentBlock')
+        const targetType = curCommentBlock.dataset.type;
+        const targetId = curCommentBlock.dataset.target;
+
+        const params = {
+            csrf: this.contentBlock.dataset.csrf,
+            body: {target_type: targetType, target_id: targetId, post_id: postId, text: form.comment_text.value},
+        }
+        const data = await this.fetchData(form.action, params, 'POST');
+
+        if (data) {
+            this.addComment(data.comment);
+        }
+
+    },
+
+    clearBlock(wrapper, removeWrapper = false) {
         while (wrapper.firstChild) {
             wrapper.firstChild.remove();
         }
+        if (removeWrapper) wrapper.remove()
     },
 
     renderHtml(html_string, wrapper, clearBlock=null) {
         if (clearBlock) this.clearBlock(clearBlock);
         wrapper.insertAdjacentHTML('beforeend', html_string);
+    },
+
+    renderElement(domElement, wrapper, clearBlock=null) {
+        if (clearBlock) this.clearBlock(clearBlock, true);
+        wrapper.append(domElement);
     },
 
     renderErrorAlert(error) {
@@ -172,5 +290,6 @@ const post = {
 }
 
 document.addEventListener('DOMContentLoaded', function (event) {
-    post.init(settings, replyForm);
+    const currentUser = {id, name, avatar}
+    postPage.init(settings, replyForm, comment, currentUser, formActionUrl);
 });

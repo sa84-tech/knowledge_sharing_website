@@ -101,7 +101,7 @@ class View(models.Model):
 
 
 class Comment(models.Model):
-    comment = models.TextField(
+    body = models.TextField(
         verbose_name='комментарий',
         max_length=250,
     )

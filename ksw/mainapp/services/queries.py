@@ -11,7 +11,7 @@ def create_comment(user_id, target_id, target_type, text):
     comment = {
         'object_id': target_id,
         'author_id': user_id,
-        'comment': text,
+        'content': text,
         'content_type_id': get_cti_404(target_type)
     }
 
@@ -19,7 +19,7 @@ def create_comment(user_id, target_id, target_type, text):
     if is_created:
         new_comment.save()
 
-    return new_comment, is_created
+    return new_comment
 
 
 def get_user_rating(user):
