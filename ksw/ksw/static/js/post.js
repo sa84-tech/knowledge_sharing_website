@@ -104,10 +104,7 @@ const postPage = {
 
         if (data) {
             const {counter_value, user_rating} = data;
-            clickedBtn.lastElementChild.innerText = counter_value;
-            clickedBtn.firstElementChild.classList.toggle('fa-regular');
-            clickedBtn.firstElementChild.classList.toggle('fa-solid');
-            this.rating.innerText = user_rating;
+            this.updateMark(clickedBtn, counter_value, user_rating);
         }
     },
 
@@ -121,10 +118,7 @@ const postPage = {
 
         if (data) {
             const {counter_value, user_rating} = data;
-            clickedBtn.lastElementChild.innerText = counter_value;
-            clickedBtn.firstElementChild.classList.toggle('fa-regular');
-            clickedBtn.firstElementChild.classList.toggle('fa-solid');
-            this.rating.innerText = user_rating;
+            this.updateMark(clickedBtn, counter_value, user_rating);
         }
     },
 
@@ -171,8 +165,31 @@ const postPage = {
         if (response) {
             this.renderHtml(response.result, curCommentBlock, this.currentCommentForm);
             if (form.dataset.targetType === 'post') this.commentInput.value = '';
+            const commentMark = document.querySelector('.totalCommentsMark');
+            this.updateMark(commentMark, response.total_comments, null, 'solid');
         }
 
+    },
+
+    updateMark(clickedMark, counterValue, userRating = null, updateMarkOption = 'togle') {
+        clickedMark.lastElementChild.innerText = counterValue;
+
+        switch (updateMarkOption) {
+            case 'togle':
+                clickedMark.firstElementChild.classList.toggle('fa-regular');
+                clickedMark.firstElementChild.classList.toggle('fa-solid');
+                break;
+            case 'solid':
+                clickedMark.firstElementChild.classList.add('fa-solid');
+                clickedMark.firstElementChild.classList.remove('fa-regular');
+                break;
+            case 'regular':
+                clickedMark.firstElementChild.classList.add('fa-regular');
+                clickedMark.firstElementChild.classList.remove('fa-solid');
+                break;
+        }
+
+        if (userRating !== null) this.rating.innerText = userRating;
     },
 
     clearBlock(wrapper, removeWrapper = false) {

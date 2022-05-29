@@ -69,7 +69,7 @@ def add_comment_ajax(request):
                                  'author_info': author_info},
                         request=request
                     )
-                    return JsonResponse({'result': result})
+                    return JsonResponse({'result': result, 'total_comments': post.total_comments})
         else:
             return JsonResponse({'status': 'false', 'message': 'Unauthorized'}, status=401)
 

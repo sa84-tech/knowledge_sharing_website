@@ -40,7 +40,11 @@
             </div>
             <div class="text-muted">
               <span class="me-3"><i class="me-1 text-primary opacity-50 fa-eye {% check_view post user %}"></i> {{ post.total_views }}</span>
-              <span class="me-3"><a href="#add_comment" class="text-decoration-none"><i class="me-1 opacity-50 fa-comment {% check_comment post user %}"></i></a> {{ post.total_comments }}</span>
+              <a href="#add_comment"
+                 class="text-decoration-none"
+                ><span class="me-3 totalCommentsMark"
+                ><i class="me-1 opacity-50 fa-comment {% check_comment post user %}"></i>
+                <span>{{ post.total_comments }}</span></span></a>
               <span
                 class="me-3 point-events-none addLike"
                 data-target="{{ post.id }}"

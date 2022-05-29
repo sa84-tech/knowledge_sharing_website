@@ -221,7 +221,7 @@ class Post(models.Model):
 
     @property
     def total_comments(self):
-        return self.comment.count()
+        return self.comments.count()
 
     @property
     def total_bookmarks(self):
@@ -249,9 +249,12 @@ class Post(models.Model):
         """
         content_obj = self._get_content_obj(content_obj_name)
         if user.is_authenticated and content_obj:
-            related_objects = content_obj.filter(object_id=self.pk,
-                                                 author_id=user.pk,
-                                                 content_type=ContentType.objects.get_for_model(self))
+            if content_obj_name == 'comment':
+                related_objects = self.comments.filter(author=user)
+            else:
+                related_objects = content_obj.filter(object_id=self.pk,
+                                                     author_id=user.pk,
+                                                     content_type=ContentType.objects.get_for_model(self))
             return related_objects.exists()
         return False
 
