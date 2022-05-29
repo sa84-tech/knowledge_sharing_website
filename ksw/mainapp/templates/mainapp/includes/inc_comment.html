@@ -2,7 +2,7 @@
 {% load main_extras %}
 
 <div class="mb-4">
-    <div id="comment_{{ comment.id }}" class="commentBlock col ps-3" data-target="{{ comment.id }}" data-type="comment">
+    <div id="comment-{{ comment.id }}" class="commentBlock col ps-3" data-target="{{ comment.id }}" data-type="comment">
 
         <div class="commentItem">
             <a href="{% url 'account:lk' comment.author.username %}" class="d-flex align-items-center nav-link p-0 text-small text-muted">

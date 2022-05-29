@@ -7,7 +7,7 @@
         <div class="col p-3 pt-2 d-flex flex-column">
 
             <a href="{% url 'post_page' comment.content_object.pk %}" class="h5 nav-link p-0 text-muted">
-                {{ comment.content_object.topic }}
+                {{ comment.post.topic }}
             </a>
 
             <hr class="border-1 border-top border-secondary mt-0 mb-3">
@@ -30,7 +30,7 @@
                 <a
                 class="btn btn-outline-primary btn-sm me-3"
                 type="button"
-                href="{% url 'post_page' comment.content_object.pk %}#id_{{ comment.pk }}"
+                href="{% url 'post_page' comment.post.pk %}#comment-{{ comment.pk }}"
             >
                 Перейти
             </a>
