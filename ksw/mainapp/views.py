@@ -48,20 +48,6 @@ def post_page(request, pk):
     return render(request, "mainapp/post.html", context)
 
 
-@login_required
-def add_comment(request, target_type, pk):
-
-    post = get_object_or_404(Post, pk=pk)
-
-    if request.method == 'POST':
-        form = CommentForm(request.POST)
-        if form.is_valid():
-            comment_text = form.cleaned_data['comment_text']
-            create_comment(request.user.pk, post.pk, target_type, comment_text)
-
-    return redirect(f'/post/{post.pk}#add_comment')
-
-
 def add_comment_ajax(request):
     if request.is_ajax():
         if request.user.is_authenticated:
@@ -120,3 +106,7 @@ def search(request):
 
     post_list = Post.objects.filter(Q(topic__icontains=q) | Q(article__icontains=q))
     return render(request, 'mainapp/search.html', {'error_msg': error_msg, 'post_list': post_list})
+
+
+def help_doc(request):
+    return render(request, "mainapp/help.html")

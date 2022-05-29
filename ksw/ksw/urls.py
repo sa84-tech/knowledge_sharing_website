@@ -18,14 +18,14 @@ from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 
-from mainapp.views import index_page, post_page, add_comment, add_mark_ajax, search, add_comment_ajax
+from mainapp.views import index_page, post_page, add_mark_ajax, search, add_comment_ajax, help_doc
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index_page, name='index_page'),
+    path('help/', help_doc, name='help'),
     path('category/<slug:slug>', index_page, name='index_page'),
     path('post/<int:pk>', post_page, name='post_page'),
-    path('comment/<str:target_type>/<int:pk>', add_comment, name='comment_prev'),
     path('comment/', add_comment_ajax, name='add_comment'),
     path('mark/', add_mark_ajax, name='add_mark'),
     path('ckeditor/', include('ckeditor_uploader.urls')),
