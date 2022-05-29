@@ -106,7 +106,7 @@
                 <span class="h6 text-primary fw-bold">{{ post.total_comment }}</span>
             </div>
 
-            <div class="card-body px-0">
+            <div class="card-body ps-0 pe-3" data-target="{{ post.id }}" data-type="post">
 
               {% if post.total_comment == 0 %}
                 <div class="text-center my-4">
@@ -114,63 +114,25 @@
                 </div>
               {% else %}
                 {% for comment in comments %}
-                  <div id="id_{{ comment.id }}" class="commentBlock mb-4" data-target="{{ comment.id }}" data-type="comment">
-                    <div class="col px-3 ">
-
-                      <a href="{% url 'account:lk' comment.author.username %}" class="d-flex align-items-center nav-link p-0 text-small text-muted">
-                        <img class="rounded-circle shadow-1-strong me-2"
-                        src="{% get_avatar comment.author %}" alt="avatar" width="32"
-                        height="32">
-                        <span class="fw-bold me-2">{{ comment.author.first_name|capfirst }} {{ comment.author.last_name|capfirst }}</span>
-                        <span class="date_info">{{ comment.created }}</span>
-                      </a>
-
-                      <div class="mt-1 mb-3">
-                        {{ comment.body }}
-                      </div>
-
-                      <div class="small d-flex justify-content-start mb-3">
-                        {% if request.user.is_authenticated %}
-                        <a href="#" class="reply-form d-flex align-items-center me-4">Ответить</a>
-                        {% endif %}
-                        <span
-                          class="ms-1 me-3 text-muted point-events-none addLike"
-                          data-target="{{ comment.id }}"
-                          data-type="comment"
-                        >
-                          <i class="me-1 text-primary opacity-75 fa-thumbs-up {% check_like comment user %}" data-target="{{ comment.id }}"></i> <span>{{ comment.total_likes }}</span>
-                        </span>
-                        <span
-                          class="me-3 text-muted point-events-none addBookmark"
-                          data-target="{{ comment.id }}"
-                          data-type="comment"
-                        >
-                          <i class="me-1 text-primary opacity-75 fa-bookmark {% check_bookmark comment user %}" data-target="{{ comment.id }}"></i> <span>{{ comment.total_bookmarks }}</span>
-                        </span>
-                      </div>
-                    </div>
-
-                  </div>
+                  {% include 'mainapp/includes/inc_comment.html' %}
                 {% endfor %}
               {% endif %}
             </div>
-{#            {% if request.user.is_authenticated %} #}
             <div class="card-footer py-3 border-0" style="background-color: #f8f9fa;">
-              <form action="{% url 'comment_prev' 'post' post.pk %}" method="post" class="form-outline w-100">
+            {% if request.user.is_authenticated %}
+              <form action="{% url 'add_comment' %}" method="post" class="form-outline w-100" data-target-type="post">
                 {% csrf_token %}
-                <label for="add_comment" class="h6 text-muted fw-bold form-label">Написать комментарий</label>
+                <label for="add_comment" class="h6 text-muted fw-bold form-label">Написать комментарий к статье</label>
                 <textarea class="form-control" id="add_comment" name="comment_text" rows="5" style="background: #fff;"></textarea>
                 <div class="mt-3">
                   <input type="submit" class="btn btn-primary btn-sm opacity-75 me-1" value="Отправить">
                   <input type="button" class="cancel btn btn-outline-primary btn-sm opacity-75" value="Отмена">
                 </div>
               </form>
+            {% else %}
+              <div>Только зарегистрированные пользователи могут оставлять комментарии.</div>
+            {% endif %}
             </div>
-{#            {% else %}#}
-{#             <div class="card-footer py-3 border-0" style="background-color: #f8f9fa;">#}
-{#             Только полноправные пользователи могут оставлять комментарии. Войдите, пожалуйста.#}
-{#             </div>#}
-{#          {% endif %} #}
           </div>
         </div>
 
@@ -179,8 +141,6 @@
       {% include 'mainapp/includes/inc_sidebar.html' %}
     </div>
   </div>
-
-
 
 {% endblock %}
 
@@ -191,7 +151,6 @@
       var id = '{{ request.user.pk }}';
       var name = '{{ request.user.full_name }}';
       var avatar = '{% get_avatar request.user %}';
-      var formActionUrl = '{% url 'add_comment' %}'
     </script>
     <script src="{% static 'js/post.js' %}"></script>
 {% endif %}

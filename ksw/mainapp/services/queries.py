@@ -1,17 +1,19 @@
 from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import get_object_or_404
 
-from authapp.models import WriterUserProfile
+from authapp.models import WriterUser, WriterUserProfile
 from mainapp.models import Post, Like, Comment, View
 from mainapp.services.helpers import get_cti_404
 from accountapp.models import Bookmark
 
 
-def create_comment(user_id, target_id, target_type, text):
+def create_comment(user: WriterUser, post: Post, target_id: int, target_type: str, comment_body: str) -> Comment:
+    """ Создает и сохраняет новый комментарий """
     comment = {
+        'post': post,
         'object_id': target_id,
-        'author_id': user_id,
-        'body': text,
+        'author': user,
+        'body': comment_body,
         'content_type_id': get_cti_404(target_type)
     }
 
@@ -26,7 +28,7 @@ def get_user_rating(user):
     return user_profile.rating
 
 
-def toggle_content_object(user, target_type: str, target_id: str, model_name: str) -> int:
+def toggle_content_object(user: WriterUser, target_type: str, target_id: str, model_name: str) -> int:
     """Создает новый объект (тип Like/Bookmark) для статьи или комментария,
        если объект уже существует, удаляет его.
     """
@@ -44,7 +46,8 @@ def toggle_content_object(user, target_type: str, target_id: str, model_name: st
     return target_obj.total_bookmarks if model_name == 'bookmark' else target_obj.total_likes
 
 
-def create_post_view(post, user) -> None:
+def create_post_view(post: Post, user: WriterUser) -> None:
+    """ Создает объект просмотра """
 
     if user.is_authenticated:
         view_dict = {

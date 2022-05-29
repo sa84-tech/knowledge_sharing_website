@@ -20,7 +20,7 @@ def check_user(request, post_author):
 
 
 def get_sorted_objects(objects, sorting_value):
-    if sorting_value in ['created', '-created', 'topic', 'name', 'comment']:
+    if sorting_value in ['created', '-created', 'topic', 'name', 'body']:
         try:
             return objects.order_by(sorting_value)
         except FieldError:
@@ -49,7 +49,7 @@ def get_filtered_comments(request, user):
     comments = Comment.objects.filter(author=user.pk)
     sorting_value = request.GET.get('sorting', '-created')
     if sorting_value == 'name':
-        sorting_value = 'comment'
+        sorting_value = 'body'
     return get_sorted_objects(comments, sorting_value)
 
 

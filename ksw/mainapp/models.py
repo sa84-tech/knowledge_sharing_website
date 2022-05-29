@@ -101,6 +101,7 @@ class View(models.Model):
 
 
 class Comment(models.Model):
+    post = models.ForeignKey('Post', on_delete=models.CASCADE, related_name="comments")
     body = models.TextField(
         verbose_name='комментарий',
         max_length=250,
@@ -117,6 +118,8 @@ class Comment(models.Model):
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
     )
+
+    comments = GenericRelation('self')
     like = GenericRelation(Like)
     bookmark = GenericRelation(Bookmark)
     created = models.DateTimeField(auto_now_add=True)
@@ -129,6 +132,9 @@ class Comment(models.Model):
     @property
     def total_bookmarks(self):
         return self.bookmark.count()
+
+    def get_comments(self):
+        return self.comments.all()
 
     def _get_content_obj(self, content_obj_name: str):
         content_objects = {

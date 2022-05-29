@@ -2,43 +2,43 @@
 {% load main_extras %}
 
 <div id="pills-comments" class="tab-pane fade show active">
-    {% for comment_item in comments %}
+    {% for comment in comments %}
     <div class="row g-0 bg-white overflow-hidden flex-md-row mb-3 h-md-250 position-relative shadow">
         <div class="col p-3 pt-2 d-flex flex-column">
 
-            <a href="{% url 'post_page' comment_item.content_object.pk %}" class="h5 nav-link p-0 text-muted">
-                {{ comment_item.content_object.topic }}
+            <a href="{% url 'post_page' comment.content_object.pk %}" class="h5 nav-link p-0 text-muted">
+                {{ comment.content_object.topic }}
             </a>
 
             <hr class="border-1 border-top border-secondary mt-0 mb-3">
 
             <div class="d-flex mb-1 text-small align-items-center">
                 <img class="rounded-circle shadow-1-strong me-3"
-                    src="{% get_avatar comment_item.author %}" alt="avatar" width="32"
+                    src="{% get_avatar comment.author %}" alt="avatar" width="32"
                     height="32">
                 <a href="#" class="nav-link p-0 text-muted fw-bold me-2">
-                    {{ comment_item.author.first_name|capfirst }} {{ comment_item.author.last_name|capfirst }}
+                    {{ comment.author.first_name|capfirst }} {{ comment.author.last_name|capfirst }}
                 </a>
-                <span class="date_info text-muted">{{ comment_item.created }}</span>
+                <span class="date_info text-muted">{{ comment.created }}</span>
             </div>
 
             <div class="mb-4">
-                {{ comment_item.comment }}
+                {{ comment.body }}
             </div>
 
             <div class="mb-3">
                 <a
                 class="btn btn-outline-primary btn-sm me-3"
                 type="button"
-                href="{% url 'post_page' comment_item.content_object.pk %}#id_{{ comment_item.pk }}"
+                href="{% url 'post_page' comment.content_object.pk %}#id_{{ comment.pk }}"
             >
                 Перейти
             </a>
             </div>
 
             <div class="d-flex flex-grow-1 align-items-end text-small">
-                <span class="me-3 text-muted"><i class="me-1 text-primary opacity-75 fa-thumbs-up {% check_like comment_item user %}"></i> {{ comment_item.total_likes }}</span>
-                <span class="me-3 text-muted"><i class="me-1 text-primary opacity-75 fa-bookmark {% check_bookmark comment_item user %}"></i> {{ comment_item.total_bookmarks }}</span>
+                <span class="me-3 text-muted"><i class="me-1 text-primary opacity-75 fa-thumbs-up {% check_like comment user %}"></i> {{ comment.total_likes }}</span>
+                <span class="me-3 text-muted"><i class="me-1 text-primary opacity-75 fa-bookmark {% check_bookmark comment user %}"></i> {{ comment.total_bookmarks }}</span>
             </div>
         </div>
     </div>

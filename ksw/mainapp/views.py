@@ -1,11 +1,11 @@
 import json
 
 from django.contrib.auth.decorators import login_required
-from django.core.serializers import serialize
 from django.db.models import Q
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator
+from django.template.loader import render_to_string
 
 from authapp.models import WriterUserProfile
 from .forms import CommentForm, ContentForm
@@ -69,13 +69,21 @@ def add_comment_ajax(request):
             if form.is_valid():
                 form_data = form.cleaned_data
                 post = get_object_or_404(Post, pk=form_data['post_id'])
-                new_comment = create_comment(request.user.pk,
+                author_info = get_object_or_404(WriterUserProfile, user=post.author)
+                new_comment = create_comment(request.user,
+                                             post,
                                              form_data['target_id'],
                                              form_data['target_type'],
                                              form_data['text'])
                 if new_comment is not None:
-                    data = serialize('json', [new_comment])
-                    return HttpResponse(data, content_type="application/json")
+                    result = render_to_string(
+                        'mainapp/includes/inc_comment.html',
+                        context={'post': post,
+                                 'comment': new_comment,
+                                 'author_info': author_info},
+                        request=request
+                    )
+                    return JsonResponse({'result': result})
         else:
             return JsonResponse({'status': 'false', 'message': 'Unauthorized'}, status=401)
 
