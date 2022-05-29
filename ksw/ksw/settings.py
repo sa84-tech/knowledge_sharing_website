@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'accountapp',
     'social_django',
     'django_countries',
+    'gradeapp',
 ]
 
 AUTHENTICATION_BACKENDS = (
