@@ -101,7 +101,8 @@ class View(models.Model):
 
 
 class Comment(models.Model):
-    comment = models.TextField(
+    post = models.ForeignKey('Post', on_delete=models.CASCADE, related_name="comments")
+    body = models.TextField(
         verbose_name='комментарий',
         max_length=250,
     )
@@ -117,6 +118,8 @@ class Comment(models.Model):
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
     )
+
+    comments = GenericRelation('self')
     like = GenericRelation(Like)
     bookmark = GenericRelation(Bookmark)
     created = models.DateTimeField(auto_now_add=True)
@@ -129,6 +132,9 @@ class Comment(models.Model):
     @property
     def total_bookmarks(self):
         return self.bookmark.count()
+
+    def get_comments(self):
+        return self.comments.all()
 
     def _get_content_obj(self, content_obj_name: str):
         content_objects = {
@@ -215,7 +221,7 @@ class Post(models.Model):
 
     @property
     def total_comments(self):
-        return self.comment.count()
+        return self.comments.count()
 
     @property
     def total_bookmarks(self):
@@ -243,9 +249,12 @@ class Post(models.Model):
         """
         content_obj = self._get_content_obj(content_obj_name)
         if user.is_authenticated and content_obj:
-            related_objects = content_obj.filter(object_id=self.pk,
-                                                 author_id=user.pk,
-                                                 content_type=ContentType.objects.get_for_model(self))
+            if content_obj_name == 'comment':
+                related_objects = self.comments.filter(author=user)
+            else:
+                related_objects = content_obj.filter(object_id=self.pk,
+                                                     author_id=user.pk,
+                                                     content_type=ContentType.objects.get_for_model(self))
             return related_objects.exists()
         return False
 

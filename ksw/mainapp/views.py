@@ -5,10 +5,11 @@ from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator
+from django.template.loader import render_to_string
 
 from authapp.models import WriterUserProfile
 from .forms import CommentForm, ContentForm
-from .models import Post
+from .models import Post, Comment
 from .services.queries import get_user_rating, create_comment, create_post_view, toggle_content_object
 
 POSTS_PER_PAGE = 5
@@ -47,21 +48,35 @@ def post_page(request, pk):
     return render(request, "mainapp/post.html", context)
 
 
-@login_required
-def add_comment(request, target_type, pk):
+def add_comment_ajax(request):
+    if request.is_ajax():
+        if request.user.is_authenticated:
+            form = CommentForm(json.loads(request.body))
+            if form.is_valid():
+                form_data = form.cleaned_data
+                post = get_object_or_404(Post, pk=form_data['post_id'])
+                author_info = get_object_or_404(WriterUserProfile, user=post.author)
+                new_comment = create_comment(request.user,
+                                             post,
+                                             form_data['target_id'],
+                                             form_data['target_type'],
+                                             form_data['text'])
+                if new_comment is not None:
+                    result = render_to_string(
+                        'mainapp/includes/inc_comment.html',
+                        context={'post': post,
+                                 'comment': new_comment,
+                                 'author_info': author_info},
+                        request=request
+                    )
+                    return JsonResponse({'result': result, 'total_comments': post.total_comments})
+        else:
+            return JsonResponse({'status': 'false', 'message': 'Unauthorized'}, status=401)
 
-    post = get_object_or_404(Post, pk=pk)
-
-    if request.method == 'POST':
-        form = CommentForm(request.POST)
-        if form.is_valid():
-            comment_text = form.cleaned_data['comment_text']
-            create_comment(request.user.pk, post.pk, target_type, comment_text)
-
-    return redirect(f'/post/{post.pk}#add_comment')
+    return JsonResponse({'status': 'false', 'message': 'Bad request'}, status=400)
 
 
-def content_btn_handler(request):
+def add_mark_ajax(request):
     if request.is_ajax():
         if request.user.is_authenticated:
             form = ContentForm(json.loads(request.body))

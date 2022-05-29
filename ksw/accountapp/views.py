@@ -44,7 +44,7 @@ def account_comments(request, username):
     if request.is_ajax():
         user = get_object_or_404(WriterUser, username=username)
         comments = get_filtered_comments(request, user)
-
+        print('*** COMMENT', comments[0])
         context = {'comments': comments, 'target_user': user}
 
         result = render_to_string(

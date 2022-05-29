@@ -52,8 +52,7 @@
                 class="img-fluid"
                 alt="post image"
                 width="154"
-                height="210"
-            >
+                height="210">
         </div>
     </div>
 
@@ -62,8 +61,8 @@
     <div class="row g-0 bg-white overflow-hidden flex-md-row mb-3 h-md-250 position-relative shadow">
         <div class="col p-3 pt-2 d-flex flex-column">
 
-            <a href="{% url 'post_page' bookmark.content_object.content_object.pk %}" class="h5 nav-link p-0 text-muted">
-                {{ bookmark.content_object.content_object.topic }}
+            <a href="{% url 'post_page' bookmark.content_object.post.pk %}" class="h5 nav-link p-0 text-muted">
+                {{ bookmark.content_object.post.topic }}
             </a>
 
             <hr class="border-1 border-top border-secondary mt-0 mb-3">
@@ -79,17 +78,17 @@
             </div>
 
             <div class="mb-4">
-                {{ bookmark.content_object.comment }}
+                {{ bookmark.content_object.body }}
             </div>
 
             <div class="mb-3">
                 <a
-                class="btn btn-outline-primary btn-sm me-3"
-                type="button"
-                href="{% url 'post_page' bookmark.content_object.content_object.pk %}#id_{{ bookmark.content_object.pk }}"
-            >
-                Перейти
-            </a>
+                    class="btn btn-outline-primary btn-sm me-3"
+                    type="button"
+                    href="{% url 'post_page' bookmark.content_object.post.pk %}#comment-{{ bookmark.content_object.pk }}"
+                >
+                    Перейти
+                </a>
             </div>
 
             <div class="d-flex flex-grow-1 align-items-end text-small">

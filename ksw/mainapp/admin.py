@@ -17,8 +17,8 @@ class CategoryAdmin(admin.ModelAdmin):
 
 
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ('comment', 'author', 'content_type', 'created')
-    search_fields = ('author', 'comment')
+    list_display = ('body', 'author', 'content_type', 'created')
+    search_fields = ('author', 'body')
     raw_id_fields = ('author',)
     date_hierarchy = 'created'
     ordering = ['created']
