@@ -44,7 +44,6 @@ def account_comments(request, username):
     if request.is_ajax():
         user = get_object_or_404(WriterUser, username=username)
         comments = get_filtered_comments(request, user)
-        print('*** COMMENT', comments[0])
         context = {'comments': comments, 'target_user': user}
 
         result = render_to_string(
@@ -144,6 +143,22 @@ class EmailChangeView(LoginRequiredMixin, FormView):
                        'email_form': email_form,
                        'page': 'email'}
             return self.render_to_response(context)
+
+
+class NotificationsView(LoginRequiredMixin, TemplateView):
+    template_name = 'accountapp/notifications.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(NotificationsView, self).get_context_data(**kwargs)
+        comments = get_filtered_comments(self.request)
+        context.update({'comments': comments, 'target_user': self.request.user})
+        return context
+
+    # def get(self, request, *args, **kwargs):
+    #     context = self.get_context_data(edit_form=WriterUserEditForm(instance=request.user),
+    #                                     profile_form=WriterUserProfileForm(instance=request.user.writeruserprofile),
+    #                                     **kwargs)
+    #     return self.render_to_response(context)
 
 
 def settings_success(request, page):

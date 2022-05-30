@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'notifications',
     'mainapp',
     'authapp',
     'ckeditor',
@@ -99,6 +100,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'ksw.wsgi.application'
 
+DJANGO_NOTIFICATIONS_CONFIG = {'USE_JSONFIELD': True}
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
