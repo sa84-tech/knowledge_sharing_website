@@ -1,13 +1,14 @@
 import datetime
 import dateutil.relativedelta
 import calendar
+import locale
 
 
 def period_generator(request):
     today = datetime.date.today()
     periods = []
-
-    for i in range(1, 13):
+    locale.setlocale(locale.LC_ALL, '')
+    for i in range(13):
         archive_data = today + dateutil.relativedelta.relativedelta(months=-i)
         archive_month = calendar.month_name[archive_data.month]
 
