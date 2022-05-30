@@ -7,7 +7,7 @@ import locale
 def period_generator(request):
     today = datetime.date.today()
     periods = []
-    locale.setlocale(locale.LC_ALL, '')
+    locale.setlocale(locale.LC_ALL, '')  # перевод названий месяцев на русский язык
     for i in range(13):
         archive_data = today + dateutil.relativedelta.relativedelta(months=-i)
         archive_month = calendar.month_name[archive_data.month]
