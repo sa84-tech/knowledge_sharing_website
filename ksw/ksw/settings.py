@@ -92,6 +92,7 @@ TEMPLATES = [
                 'social_django.context_processors.login_redirect',
                 'mainapp.context_processors.menu',
                 'mainapp.context_processors.top4',
+                'mainapp.context_processors.archive_peroids',
             ],
         },
     },
