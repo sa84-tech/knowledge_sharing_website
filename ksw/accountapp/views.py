@@ -8,6 +8,7 @@ from django.template.loader import render_to_string
 from django.urls import reverse, reverse_lazy
 from django.views.generic import TemplateView, FormView
 
+from mainapp.services.notifications import get_filtered_notifications
 from .forms import PostForm
 from .services import post_save, get_filtered_posts, get_filtered_comments, get_filtered_bookmarks, check_user
 from authapp.forms import WriterUserEditForm, WriterUserProfileForm, PasswordChangeForm, EmailChangeForm
@@ -150,15 +151,9 @@ class NotificationsView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(NotificationsView, self).get_context_data(**kwargs)
-        comments = get_filtered_comments(self.request)
-        context.update({'comments': comments, 'target_user': self.request.user})
+        notifications = get_filtered_notifications(self.request)
+        context.update({'notifications': notifications, 'target_user': self.request.user})
         return context
-
-    # def get(self, request, *args, **kwargs):
-    #     context = self.get_context_data(edit_form=WriterUserEditForm(instance=request.user),
-    #                                     profile_form=WriterUserProfileForm(instance=request.user.writeruserprofile),
-    #                                     **kwargs)
-    #     return self.render_to_response(context)
 
 
 def settings_success(request, page):

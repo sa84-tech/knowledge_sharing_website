@@ -1,4 +1,5 @@
 import json
+import calendar
 
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
@@ -11,6 +12,7 @@ from authapp.models import WriterUserProfile
 from .forms import CommentForm, ContentForm
 from .models import Post, Comment
 from .services.queries import get_user_rating, create_comment, create_post_view, toggle_content_object
+
 
 POSTS_PER_PAGE = 5
 
@@ -110,3 +112,25 @@ def search(request):
 
 def help_doc(request):
     return render(request, "mainapp/help.html")
+
+
+def archive_filter(request, year, month):
+
+    """Принимает число год и месяц с кнопок блока архива на боковой панели сайта,
+    возвращает список всех статей, отсортированных по дате создания, в диапазоне месяца и выбранного года"""
+
+    posts = Post.objects.filter(status__name='published',
+                                created__year=year,
+                                created__month=month)  # фильтрация по дате и статусу публикации
+
+    paginator = Paginator(posts, POSTS_PER_PAGE)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    context = {
+        'posts': posts,
+        'page_obj': page_obj,
+        'title': 'Архив',
+    }
+
+    return render(request, "mainapp/index.html", context)

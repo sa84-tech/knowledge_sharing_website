@@ -2,12 +2,13 @@ from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelatio
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.conf import settings
+from django.db.models.signals import post_save
 from django.shortcuts import reverse
 from ckeditor_uploader.fields import RichTextUploadingField
 
 from accountapp.models import Bookmark
 from .services.images import crop_rect
-
+from .services.notifications import post_signal_handler, comment_signal_handler
 
 WIDTH_TO_HEIGHT_RATIO = 0.72
 
@@ -262,3 +263,7 @@ class Post(models.Model):
         verbose_name = 'Статья'
         verbose_name_plural = 'Статьи'
         ordering = ['-created']
+
+
+post_save.connect(post_signal_handler, sender=Post)
+post_save.connect(comment_signal_handler, sender=Comment)

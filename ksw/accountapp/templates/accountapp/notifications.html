@@ -39,9 +39,10 @@
                 </div>
             </div>
 
-            <div class="mt-3">
-                    {% include 'accountapp/includes/inc_account_comments.html' %}
-<!--                    {% include 'accountapp/includes/inc_settings_notifications.html' %}-->
+            <div class="notifications mt-3">
+                {% for notice in notifications %}
+                    {% include 'accountapp/includes/inc_notice.html' %}
+                {% endfor %}
             </div>
         </div>
     </div>

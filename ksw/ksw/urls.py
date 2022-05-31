@@ -20,7 +20,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 import notifications.urls
 
-from mainapp.views import index_page, post_page, add_mark_ajax, search, add_comment_ajax, help_doc
+from mainapp.views import index_page, post_page, add_mark_ajax, search, add_comment_ajax, help_doc, archive_filter
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -35,5 +35,6 @@ urlpatterns = [
     path('account/', include('accountapp.urls', namespace='account'), name='account'),
     path('', include('social_django.urls', namespace='social')),
     path('search/', search, name='search'),
+    path('archive/<int:year>/<int:month>/', archive_filter, name='archive'),
     url('^inbox/notifications/', include(notifications.urls, namespace='notifications')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
