@@ -35,6 +35,8 @@
 
         {% if user.is_authenticated %}
 
+        {% include 'mainapp/includes/inc_header_notify.html' %}
+
         <div class="ms-1 dropdown text-end d-flex align-items-center">
           <a
             href="#"
@@ -46,9 +48,7 @@
             style="min-height: 1.8rem;"
           >
             <i class="fa-solid fa-user fa-xl"></i>
-            <span class="position-absolute top-0 start-100 translate-middle bg-danger border border-light rounded-pill text-small px-1 ms-1 text-start">
-              {% live_notify_badge %}
-            </span>
+<!--              {% live_notify_badge badge_class="ms-1 position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" %}-->
           </a>
 
           <ul
@@ -79,11 +79,6 @@
             <li>
                 <a class="dropdown-item" href="{% url 'account:lk' user %}">
                   Личный кабинет
-                </a>
-            </li>
-            <li>
-                <a class="dropdown-item" href="{% url 'account:notifications' %}">
-                  Уведомления
                 </a>
             </li>
             {% if user.is_staff %}

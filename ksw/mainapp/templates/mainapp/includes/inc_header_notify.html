@@ -1,0 +1,70 @@
+{% load static %}
+{% load notifications_tags %}
+{% load main_extras %}
+
+<div class="dropdown custom-dropdown me-5">
+    <a
+        href="#"
+        class="d-flex align-items-center text-light text-decoration-none"
+        id="dropdownNotify"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+        data-bs-offset="0, 16"
+        style="min-height: 1.8rem;"
+    >
+        <i class="fa-regular fa-bell fa-xl"></i>
+        {% if user.notifications.unread %}
+            {% live_notify_badge badge_class="live_notify_badge ms-1 position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" %}
+        {% else %}
+            {% live_notify_badge badge_class="live_notify_badge ms-1 position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger visually-hidden" %}
+        {% endif %}
+    </a>
+    <div
+        class="dropdown-menu dropdown-menu-end px-3 shadow"
+        aria-labelledby="dropdownNotify"
+        style="position: absolute; min-width: 30rem;"
+    >
+        <div class="title-wrap d-flex align-items-center">
+            <h6 class="mb-0">УВЕДОМЛЕНИЯ</h6>
+            <a class="small mb-0 ms-auto" href="{% url 'notifications:mark_all_as_read' %}?next={{ request.path|urlencode }}">Отметить все как прочитанные</a>
+        </div>
+        <ul class="custom-notifications">
+
+            {% for notify in notifications %}
+            <li
+                {% if notify.level == 'danger' %}
+                class="unread bg-warning" style="--bs-bg-opacity: .2;"
+                {% else %}
+                class="unread bg-primary" style="--bs-bg-opacity: .1;"
+                {% endif %}
+            >
+                <div class="d-flex position-relative p-3">
+                    <img class="rounded-circle shadow-1-strong me-3"
+                        src="{% get_avatar notify.actor %}" alt="avatar"
+                        width="42" height="42" />
+                    <div>
+                        <span class="d-block fw-bold text-secondary">
+                            <a href="#" class="text-decoration-none text-secondary">
+                            {{ notify.actor.full_name }}
+                            </a>
+                        </span>
+                        <span class="text">
+                            <a href="#" class="text-decoration-none text-muted">
+                            {{ notify.description }}
+                            </a>
+                        </span>
+                    </div>
+                    {% if notify.unread %}
+                    <span role="button" class="position-absolute bottom-0 end-0 p-2 bg-danger border border-light rounded-circle me-2 mb-2"></span>
+                    {% endif %}
+                </div>
+
+            </li>
+            {% endfor %}
+        </ul>
+
+        <div class="text-center my-1">
+            <a href="{% url 'notify:notification_page' %}" class="small">Посмотреть все</a>
+        </div>
+    </div>
+</div>

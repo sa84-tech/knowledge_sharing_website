@@ -1,0 +1,99 @@
+.custom-dropdown a {
+  -webkit-transition: .3s all ease;
+  -o-transition: .3s all ease;
+  transition: .3s all ease;
+}
+
+.custom-dropdown a, a:hover {
+  text-decoration: none !important;
+}
+
+.custom-dropdown .content {
+  padding: 7rem 0;
+}
+
+.custom-dropdown .btn:active, .custom-dropdown .btn:focus {
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+  outline: none;
+}
+
+.custom-dropdown .btn.btn-custom {
+  border: 1px solid #efefef;
+}
+
+.custom-dropdown .title-wrap {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.custom-dropdown .title {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.custom-dropdown .dropdown-link {
+  color: #888;
+  display: inline-block;
+  padding-right: 0px;
+  position: relative;
+}
+
+.custom-dropdown .dropdown-link .wrap-icon {
+  font-size: 30px;
+}
+
+.custom-dropdown .dropdown-link .number {
+  width: 24px;
+  height: 24px;
+  line-height: 20px;
+  border-radius: 50%;
+  background: #007bff;
+  position: absolute;
+  font-size: 13px;
+  top: -10px;
+  right: -10px;
+  border: 2px solid #fff;
+  color: #fff;
+  text-align: center;
+}
+
+.custom-dropdown .dropdown-menu delete {
+  border: 1px solid transparent;
+  -webkit-box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.2);
+  margin-top: 10px !important;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding: 10px;
+  left: 0 !important;
+  -webkit-transition: .3s margin-top ease, .3s opacity ease, .3s visibility ease;
+  -o-transition: .3s margin-top ease, .3s opacity ease, .3s visibility ease;
+  transition: .3s margin-top ease, .3s opacity ease, .3s visibility ease;
+  max-width: 380px;
+}
+
+.custom-dropdown .dropdown-menu.active {
+  opacity: 1;
+  margin-top: 10px !important;
+}
+
+.custom-dropdown .custom-notifications {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  height: 200px;
+  overflow-y: scroll;
+  border-bottom: 1px solid #efefef;
+}
+
+.custom-dropdown .custom-notifications > li {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.custom-dropdown .custom-notifications > li:last-child {
+  margin-bottom: 0;
+}

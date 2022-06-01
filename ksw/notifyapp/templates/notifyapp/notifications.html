@@ -1,4 +1,4 @@
-{% extends 'accountapp/base.html' %}
+{% extends 'mainapp/base.html' %}
 {% load static %}
 {% load main_extras %}
 
@@ -22,7 +22,7 @@
 
 <div class="settings container content_wrapper">
     <div class="row pt-4">
-        <div class="col-12">
+        <div class="col-lg-12 col-xl-9">
 
             <div class="row g-0 bg-primary overflow-hidden flex-md-row h-md-250 position-relative shadow">
                 <div class="col p-3 text-light">
@@ -41,10 +41,11 @@
 
             <div class="notifications mt-3">
                 {% for notice in notifications %}
-                    {% include 'accountapp/includes/inc_notice.html' %}
+                    {% include 'notifyapp/includes/inc_notice.html' %}
                 {% endfor %}
             </div>
         </div>
+        {% include 'mainapp/includes/inc_sidebar.html' %}
     </div>
 </div>
 

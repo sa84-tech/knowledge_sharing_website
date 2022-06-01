@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'social_django',
     'django_countries',
     'gradeapp',
+    'notifyapp',
 ]
 
 AUTHENTICATION_BACKENDS = (
@@ -94,6 +95,7 @@ TEMPLATES = [
                 'mainapp.context_processors.menu',
                 'mainapp.context_processors.top4',
                 'mainapp.context_processors.archive_peroids',
+                'notifyapp.context_processors.get_user_notifications',
             ],
         },
     },

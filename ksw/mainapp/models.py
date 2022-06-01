@@ -8,7 +8,7 @@ from ckeditor_uploader.fields import RichTextUploadingField
 
 from accountapp.models import Bookmark
 from .services.images import crop_rect
-from .services.notifications import post_signal_handler, comment_signal_handler
+from notifyapp.notify_service import post_signal_handler, comment_signal_handler
 
 WIDTH_TO_HEIGHT_RATIO = 0.72
 

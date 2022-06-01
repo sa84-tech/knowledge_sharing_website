@@ -1,20 +1,18 @@
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import PasswordChangeView
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.template.loader import render_to_string
-from django.urls import reverse, reverse_lazy
+from django.urls import reverse_lazy
 from django.views.generic import TemplateView, FormView
 
-from mainapp.services.notifications import get_filtered_notifications
 from .forms import PostForm
 from .services import post_save, get_filtered_posts, get_filtered_comments, get_filtered_bookmarks, check_user
 from authapp.forms import WriterUserEditForm, WriterUserProfileForm, PasswordChangeForm, EmailChangeForm
 from authapp.models import WriterUser
 from authapp.forms import PassChangeForm
-from mainapp.models import Post, Comment, StatusArticle
+from mainapp.models import Post, StatusArticle
 
 
 @login_required
@@ -144,16 +142,6 @@ class EmailChangeView(LoginRequiredMixin, FormView):
                        'email_form': email_form,
                        'page': 'email'}
             return self.render_to_response(context)
-
-
-class NotificationsView(LoginRequiredMixin, TemplateView):
-    template_name = 'accountapp/notifications.html'
-
-    def get_context_data(self, **kwargs):
-        context = super(NotificationsView, self).get_context_data(**kwargs)
-        notifications = get_filtered_notifications(self.request)
-        context.update({'notifications': notifications, 'target_user': self.request.user})
-        return context
 
 
 def settings_success(request, page):

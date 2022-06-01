@@ -1,0 +1,29 @@
+{% load static %}
+{% load main_extras %}
+
+<div class="row g-0 bg-white overflow-hidden flex-md-row mb-3 h-md-250 position-relative shadow">
+    <div class="col p-3 pt-2 d-flex flex-column">
+
+        <a href="#" class="h5 nav-link p-0 text-muted">
+            {{ notice.verb }}
+        </a>
+
+        <hr class="border-1 border-top border-secondary mt-0 mb-3">
+
+        <div class="mb-4">
+            {{ notice.description|linebreaksbr }}
+        </div>
+
+        <div class="mb-3">
+            <a
+                class="btn btn-outline-primary btn-sm me-3"
+                type="button"
+                href="#"
+            >
+<!--            href="{% url 'post_page' notice.target.pk %}#comment-{{ notice.target.pk }}"-->
+
+            Перейти
+        </a>
+        </div>
+    </div>
+</div>
