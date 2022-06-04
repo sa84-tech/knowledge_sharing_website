@@ -33,5 +33,5 @@ urlpatterns = [
     path('account/', include('accountapp.urls', namespace='account'), name='account'),
     path('', include('social_django.urls', namespace='social')),
     path('search/', search, name='search'),
-    path('search_ajax/', search_ajax, name='search_ajax')
+    path('search/sorting/', search_ajax, name='search_ajax')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

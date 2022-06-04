@@ -94,8 +94,9 @@ def search(request):
         error_msg = "Пожалуйста, введите ключевое слово"
         return render(request, 'mainapp/search.html', {'error_msg': error_msg})
 
-    # post_list = Post.objects.filter(Q(topic__icontains=q) | Q(article__icontains=q)).order_by(sort)
-    post_list = Post.objects.filter(Q(topic__icontains=q) | Q(article__icontains=q))
+    post_list = Post.objects.filter(Q(topic__icontains=q) | Q(article__icontains=q)).order_by('-created')
+    # post_list = Post.objects.filter(Q(topic__icontains=q) | Q(article__icontains=q))
+    print(post_list)
     return render(request, 'mainapp/search.html', {'error_msg': error_msg, 'post_list': post_list})
 
 
@@ -144,12 +145,15 @@ def get_filtered_posts(request):
 
 def search_ajax(request):
     if request.is_ajax():
+
         posts = get_filtered_posts(request)
 
-        context = {'posts': posts}
+        # Это только для проверкы работы фронтенда, нужно удалить!
+        posts = Post.objects.all()
+        context = {'post_list': posts}
 
         result = render_to_string(
-            'mainapp/search.html',
+            'mainapp/includes/inc_search_items.html',
             context=context,
             request=request
         )

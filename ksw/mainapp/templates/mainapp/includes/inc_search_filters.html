@@ -1,95 +1,6 @@
 <hr class="border-1 border-top border-secondary m-0">
 
 <div id="filter-btn-group" class="d-flex m-0 py-0 px-3 bg-white">
-    <div class="tab-content">
-        <div id="f-pills-posts" class="switchable-tab tab-pane fade show active">
-            <div class="dropdown me-3">
-                <button
-                    id="filter-posts-status"
-                    class="btn btn-sm dropdown-toggle opacity-75"
-                    type="button" data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                >
-                    Статус
-                </button>
-
-                <ul class="posts dropdown-menu shadow" aria-labelledby="filter-btn-posts">
-                    <li>
-                        <button id="filter-posts-all" data-filter="all" type="button" class="filters dropdown-item active">
-                            Все
-                        </button>
-                    </li>
-                    <li>
-                        <button id="filter-posts-published" data-filter="published" type="button" class="filters dropdown-item">
-                            Опубликовано
-                        </button>
-                    </li>
-                    <li>
-                        <button id="filter-posts-draft" data-filter="draft" type="button" class="filters dropdown-item">
-                            Черновик
-                        </button>
-                    </li>
-                    <li>
-                        <button id="filter-posts-check" data-filter="under_review" type="button" class="filters dropdown-item">
-                            На проверке
-                        </button>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <div id="f-pills-bookmarks" class="switchable-tab tab-pane fade">
-            <div class="dropdown">
-                <button
-                    id="filter-btn-bookmarks"
-                    class="btn btn-sm dropdown-toggle opacity-75"
-                    type="button" data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                >
-                    Тип
-                </button>
-
-                <ul class="bookmarks dropdown-menu shadow" aria-labelledby="filter-btn-bookmarks">
-                    <li>
-                        <button id="filter-bookmarks-post" class="filters dropdown-item active" type="button" data-filter="post">
-                            Публикации
-                        </button>
-                    </li>
-                    <li>
-                        <button id="filter-bookmarks-comment" class="filters dropdown-item" type="button" data-filter="comment">
-                            Комментарии
-                        </button>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-        <div id="f-pills-subscriptions" class="switchable-tab tab-pane fade">
-            <div class="dropdown">
-                <button
-                    id="filter-btn-subscriptions"
-                    class="btn btn-sm dropdown-toggle opacity-75"
-                    type="button" data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                >
-                    Все подряд
-                </button>
-
-                <ul class="dropdown-menu shadow" aria-labelledby="filter-btn-subscriptions">
-                    <li>
-                        <button id="filter-subscriptions-post" class="filters dropdown-item" type="button" data-filter="post">
-                            Статья
-                        </button>
-                    </li>
-                    <li>
-                        <button id="filter-subscriptions-comment" class="filters dropdown-item" type="button" data-filter="comment">
-                            Комментарий
-                        </button>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-
     <div class="dropdown ">
         <button
             id="filter-posts-type"
@@ -109,6 +20,11 @@
             <li>
                 <button id="filter-posts-old" type="button" data-sorting="created" class="sorting dropdown-item">
                     сначала старые
+                </button>
+            </li>
+            <li>
+                <button id="filter-posts-rating" type="button" data-sorting="rating" class="sorting dropdown-item">
+                    по рейтингу
                 </button>
             </li>
             <li>
