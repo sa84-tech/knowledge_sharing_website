@@ -18,8 +18,7 @@ from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 
-from mainapp.views import index_page, post_page, add_comment, content_btn_handler, search, help_doc
-
+from mainapp.views import index_page, post_page, add_comment, content_btn_handler, search, help_doc, search_ajax
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -34,4 +33,5 @@ urlpatterns = [
     path('account/', include('accountapp.urls', namespace='account'), name='account'),
     path('', include('social_django.urls', namespace='social')),
     path('search/', search, name='search'),
+    path('search_ajax/', search_ajax, name='search_ajax')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

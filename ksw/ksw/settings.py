@@ -190,12 +190,16 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = env('GOOGLE_APP_ID')
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = env('GOOGLE_API_SECRET')
 
 # Email settings
+if DEBUG:
+    EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+    EMAIL_FILE_PATH = 'tmp/email-messages/'
+else:
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
-EMAIL_HOST = 'localhost'
-EMAIL_PORT = '25'
-EMAIL_HOST_USER = 'admin@ksw.local'
-EMAIL_HOST_PASSWORD = 'admin'
+
+EMAIL_HOST = 'smtp.mail.ru'
+EMAIL_PORT = '2525'
+EMAIL_HOST_USER = env('EMAIL_SEND_USER')
+EMAIL_HOST_PASSWORD = env('EMAIL_SEND_USER_PASS')
+EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
-
-EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
-EMAIL_FILE_PATH = 'tmp/email-messages/'
