@@ -7,9 +7,9 @@ from django.dispatch import receiver
 from django.utils.timezone import now
 from django_countries.fields import CountryField
 
-from mainapp.models import Like, Comment, Post
+# from mainapp.models import Like, Comment, Post
 from mainapp.services.images import crop_square
-
+# from authapp.services.queries import get_user_rating, get_user_activity
 
 AVATAR_SIZE = 200
 
@@ -40,7 +40,6 @@ class WriterUser(AbstractUser):
 
     @property
     def status(self):
-        print('DATETIME: ', datetime.now() - self.date_joined)
         if self.is_superuser:
             return 'суперпользователь'
         if self.is_staff:
@@ -75,22 +74,3 @@ class WriterUserProfile(models.Model):
     @receiver(post_save, sender=WriterUser)
     def save_user_profile(sender, instance, **kwargs):
         instance.writeruserprofile.save()
-
-    @property
-    def activity(self):
-        return 2 * Like.objects.filter(author=self.user).count() + \
-               5 * Comment.objects.filter(author=self.user).count() + \
-               10 * Post.objects.filter(author=self.user).count()
-
-    @property
-    def rating(self):
-        idx = 0
-        for post in Post.objects.filter(author=self.user, status__name='published'):
-            idx += post.like.count() + post.comment.count()
-        return idx
-
-    @classmethod
-    def get_most_rated(cls, count=4):
-        users = [{'item': item, 'rating': item.rating} for item in cls.objects.all()]
-        max_rated_users = sorted(users, key=lambda x: x['rating'], reverse=True)[:4]
-        return [x['item'] for x in max_rated_users]

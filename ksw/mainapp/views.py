@@ -1,23 +1,24 @@
 import json
-import calendar
 
-from django.contrib.auth.decorators import login_required
 from django.db.models import Q
-from django.http import JsonResponse
-from django.shortcuts import render, get_object_or_404, redirect
+from django.http import JsonResponse, Http404
+from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator
 from django.template.loader import render_to_string
 
+from accountapp.services import check_user
 from authapp.models import WriterUserProfile
 from .forms import CommentForm, ContentForm
 from .models import Post, Comment
-from .services.queries import get_user_rating, create_comment, create_post_view, toggle_content_object
+from .services.queries import create_comment, create_post_view, toggle_content_object, get_user_rating, \
+    get_user_activity
 
 
 POSTS_PER_PAGE = 5
 
 
 def index_page(request, category_id=0, slug=None):
+    """Открыть Главную страницу"""
     posts = Post.objects.filter(status__name='published')
     if slug:
         posts = posts.filter(category__slug=slug)
@@ -36,9 +37,14 @@ def index_page(request, category_id=0, slug=None):
 
 
 def post_page(request, pk):
-
+    """Открыть страницу статьи"""
     post = get_object_or_404(Post, pk=pk)
-    author_info = get_object_or_404(WriterUserProfile, user=post.author)
+
+    if post.status != 'published' and not check_user(request, post.author):
+        raise Http404
+
+    author_info = {'rating': get_user_rating(post.author),
+                   'activity': get_user_activity(post.author)}
     create_post_view(post, request.user)
 
     context = {
@@ -51,6 +57,7 @@ def post_page(request, pk):
 
 
 def add_comment_ajax(request):
+    """Создать комментарий"""
     if request.is_ajax():
         if request.user.is_authenticated:
             form = CommentForm(json.loads(request.body))
@@ -79,6 +86,7 @@ def add_comment_ajax(request):
 
 
 def add_mark_ajax(request):
+    """Создать метку (Лайк, Закладка)"""
     if request.is_ajax():
         if request.user.is_authenticated:
             form = ContentForm(json.loads(request.body))
@@ -99,6 +107,7 @@ def add_mark_ajax(request):
 
 
 def search(request):
+    """Открыть страницу поиска"""
     q = request.GET.get('q')
     error_msg = ''
 
@@ -111,11 +120,11 @@ def search(request):
 
 
 def help_doc(request):
+    """Открыть страницу Помощь"""
     return render(request, "mainapp/help.html")
 
 
 def archive_filter(request, year, month):
-
     """Принимает число год и месяц с кнопок блока архива на боковой панели сайта,
     возвращает список всех статей, отсортированных по дате создания, в диапазоне месяца и выбранного года"""
 

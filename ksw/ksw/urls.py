@@ -18,7 +18,7 @@ from django.urls import path, include
 from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
-import notifications.urls
+# import notifications.urls
 
 from mainapp.views import index_page, post_page, add_mark_ajax, search, add_comment_ajax, help_doc, archive_filter
 
@@ -36,6 +36,5 @@ urlpatterns = [
     path('', include('social_django.urls', namespace='social')),
     path('search/', search, name='search'),
     path('archive/<int:year>/<int:month>/', archive_filter, name='archive'),
-    path('notifications/', include('notifyapp.urls', namespace='notify'), name='notify'),
-    url('^inbox/notifications/', include(notifications.urls, namespace='notifications')),
+    path('notifications/', include('notifyapp.urls', namespace='notifications'), name='notifications'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

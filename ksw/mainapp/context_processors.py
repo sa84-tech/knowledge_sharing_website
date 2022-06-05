@@ -1,6 +1,6 @@
 from mainapp.models import Category
-from authapp.models import WriterUserProfile
 from mainapp.services.period_generator import period_generator
+from mainapp.services.queries import get_most_rated
 
 
 def menu(request):
@@ -9,7 +9,7 @@ def menu(request):
 
 
 def top4(request):
-    top_four = WriterUserProfile.get_most_rated(4)
+    top_four = get_most_rated()
     return {'most_rated_users': top_four}
 
 

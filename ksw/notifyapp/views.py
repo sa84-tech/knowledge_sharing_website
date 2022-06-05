@@ -1,12 +1,12 @@
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.paginator import Paginator
+from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.http import JsonResponse
+from django.template.loader import render_to_string
 from django.utils.decorators import method_decorator
-from django.views.decorators.cache import never_cache
 from django.views.generic import ListView
 
-from notifyapp.notify_service import get_filtered_notifications
+from mainapp.services.decorators import require_ajax_and_auth
+from notifyapp.notify_services import get_filtered_notifications, mark_notification_as_read, get_notification_list
 
 
 class NotificationsViewList(ListView):
@@ -23,8 +23,41 @@ class NotificationsViewList(ListView):
             request, *args, **kwargs)
 
 
-@never_cache
+@require_ajax_and_auth
 def mark_all_as_read_ajax(request):
-    if request.user.is_authenticated:
-        request.user.notifications.mark_all_as_read()
+    request.user.notifications.mark_all_as_read()
     return JsonResponse({'success': True})
+
+
+@require_ajax_and_auth
+def mark_as_read_ajax(request):
+    """Меняет состояние уведомления на Прочитано"""
+
+    notification_id = request.GET.get('id')
+    try:
+        mark_notification_as_read(request.user, notification_id)
+        return JsonResponse({'success': True})
+    except (ObjectDoesNotExist, MultipleObjectsReturned):
+        return JsonResponse({'status': 'false', 'message': 'Bad request'}, status=400)
+
+
+@require_ajax_and_auth
+def get_unread_notification_list(request):
+    """Получить список непрочитанных уведомлений пользователя request.user"""
+
+    num_to_fetch = 50
+    template = 'mainapp/includes/inc_header_notification_items.html'
+    notifications = request.user.notifications.unread()[0:num_to_fetch]
+
+    unread_list_html = render_to_string(
+        template,
+        context={'notifications': notifications},
+        request=request)
+
+    data = {
+        'unread_count': request.user.notifications.unread().count(),
+        'unread_list_html': unread_list_html,
+        'unread_list': get_notification_list(notifications),
+    }
+
+    return JsonResponse(data)

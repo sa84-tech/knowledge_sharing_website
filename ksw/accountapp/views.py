@@ -7,6 +7,7 @@ from django.template.loader import render_to_string
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, FormView
 
+from mainapp.services.queries import get_user_rating, get_user_activity
 from .forms import PostForm
 from .services import post_save, get_filtered_posts, get_filtered_comments, get_filtered_bookmarks, check_user
 from authapp.forms import WriterUserEditForm, WriterUserProfileForm, PasswordChangeForm, EmailChangeForm
@@ -18,7 +19,9 @@ from mainapp.models import Post, StatusArticle
 @login_required
 def account(request, username):
     user = get_object_or_404(WriterUser, username=username)
-    return render(request, "accountapp/account.html", {'target_user': user})
+    user_info = {'rating': get_user_rating(user),
+                 'activity': get_user_activity(user)}
+    return render(request, "accountapp/account.html", {'target_user': user, 'user_info': user_info})
 
 
 @login_required

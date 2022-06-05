@@ -33,43 +33,33 @@
                 </div>
             </div>
 
-            <div class="row g-0 bg-white overflow-hidden flex-md-row mb-1 h-md-250 position-relative shadow overflow-visible">
+            <div class="row g-0 bg-white overflow-hidden flex-md-row mb-1 h-md-250 position-relative shadow overflow-visible mb-2">
                 <div class="" role="presentation">
-                    {% include 'accountapp/includes/inc_account_filters.html' %}
+                    {% include 'notifyapp/includes/inc_notification_filters.html' %}
                 </div>
             </div>
 
-            <div class="notifications mt-3">
-                {% for notice in notifications %}
+            <ul class="content-list p-0 list-unstyled">
+
+                {% for notification in notifications %}
                     {% include 'notifyapp/includes/inc_notice.html' %}
+                {% empty %}
+                <li>
+                    <div class="p-3" style="--bs-bg-opacity: .1;">
+                        У вас нет непрочитанных уведомлений.
+                    </div>
+                </li>
                 {% endfor %}
-            </div>
+
+            </ul>
+
         </div>
         {% include 'mainapp/includes/inc_sidebar.html' %}
-    </div>
-</div>
-
-<div class="position-absolute bottom-0 end-0 p-5" style="z-index: 11">
-    <div class="toast align-items-center text-white bg-danger border-0 {% if 'success' in page %} showSuccess {% endif %}"
-         data-bs-animation="true" data-bs-autohide="true" data-bs-delay="5000"
-         role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="d-flex">
-            <div class="toast-body fs-5">
-                {% if 'profile' in page %}
-                Данные пользователя успешно обновлены.
-                {% elif 'email' in page %}
-                Email пользователя успешно обновлен.
-                {% elif 'password' in page %}
-                Пароль пользователя успешно обновлен.
-                {% endif %}
-            </div>
-            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Закрыть"></button>
-        </div>
     </div>
 </div>
 
 {% endblock %}
 
 {% block script %}
-    <script src="{% static 'js/settings.js' %}"></script>
+    <script src="{% static 'js/notification_page.js' %}"></script>
 {% endblock %}

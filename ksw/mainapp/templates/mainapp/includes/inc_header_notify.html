@@ -2,7 +2,7 @@
 {% load notifications_tags %}
 {% load main_extras %}
 
-<div class="dropdown custom-dropdown me-5">
+<div class="notification-block dropdown custom-dropdown ms-2 me-4">
     <a
         href="#"
         class="d-flex align-items-center text-light text-decoration-none"
@@ -26,45 +26,17 @@
     >
         <div class="title-wrap d-flex align-items-center">
             <h6 class="mb-0">УВЕДОМЛЕНИЯ</h6>
-            <a class="small mb-0 ms-auto" href="{% url 'notifications:mark_all_as_read' %}?next={{ request.path|urlencode }}">Отметить все как прочитанные</a>
+            <a class="mark-all-as-read small mb-0 ms-auto" href="{% url 'notifications:mark_all_as_read' %}">Отметить все как прочитанные</a>
+{#            <a class="small mb-0 ms-auto" href="{% url 'notifications:mark_all_as_read' %}?next={{ request.path|urlencode }}">Отметить все как прочитанные</a> #}
         </div>
-        <ul class="custom-notifications">
 
-            {% for notify in notifications %}
-            <li
-                {% if notify.level == 'danger' %}
-                class="unread bg-warning" style="--bs-bg-opacity: .2;"
-                {% else %}
-                class="unread bg-primary" style="--bs-bg-opacity: .1;"
-                {% endif %}
-            >
-                <div class="d-flex position-relative p-3">
-                    <img class="rounded-circle shadow-1-strong me-3"
-                        src="{% get_avatar notify.actor %}" alt="avatar"
-                        width="42" height="42" />
-                    <div>
-                        <span class="d-block fw-bold text-secondary">
-                            <a href="#" class="text-decoration-none text-secondary">
-                            {{ notify.actor.full_name }}
-                            </a>
-                        </span>
-                        <span class="text">
-                            <a href="#" class="text-decoration-none text-muted">
-                            {{ notify.description }}
-                            </a>
-                        </span>
-                    </div>
-                    {% if notify.unread %}
-                    <span role="button" class="position-absolute bottom-0 end-0 p-2 bg-danger border border-light rounded-circle me-2 mb-2"></span>
-                    {% endif %}
-                </div>
-
-            </li>
-            {% endfor %}
+        <ul class="custom-notifications live_notify_list">
+            {% include 'mainapp/includes/inc_header_notification_items.html' %}
         </ul>
 
         <div class="text-center my-1">
-            <a href="{% url 'notify:notification_page' %}" class="small">Посмотреть все</a>
+        <a href="{% url 'notifications:notification_page' %}" class="small">Посмотреть все</a>
         </div>
+
     </div>
 </div>

@@ -1,33 +1,45 @@
-'use strict';
+const filters_btn_block = "#filter-btn-group";
+const notification_list = ".content-list";
 
-const notification_block = ".notification-block";
-const notify_menu_class = ".live_notify_list";
-const notify_badge_class = '.live_notify_badge';
-
-const apiUrls = {
+const notificationApiUrls = {
     unread_list_url: '/notifications/get-unread-list',
     mark_read_url: '/notifications/mark-as-read',
     mark_all_read_url: '/notifications/mark-all-as-read',
 }
 
-const notifications = {
-    notificationBlock: {},
+const notifications_list_page = {
+    filtersBtnBlock: {},
     contentBlock: {},
     notifyBadge: {},
     apiUrls: {},
-    notification_update_period: 15 * 1000,
 
-    init(notificationBlock, contentBlock, notifyBadge, apiUrl) {
-        this.notificationBlock = document.querySelector(notificationBlock);
-        this.contentBlock = document.querySelector(contentBlock);
-        this.notifyBadge = document.querySelector(notifyBadge);
+    init(filtersBtnBlock, notificationList, apiUrls) {
+        this.contentBlock = document.querySelector(notificationList);
+        this.filtersBtnBlock = document.querySelector(filtersBtnBlock);
         this.apiUrls = apiUrls;
-        this.notificationBlock.addEventListener('click', this.onContentBlockClicked.bind(this));
-        this.fetchNotifications();
+        this.filtersBtnBlock.addEventListener('click', this.onFiltersBlockClicked.bind(this));
+        this.contentBlock.addEventListener('click', this.onContentBlockClicked.bind(this));
     },
 
     onContentBlockClicked(e) {
-        console.log(e.target)
+        console.log('CONTENT BLOCK CLICKED', e.target)
+        if (e.target.classList.contains('follow-notification-target')) {
+            e.preventDefault();
+            const notificationId = e.target.dataset.target;
+            this.followTargetUrl(notificationId, e.target);
+        }
+        else if (e.target.classList.contains('mark-all-as-read')) {
+            e.preventDefault();
+            this.markAllNotificationRead();
+        }
+        else if (e.target.classList.contains('mark-read')) {
+            const notificationId = e.target.dataset.target;
+            this.markNotificationRead(notificationId, e.target);
+        }
+    },
+
+    onFiltersBlockClicked(e) {
+        console.log('FILTERS BLOCK CLICKED', e.target)
         if (e.target.classList.contains('follow-notification-target')) {
             e.preventDefault();
             const notificationId = e.target.dataset.target;
@@ -146,5 +158,5 @@ const notifications = {
 }
 
 document.addEventListener('DOMContentLoaded', function (event) {
-    notifications.init(notification_block, notify_menu_class, notify_badge_class, apiUrls);
+    notifications_list_page.init(filters_btn_block, notification_list, notificationApiUrls);
 });

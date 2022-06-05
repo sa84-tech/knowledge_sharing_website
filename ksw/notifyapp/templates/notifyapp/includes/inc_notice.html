@@ -1,29 +1,42 @@
 {% load static %}
 {% load main_extras %}
 
-<div class="row g-0 bg-white overflow-hidden flex-md-row mb-3 h-md-250 position-relative shadow">
-    <div class="col p-3 pt-2 d-flex flex-column">
+<li class="bg-white flex-md-row mb-2 position-relative shadow">
+    {% if notification.level == 'danger' %}
+    <div class="bg-danger d-flex position-relative p-3" style="--bs-bg-opacity: .3;">
+    {% else %}
+    <div class="d-flex position-relative p-3">
+    {% endif %}
 
-        <a href="#" class="h5 nav-link p-0 text-muted">
-            {{ notice.verb }}
-        </a>
-
-        <hr class="border-1 border-top border-secondary mt-0 mb-3">
-
-        <div class="mb-4">
-            {{ notice.description|linebreaksbr }}
+        <img class="rounded-circle shadow-1-strong me-3"
+            src="{% get_avatar notification.actor %}" alt="avatar"
+            width="42" height="42" />
+        <div>
+            <span class="">
+                <a href="{{ notification.data.target_url }}" class="text-decoration-none text-secondary">
+                {{ notification.description }}
+                </a>
+            </span>
+            <span class="text-muted text-small d-block">
+                <a href="{{ notification.data.target_url }}" class="text-decoration-none text-muted">
+                {{ notification.timesince }} назад
+                </a>
+            </span>
         </div>
-
-        <div class="mb-3">
-            <a
-                class="btn btn-outline-primary btn-sm me-3"
-                type="button"
-                href="#"
-            >
-<!--            href="{% url 'post_page' notice.target.pk %}#comment-{{ notice.target.pk }}"-->
-
-            Перейти
-        </a>
-        </div>
+        {% if notification.unread %}
+        <span role="button" class="position-absolute bottom-0 end-0 me-2 mb-2"><i class="fa-solid text-danger fa-xs fa-circle" style="pointer-events: none;"></i></span>
+        {% else %}
+        <span role="button" class="position-absolute bottom-0 end-0 me-2 mb-2"><i class="fa-regular text-danger fa-xs fa-circle" style="pointer-events: none;"></i></span>
+        {% endif %}
+        <span
+            role="button"
+            class="position-absolute top-0 end-0 p-1 bg-light me-2 mb-2 dropdown"
+            style="--bs-bg-opacity: 0;"
+            data-bs-toggle="dropdown" aria-expanded="false"
+        ><i class="fa-solid text-secondary fa-xl opacity-50 fa-ellipsis" style="pointer-events: none;"></i></span>
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="post_dropdown">
+            <li class="text-decoration-none"><a class="dropdown-item" href="№">Перейти</a></li>
+            <li class="text-decoration-none"><a class="dropdown-item" href="№">Удалить</a></li>
+        </ul>
     </div>
-</div>
+</li>
