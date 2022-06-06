@@ -1,5 +1,4 @@
 {% load static %}
-{% load main_extras %}
 
 <!DOCTYPE html>
 <html lang="ru">
@@ -26,6 +25,10 @@
         <script>
             document.querySelector("#year").innerHTML = new Date().getFullYear();
         </script>
+        {% if user.is_authenticated %}
+        <script src="{% static 'js/notification_header.js' %}" type="text/javascript"></script>
+        {% endif %}
+
         {% block script %}{% endblock %}
     </body>
 </html>

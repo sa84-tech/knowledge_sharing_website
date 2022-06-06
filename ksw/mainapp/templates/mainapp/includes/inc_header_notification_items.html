@@ -4,6 +4,7 @@
 
 {% for notify in notifications %}
 <li
+    id="header-notification-{{ notify.id }}"
     {% if notify.level == 'danger' %}
     class="unread bg-warning" style="--bs-bg-opacity: .2;"
     {% else %}

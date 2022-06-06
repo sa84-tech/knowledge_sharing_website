@@ -27,7 +27,6 @@ const notifications = {
     },
 
     onContentBlockClicked(e) {
-        console.log(e.target)
         if (e.target.classList.contains('follow-notification-target')) {
             e.preventDefault();
             const notificationId = e.target.dataset.target;
@@ -134,7 +133,7 @@ const notifications = {
         try {
             const response = await fetch(url, options);
             if (!response.ok) {
-                throw new Error(response);
+                throw new Error(response.statusText);
             }
             const data = await response.json();
             return data;

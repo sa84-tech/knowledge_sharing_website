@@ -1,12 +1,14 @@
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
 from django.template.loader import render_to_string
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView
+from notifications.models import Notification
 
 from mainapp.services.decorators import require_ajax_and_auth
-from notifyapp.notify_services import get_filtered_notifications, mark_notification_as_read, get_notification_list
+from notifyapp.notify_services import mark_notification_as_read, get_notification_list
 
 
 class NotificationsViewList(ListView):
@@ -26,7 +28,11 @@ class NotificationsViewList(ListView):
 @require_ajax_and_auth
 def mark_all_as_read_ajax(request):
     request.user.notifications.mark_all_as_read()
-    return JsonResponse({'success': True})
+    list_html = render_to_string(
+        'notifyapp/includes/inc_notification_items.html',
+        context={'notifications': request.user.notifications.all()},
+        request=request)
+    return JsonResponse({'success': True, 'list_html': list_html})
 
 
 @require_ajax_and_auth
@@ -39,6 +45,16 @@ def mark_as_read_ajax(request):
         return JsonResponse({'success': True})
     except (ObjectDoesNotExist, MultipleObjectsReturned):
         return JsonResponse({'status': 'false', 'message': 'Bad request'}, status=400)
+
+
+@require_ajax_and_auth
+def delete_ajax(request):
+    """Меняет состояние уведомления на Прочитано"""
+
+    notification_id = request.GET.get('id')
+    notification = get_object_or_404(Notification, recipient=request.user, id=notification_id)
+    notification.delete()
+    return JsonResponse({'success': True})
 
 
 @require_ajax_and_auth

@@ -56,7 +56,6 @@ INSTALLED_APPS = [
     'django_countries',
     'gradeapp',
     'notifyapp',
-    'django_extensions'
 ]
 
 AUTHENTICATION_BACKENDS = (

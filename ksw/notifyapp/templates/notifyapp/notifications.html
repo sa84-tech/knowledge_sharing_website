@@ -1,4 +1,4 @@
-{% extends 'mainapp/base.html' %}
+{% extends 'notifyapp/base.html' %}
 {% load static %}
 {% load main_extras %}
 
@@ -32,25 +32,16 @@
                     </h1>
                 </div>
             </div>
-
             <div class="row g-0 bg-white overflow-hidden flex-md-row mb-1 h-md-250 position-relative shadow overflow-visible mb-2">
                 <div class="" role="presentation">
+                    {% comment %}
                     {% include 'notifyapp/includes/inc_notification_filters.html' %}
+                    {% endcomment %}
                 </div>
             </div>
 
             <ul class="content-list p-0 list-unstyled">
-
-                {% for notification in notifications %}
-                    {% include 'notifyapp/includes/inc_notice.html' %}
-                {% empty %}
-                <li>
-                    <div class="p-3" style="--bs-bg-opacity: .1;">
-                        У вас нет непрочитанных уведомлений.
-                    </div>
-                </li>
-                {% endfor %}
-
+                {% include 'notifyapp/includes/inc_notification_items.html' %}
             </ul>
 
         </div>
