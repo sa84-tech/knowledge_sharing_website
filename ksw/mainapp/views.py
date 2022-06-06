@@ -1,12 +1,10 @@
 import json
 
 from django.contrib.auth.decorators import login_required
-from django.core.exceptions import FieldError
 from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator
-from django.template.loader import render_to_string
 
 from authapp.models import WriterUserProfile
 from .forms import CommentForm, ContentForm
@@ -84,51 +82,19 @@ def content_btn_handler(request):
 
 
 def search(request):
-    q = request.GET.get('q')
+    query = request.GET.get('q')
+    sort = request.GET.get('sorting', '-created')
+    if sort not in ['created', '-created', 'topic', 'rating']:
+        sort = '-created'
     error_msg = ''
 
-    if not q:
+    if not query:
         error_msg = "Пожалуйста, введите ключевое слово"
         return render(request, 'mainapp/search.html', {'error_msg': error_msg})
 
-    post_list = Post.objects.filter(Q(topic__icontains=q) | Q(article__icontains=q)).order_by('-created')
+    post_list = Post.objects.filter(Q(topic__icontains=query) | Q(article__icontains=query)).order_by(sort)
 
-    return render(request, 'mainapp/search.html', {'error_msg': error_msg, 'post_list': post_list})
-
-
-def get_sorted_objects(objects, sorting_value):
-    if sorting_value in ['created', '-created', 'topic', 'name', 'rating']:
-        try:
-            return objects.order_by(sorting_value)
-        except FieldError:
-            print(' *** EXCEPTION sorting_value *** ', sorting_value)
-    return objects
-
-
-def get_filtered_posts(request):
-    posts = Post.objects.filter(status__name='published')
-
-    sorting_value = request.GET.get('sorting', '-created')
-    if sorting_value == 'name':
-        sorting_value = 'topic'
-
-    return get_sorted_objects(posts, sorting_value)
-
-
-def search_ajax(request):
-    if request.is_ajax():
-
-        posts = get_filtered_posts(request)
-
-        context = {'post_list': posts}
-
-        result = render_to_string(
-            'mainapp/includes/inc_search_items.html',
-            context=context,
-            request=request
-        )
-
-        return JsonResponse({'result': result})
+    return render(request, 'mainapp/search.html', {'error_msg': error_msg, 'post_list': post_list, 'query': query})
 
 
 def help_doc(request):

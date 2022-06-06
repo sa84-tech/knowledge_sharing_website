@@ -13,24 +13,19 @@
 
         <ul class="dropdown-menu shadow" aria-labelledby="filter-btn-posts">
             <li>
-                <button id="filter-posts-new" type="button" data-sorting="-created" class="sorting dropdown-item active">
+                <a role="button" href="{% url 'search' %}?q={{ query }}&sorting=-created" id="filter-posts-new" type="button" data-sorting="-created" class="sorting dropdown-item active">
                     сначала новые
-                </button>
+                </a>
             </li>
             <li>
-                <button id="filter-posts-old" type="button" data-sorting="created" class="sorting dropdown-item">
+                <a role="button" href="{% url 'search' %}?q={{ query|urlencode }}&sorting=created" id="filter-posts-old" type="button" data-sorting="created" class="sorting dropdown-item">
                     сначала старые
-                </button>
+                </a>
             </li>
             <li>
-                <button id="filter-posts-rating" type="button" data-sorting="rating" class="sorting dropdown-item">
-                    по рейтингу
-                </button>
-            </li>
-            <li>
-                <button id="filter-posts-title" type="button" data-sorting="name" class="sorting dropdown-item">
+                <a role="button" href="{% url 'search' %}?q={{ query|urlencode }}&sorting=topic" id="filter-posts-title" type="button" data-sorting="name" class="sorting dropdown-item">
                     по названию
-                </button>
+                </a>
             </li>
         </ul>
     </div>
