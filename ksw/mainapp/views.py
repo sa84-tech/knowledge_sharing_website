@@ -85,9 +85,6 @@ def content_btn_handler(request):
 
 def search(request):
     q = request.GET.get('q')
-    # sort = request.GET.get('order_by', '-created')
-    # if sort not in ['created', '-created', 'view', 'like']:
-    #     sort = '-created'
     error_msg = ''
 
     if not q:
@@ -95,33 +92,12 @@ def search(request):
         return render(request, 'mainapp/search.html', {'error_msg': error_msg})
 
     post_list = Post.objects.filter(Q(topic__icontains=q) | Q(article__icontains=q)).order_by('-created')
-    # post_list = Post.objects.filter(Q(topic__icontains=q) | Q(article__icontains=q))
-    print(post_list)
+
     return render(request, 'mainapp/search.html', {'error_msg': error_msg, 'post_list': post_list})
 
 
-# def search_ajax(request):
-#     if request.is_ajax():
-#         q = request.GET.get('q')
-#         sort = request.GET.get('order_by', '-created')
-#         if sort not in ['created', '-created', 'view', 'like']:
-#             sort = '-created'
-#
-#         post_list = Post.objects.filter(Q(topic__icontains=q) | Q(article__icontains=q)).order_by(sort)
-#
-#         context = {'post_list': post_list}
-#
-#         result = render_to_string(
-#             'mainapp/search.html',
-#             context=context,
-#             request=request
-#         )
-#
-#         return JsonResponse({'result': result})
-
-
 def get_sorted_objects(objects, sorting_value):
-    if sorting_value in ['created', '-created', 'topic', 'name']:
+    if sorting_value in ['created', '-created', 'topic', 'name', 'rating']:
         try:
             return objects.order_by(sorting_value)
         except FieldError:
@@ -132,13 +108,9 @@ def get_sorted_objects(objects, sorting_value):
 def get_filtered_posts(request):
     posts = Post.objects.filter(status__name='published')
 
-    filter_value = request.GET.get('filter', None)
     sorting_value = request.GET.get('sorting', '-created')
-    if sorting_value == 'rating':
-        sorting_value = 'like'
-
-    if filter_value and StatusArticle.objects.filter(name=filter_value).exists():
-        posts = posts.filter(status__name=filter_value)
+    if sorting_value == 'name':
+        sorting_value = 'topic'
 
     return get_sorted_objects(posts, sorting_value)
 
@@ -148,8 +120,6 @@ def search_ajax(request):
 
         posts = get_filtered_posts(request)
 
-        # Это только для проверкы работы фронтенда, нужно удалить!
-        posts = Post.objects.all()
         context = {'post_list': posts}
 
         result = render_to_string(

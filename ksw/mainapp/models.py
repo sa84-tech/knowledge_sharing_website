@@ -225,6 +225,12 @@ class Post(models.Model):
     def total_views(self):
         return self.view.count()
 
+    @property
+    def rating(self):
+        idx = 0
+        idx += self.like.count() + self.comment.count() + self.bookmark.count() + self.view.count() / 4
+        return idx
+
     def _get_content_obj(self, content_obj_name: str):
         content_objects = {
             'view': self.view,
