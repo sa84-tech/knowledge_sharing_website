@@ -1,0 +1,32 @@
+<hr class="border-1 border-top border-secondary m-0">
+
+<div id="filter-btn-group" class="d-flex m-0 py-0 px-3 bg-white">
+    <div class="dropdown ">
+        <button
+            id="filter-posts-type"
+            class="btn btn-sm dropdown-toggle opacity-75"
+            type="button" data-bs-toggle="dropdown"
+            aria-expanded="false"
+        >
+            Сортировка
+        </button>
+
+        <ul class="dropdown-menu shadow" aria-labelledby="filter-btn-posts">
+            <li>
+                <a role="button" href="{% url 'search' %}?q={{ query|urlencode }}&sorting=-created" id="filter-posts-new" type="button" data-sorting="-created" class="sorting dropdown-item active">
+                    сначала новые
+                </a>
+            </li>
+            <li>
+                <a role="button" href="{% url 'search' %}?q={{ query|urlencode }}&sorting=created" id="filter-posts-old" type="button" data-sorting="created" class="sorting dropdown-item">
+                    сначала старые
+                </a>
+            </li>
+            <li>
+                <a role="button" href="{% url 'search' %}?q={{ query|urlencode }}&sorting=topic" id="filter-posts-title" type="button" data-sorting="name" class="sorting dropdown-item">
+                    по названию
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>

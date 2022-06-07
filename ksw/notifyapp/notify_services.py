@@ -1,5 +1,4 @@
 from django.forms import model_to_dict
-from django.shortcuts import get_list_or_404
 from django.urls import reverse
 from notifications.models import Notification
 from notifications.signals import notify
@@ -23,8 +22,8 @@ def _get_post_url(post) -> str:
 
 def comment_signal_handler(sender, instance, created, **kwargs) -> None:
     """Обработчик события сохранения комментария. Создает объект Notification """
-    sender = instance.author
     target = instance.content_object
+    sender = instance.author
     recipient = instance.content_object.author
     level = 'info'
     verb = 'Комментарий'
@@ -35,31 +34,28 @@ def comment_signal_handler(sender, instance, created, **kwargs) -> None:
     if instance.body.startswith('@moderator'):
         level = 'danger'
         recipient = get_moderators()
-        description = f'Пользователь {instance.author.full_name} сообщил о нарушении.'
+        description = f'Пользователь {sender.full_name} сообщил о нарушении.'
 
     elif type(target).__name__ == 'Comment':
-        description = f'Пользователь {instance.author.full_name} ответил на ваш комментарий.'
+        description = f'Пользователь {sender.full_name} ответил на ваш комментарий.'
 
     elif type(target).__name__ == 'Post':
-        description = f'Пользователь {instance.author.full_name} оставил комментарий к вашей статье.'
+        description = f'Пользователь {sender.full_name} оставил комментарий к вашей статье.'
 
     notify.send(sender, recipient=recipient, level=level, target=target, verb=verb,
                 description=description, sender_avatar=avatar, target_url=target_url)
 
 
-def post_signal_handler(sender, instance, created, **kwargs):
+def post_signal_handler(sender, instance, created, **kwargs) -> None:
+    """Обработчик события сохранения Статьи (Post). Создает объект Notification """
     if instance.status.name == 'under_review':
+        sender = instance.author
         avatar = instance.author.avatar.url if instance.author.avatar else f'{MEDIA_URL}seeder/users/no_avatar.jpg'
         target_url = _get_post_url(instance)
-        notify.send(instance.author, recipient=get_moderators(), verb=f'Проверка', target=instance,
-                    description=f'Пользователь {instance.author} отправил запрос на публикацию статьи.',
+        notify.send(sender, recipient=get_moderators(), verb=f'Проверка', target=instance,
+                    description=f'Пользователь @{sender.username} ({sender.full_name}) '
+                                f'отправил запрос на публикацию статьи.',
                     sender_avatar=avatar, target_url=target_url, level='danger')
-
-
-def get_filtered_notifications(user):
-    notification = get_list_or_404(
-        Notification, recipient=user)
-    return notification
 
 
 def mark_notification_as_read(user: WriterUser, notification_id: int) -> None:
@@ -71,7 +67,6 @@ def mark_notification_as_read(user: WriterUser, notification_id: int) -> None:
 
 def get_notification_list(notifications: list[Notification]) -> list[dict]:
     """Возвращает отформатировонный список уведомлений"""
-
     notification_list = []
     for notification in notifications:
         struct = model_to_dict(notification)
