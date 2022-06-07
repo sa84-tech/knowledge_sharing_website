@@ -1,3 +1,4 @@
+{% load static %}
 {% load main_extras %}
 {% load notifications_tags %}
 
@@ -11,7 +12,7 @@
           href="/"
           class="d-flex col-12 col-lg-auto align-items-center my-2 my-lg-0 me-lg-auto text-light text-decoration-none fs-1 fw-bold"
         >
-          KSW
+          <img src="{% static 'img/logo.png' %}" alt="KSW" height="60">
         </a>
 
         <form role="search" method="get" id="searchform" action="{% url 'search' %}" class="col-12 col-lg-auto mb-3 mb-lg-0 me-5">

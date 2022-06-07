@@ -1,6 +1,6 @@
+from gradeapp.grade_services import get_most_rated
 from mainapp.models import Category
 from mainapp.services.period_generator import period_generator
-from mainapp.services.queries import get_most_rated
 
 
 def menu(request):

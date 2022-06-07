@@ -3,7 +3,21 @@
 {% load main_extras %}
 
 {% block content %}
-<div class="account container content_wrapper">
+
+<style>
+    span.point-events-none {
+        cursor: pointer;
+    }
+    .point-events-none > i {
+        pointer-events: none;
+    }
+
+    .search-page .bg-primary {
+        background-color: #3B727D !important;
+    }
+</style>
+
+<div class="search-page container content_wrapper">
     <div class="row pt-4">
         <div class="col-xl-8 col-xxl-9">
             <div class="row g-0 bg-primary overflow-hidden flex-md-row h-md-250 position-relative shadow">

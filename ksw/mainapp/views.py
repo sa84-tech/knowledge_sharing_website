@@ -8,11 +8,11 @@ from django.template.loader import render_to_string
 
 from accountapp.services import check_user
 from authapp.models import WriterUserProfile
+from gradeapp.grade_services import get_user_rating, get_user_activity
 from .forms import CommentForm, ContentForm
 from .models import Post, Comment
 from .services.decorators import require_ajax_and_auth
-from .services.queries import create_comment, create_post_view, toggle_content_object, get_user_rating, \
-    get_user_activity
+from .services.queries import create_comment, create_post_view, toggle_content_object
 
 
 POSTS_PER_PAGE = 5

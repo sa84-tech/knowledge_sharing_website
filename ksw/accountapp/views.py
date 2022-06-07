@@ -7,7 +7,7 @@ from django.template.loader import render_to_string
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, FormView
 
-from mainapp.services.queries import get_user_rating, get_user_activity
+from gradeapp.grade_services import get_user_rating, get_user_activity
 from .forms import PostForm
 from .services import post_save, get_filtered_posts, get_filtered_comments, get_filtered_bookmarks, check_user
 from authapp.forms import WriterUserEditForm, WriterUserProfileForm, PasswordChangeForm, EmailChangeForm

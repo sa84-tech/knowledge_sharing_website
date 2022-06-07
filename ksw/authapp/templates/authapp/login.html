@@ -11,7 +11,7 @@
 
             <form action="{% url 'auth:login' %}" method="post">
                 <div class="text-center mb-3 text-primary fs-1 fw-bold">
-                KSW
+                <img src="{% static 'img/logo_2.png' %}" alt="KSW" height="42">
               </div>
                 {% if login_form.non_field_errors %}
                     <p class="text-danger text-small opacity-75 text-decoration-none">
