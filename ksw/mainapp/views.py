@@ -98,15 +98,19 @@ def add_mark_ajax(request):
 
 
 def search(request):
-    q = request.GET.get('q')
+    query = request.GET.get('q')
+    sort = request.GET.get('sorting', '-created')
+    if sort not in ['created', '-created', 'topic']:
+        sort = '-created'
     error_msg = ''
 
-    if not q:
+    if not query:
         error_msg = "Пожалуйста, введите ключевое слово"
         return render(request, 'mainapp/search.html', {'error_msg': error_msg})
 
-    post_list = Post.objects.filter(Q(topic__icontains=q) | Q(article__icontains=q))
-    return render(request, 'mainapp/search.html', {'error_msg': error_msg, 'post_list': post_list})
+    post_list = Post.objects.filter(Q(topic__icontains=query) | Q(article__icontains=query)).order_by(sort)
+
+    return render(request, 'mainapp/search.html', {'error_msg': error_msg, 'post_list': post_list, 'query': query})
 
 
 def help_doc(request):

@@ -1,0 +1,66 @@
+{% load static %}
+{% load main_extras %}
+
+{% for post in post_list %}
+<div class="row g-0 bg-white overflow-hidden flex-md-row mb-3 h-md-250 position-relative shadow">
+    <div class="col p-3 pb-2 d-flex flex-column position-static">
+        <div class="d-flex mb-2 text-small align-items-center">
+            <img
+                class="rounded-circle shadow-1-strong me-3"
+                src="{% get_avatar post.author %}" alt="avatar" width="32"
+                height="32">
+                <a href="{% url 'account:lk' post.author.username %}" class="nav-link p-0 fw-bold me-2">
+                    {{ post.author.full_name|title }}
+                </a>
+            <span class="date_info text-secondary">{{ post.created }}</span>
+        </div>
+
+        <h3 class="mb-1">
+            <a href="{% url 'post_page' post.pk %}" class="nav-link p-0 text-secondary">
+                {{ post.topic|capfirst }}
+            </a>
+        </h3>
+
+        <p class="mb-4">
+            {{ post.annotation|safe }}
+        </p>
+
+        <div class="mb-2">
+            <a
+                class="btn btn-outline-primary btn-sm me-3"
+                type="button"
+                href="{% url 'post_page' post.pk %}"
+            >
+                Перейти
+            </a>
+        </div>
+
+        <div class="d-flex flex-grow-1 align-items-end text-small">
+            <span class="me-3 text-muted"><i class="me-1 text-primary opacity-75 fa-eye {% check_view post user %}"></i> {{ post.total_views }}</span>
+            <span class="me-3 text-muted"><i class="me-1 text-primary opacity-75 fa-comment {% check_comment post user %}"></i> {{ post.total_comments }}</span>
+            <span class="me-3 text-muted"><i class="me-1 text-primary opacity-75 fa-thumbs-up {% check_like post user %}"></i> {{ post.total_likes }} </span>
+            <span class="me-3 text-muted"><i class="me-1 text-primary opacity-75 fa-bookmark {% check_bookmark post user %}"></i> {{ post.total_bookmarks }}</span>
+        </div>
+
+    </div>
+
+    <div class="col-auto d-none d-lg-block p-3">
+        <img
+            src="{{ post.image.url }}"
+            class="img-fluid"
+            alt="post image"
+            width="154"
+            height="210"
+        >
+    </div>
+</div>
+
+{% empty %}
+<div class="row g-0 bg-white overflow-hidden flex-md-row mb-4 h-md-250 position-relative shadow">
+    <div class="col p-3 d-flex flex-column position-static">
+        <div class="d-flex mb-2">
+        <p>Не найдено публикаций по вашему запросу.<br>Попробуйте повторить запрос с другой формулировкой.</p>
+        </div>
+    </div>
+</div>
+{% endfor %}
