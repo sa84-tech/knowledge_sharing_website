@@ -45,7 +45,9 @@ def get_filtered_posts(request, user):
     return get_sorted_objects(posts, sorting_value)
 
 
-def get_filtered_comments(request, user):
+def get_filtered_comments(request, user=None):
+    if user is None:
+        user = request.user
     comments = Comment.objects.filter(author=user.pk)
     sorting_value = request.GET.get('sorting', '-created')
     if sorting_value == 'name':

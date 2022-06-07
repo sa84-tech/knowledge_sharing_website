@@ -6,16 +6,16 @@
             <h5 class="text-secondary mb-2">ЛУЧШИЕ БЛОГИ</h5>
             <ol class="list-unstyled">
 
-                {% for up in most_rated_users %}
+                {% for user in most_rated_users %}
                 <li class="d-flex align-items-center mb-1 rounded-3">
                     <div class="d-flex mb-3 text-small align-items-center">
 
                         <img class="rounded-circle shadow-1-strong me-3"
-                             src="{% get_avatar up.user %}" alt="avatar" width="40"
+                             src="{% get_avatar user %}" alt="avatar" width="40"
                              height="40"/>
                         <span class="author_info text-muted fw-bold me-2">
-              <a href="{% url 'account:lk' up.user.username %}" class="nav-link p-0 text-secondary text-muted">
-                {{ up.user.first_name|capfirst }} {{ up.user.last_name|capfirst }}
+              <a href="{% url 'account:lk' user.username %}" class="nav-link p-0 text-secondary text-muted">
+                {{ user.full_name|title }}
               </a>
             </span>
                     </div>

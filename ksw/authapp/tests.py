@@ -15,7 +15,7 @@ class TestAuthappSmoke(TestCase):  # в .env DEBUG=False
         self.superuser = WriterUser.objects.create_superuser('super_test', 'super_django@test.local', '123test')
         self.user = WriterUser.objects.create_user('user1_test', 'user1_django@test.local', '123test')
         self.user_with__name = WriterUser.objects.create_user('user2_test', 'user2_django@test.local', '123test',
-                                                              first_name='John', last_name='Dow')
+                                                              first_name='John', last_name='Dow', is_staff=True)
 
     def test_user_login(self):
         # доступность главной страницы для не авторизированного пользователя
@@ -54,24 +54,38 @@ class TestAuthappSmoke(TestCase):  # в .env DEBUG=False
         self.assertEqual(response.status_code, 200)
 
         for post in Post.objects.all():
-            if post.status != "draft":
+            if post.status == "published":
+                # доступность чужой опубликованной статьи для зарегистрированного пользователя
+                response = self.client.get(f'/post/{post.pk}')
+                self.assertEqual(response.status_code, 200)
+            elif post.status == "draft":
                 # доступность чужого "черновика" для зарегистрированного пользователя
                 response = self.client.get(f'/post/{post.pk}')
-                self.assertEqual(response.status_code, 200)  # ПОМЕНЯТЬ! на assertNotEqual после слива веток
-            elif post.status != 'under_review':
+                self.assertEqual(response.status_code, 404)
+            elif post.status == 'under_review':
                 # доступность чужой "статьи на модерации" для зарегистрированного пользователя
                 response = self.client.get(f'/post/{post.pk}')
-                self.assertEqual(response.status_code, 200)  # ПОМЕНЯТЬ! на assertNotEqual после слива веток
-            elif post.status != 'deleted':
+                self.assertEqual(response.status_code, 404)
+            elif post.status == 'deleted':
                 # доступность чужой "удаленной статьи" для зарегистрированного пользователя
                 response = self.client.get(f'/post/{post.pk}')
-                self.assertEqual(response.status_code, 200)  # ПОМЕНЯТЬ! на assertNotEqual после слива веток
+                self.assertEqual(response.status_code, 404)
 
-            # доступность чужой опубликованной статьи для зарегистрированного пользователя
-            response = self.client.get(f'/post/{post.pk}')
-            self.assertEqual(response.status_code, 200)
+        self.client.logout()
+        self.client.login(username='user2_test', password='123test')
 
-        # выход из учетной записи
+        for post in Post.objects.all():
+            # доступность чужой статьи для модератора
+            if post.status == "draft":
+                response = self.client.get(f'/post/{post.pk}')
+                self.assertEqual(response.status_code, 200)
+            elif post.status == 'under_review':
+                response = self.client.get(f'/post/{post.pk}')
+                self.assertEqual(response.status_code, 200)
+            elif post.status == 'deleted':
+                response = self.client.get(f'/post/{post.pk}')
+                self.assertEqual(response.status_code, 404)
+
         self.client.logout()
 
         # доступность админки для не зарегистрированного пользователя
@@ -80,6 +94,7 @@ class TestAuthappSmoke(TestCase):  # в .env DEBUG=False
         # доступность аккаунта для не зарегистрированного пользователя
         response = self.client.get(f'/account/users/{self.user.username}/')
         self.assertNotEqual(response.status_code, 200)
+
 
     def tearDown(self):
         call_command('sqlsequencereset', 'mainapp', 'authapp')

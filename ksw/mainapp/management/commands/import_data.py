@@ -42,24 +42,24 @@ class Command(BaseCommand):
 
             if data.get('statuses'):
                 for status in data['statuses']:
-                    self.save_object(*StatusArticle.objects.get_or_create(**status))
+                    self.print_creation_result(*StatusArticle.objects.get_or_create(**status))
 
             if data.get('categories'):
                 for category in data['categories']:
-                    self.save_object(*Category.objects.get_or_create(**category))
+                    self.print_creation_result(*Category.objects.get_or_create(**category))
 
             if data.get('posts'):
                 for post in data['posts']:
                     post['category'] = Category.objects.get(pk=post['category'])
                     post['status'] = StatusArticle.objects.get(pk=post['status'])
                     post['author'] = WriterUser.objects.get(username=post['author'])
-                    self.save_object(*Post.objects.get_or_create(**post))
+                    self.print_creation_result(*Post.objects.get_or_create(**post))
 
             if data.get('comments'):
                 for comment in data['comments']:
                     comment['content_type'] = ContentType.objects.get(model=comment['content_type_name'])
                     del comment['content_type_name']
-                    self.save_object(*Comment.objects.get_or_create(**comment))
+                    self.print_creation_result(*Comment.objects.get_or_create(**comment))
 
             # Create views, bookmarks and likes for random posts and comments
             bookmarks = []
@@ -91,9 +91,8 @@ class Command(BaseCommand):
             print(str(IOError))
             return
 
-    def save_object(self, obj: object, is_created: bool = None):
+    def print_creation_result(self, obj: object, is_created: bool = None):
         if is_created:
-            obj.save()
             print(f'** New {type(obj).__name__} with id {obj.id} created **')
         else:
             print(f'** {type(obj).__name__} with id {obj.id} already exists **')

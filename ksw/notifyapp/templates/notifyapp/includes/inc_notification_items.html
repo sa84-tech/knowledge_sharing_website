@@ -1,0 +1,77 @@
+{% load static %}
+{% load main_extras %}
+
+{% for notification in notifications %}
+
+<li id="page-notification-{{ notification.id }}" class="bg-white flex-md-row mb-2 position-relative shadow">
+    {% if notification.level == 'danger' %}
+    <div class="bg-danger d-flex position-relative p-3" style="--bs-bg-opacity: .3;">
+    {% else %}
+    <div class="d-flex position-relative p-3">
+    {% endif %}
+
+        <img class="rounded-circle shadow-1-strong me-3"
+            src="{% get_avatar notification.actor %}" alt="avatar"
+            width="42" height="42" />
+        <div>
+            <span class="">
+                <a href="{{ notification.data.target_url }}"
+                   class="follow-notification-target text-decoration-none text-secondary"
+                   data-target="{{ notification.id }}">
+                {{ notification.description }}
+                </a>
+            </span>
+            <span class="text-muted text-small d-block">
+                <a href="{{ notification.data.target_url }}"
+                   class="follow-notification-target text-decoration-none text-muted"
+                   data-target="{{ notification.id }}">
+                {{ notification.timesince }} назад
+                </a>
+            </span>
+        </div>
+        {% if notification.unread %}
+        <span
+            role="button"
+            class="mark-read position-absolute bottom-0 end-0 me-2 mb-2"
+            data-target="{{ notification.id }}"
+        ><i class="fa-solid text-danger fa-xs fa-circle" style="pointer-events: none;"></i></span>
+        {% else %}
+        <span
+            role="button"
+            class="mark-unread position-absolute bottom-0 end-0 me-2 mb-2"
+            data-target="{{ notification.id }}"
+        ><i class="fa-regular text-danger fa-xs fa-circle" style="pointer-events: none;"></i></span>
+
+        {% endif %}
+        <span
+            role="button"
+            class="position-absolute top-0 end-0 p-1 bg-light me-2 mb-2 dropdown"
+            style="--bs-bg-opacity: 0;"
+            data-bs-toggle="dropdown" aria-expanded="false"
+        ><i class="fa-solid text-secondary fa-xl opacity-50 fa-ellipsis" style="pointer-events: none;"></i></span>
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="post_dropdown">
+            <li class="text-decoration-none">
+                <a
+                    href="{{ notification.data.target_url }}"
+                    class="follow-notification-target dropdown-item"
+                    data-target="{{ notification.id }}"
+                >Перейти</a>
+            </li>
+            <li class="text-decoration-none">
+                <a
+                    class="notification-delete dropdown-item"
+                    href="#"
+                    data-target="{{ notification.id }}"
+                >Удалить</a>
+            </li>
+        </ul>
+    </div>
+</li>
+
+{% empty %}
+<li>
+    <div class="p-3" style="--bs-bg-opacity: .1;">
+        У вас нет непрочитанных уведомлений.
+    </div>
+</li>
+{% endfor %}

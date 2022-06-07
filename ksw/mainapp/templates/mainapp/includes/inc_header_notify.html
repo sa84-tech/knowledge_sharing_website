@@ -1,0 +1,42 @@
+{% load static %}
+{% load notifications_tags %}
+{% load main_extras %}
+
+<div class="notification-block dropdown custom-dropdown ms-2 me-4">
+    <a
+        href="#"
+        class="d-flex align-items-center text-light text-decoration-none"
+        id="dropdownNotify"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+        data-bs-offset="0, 16"
+        style="min-height: 1.8rem;"
+    >
+        <i class="fa-regular fa-bell fa-xl"></i>
+        {% if user.notifications.unread %}
+            {% live_notify_badge badge_class="live_notify_badge ms-1 position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" %}
+        {% else %}
+            {% live_notify_badge badge_class="live_notify_badge ms-1 position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger visually-hidden" %}
+        {% endif %}
+    </a>
+    <div
+        class="dropdown-menu dropdown-menu-end px-3 shadow"
+        aria-labelledby="dropdownNotify"
+        style="position: absolute; min-width: 30rem;"
+    >
+        <div class="title-wrap d-flex align-items-center">
+            <h6 class="mb-0">УВЕДОМЛЕНИЯ</h6>
+            <a class="mark-all-as-read small mb-0 ms-auto" href="{% url 'notifications:mark_all_as_read' %}">Отметить все как прочитанные</a>
+{#            <a class="small mb-0 ms-auto" href="{% url 'notifications:mark_all_as_read' %}?next={{ request.path|urlencode }}">Отметить все как прочитанные</a> #}
+        </div>
+
+        <ul class="custom-notifications live_notify_list">
+            {% include 'mainapp/includes/inc_header_notification_items.html' %}
+        </ul>
+
+        <div class="text-center my-1">
+        <a href="{% url 'notifications:notification_page' %}" class="small">Посмотреть все</a>
+        </div>
+
+    </div>
+</div>

@@ -88,7 +88,7 @@
             </div>
             <div class="mb-2">
               <span class="author_info fw-bold">
-                {{ post.author.first_name|capfirst }} {{ post.author.last_name|capfirst }}
+                {{ post.author.full_name|title }}
                 <a href="#" class="p-0 text-decoration-none text-primary fw-normal">@{{ post.author.username }}</a>
               </span>
             </div>

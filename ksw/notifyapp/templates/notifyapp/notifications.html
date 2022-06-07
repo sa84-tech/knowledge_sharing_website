@@ -1,0 +1,56 @@
+{% extends 'notifyapp/base.html' %}
+{% load static %}
+{% load main_extras %}
+
+{% block content %}
+
+<style>
+    .settings .bg-primary {
+        background-color: #3B727D !important;
+    }
+    .btn-primary {
+        color: #fff;
+        background-color: #3B727D;
+        border-color: #3B727D;
+    }
+    .btn-primary:hover {
+        color: #fff;
+        background-color: #105D6C;
+        border-color: #105D6C;
+    }
+</style>
+
+<div class="settings container content_wrapper">
+    <div class="row pt-4">
+        <div class="col-lg-12 col-xl-9">
+
+            <div class="row g-0 bg-primary overflow-hidden flex-md-row h-md-250 position-relative shadow">
+                <div class="col p-3 text-light">
+                    <h1 id="" class="fw-bold">
+                        <i class="fa-solid fa-bell fa-xl me-3"></i>
+                        Уведомления
+                    </h1>
+                </div>
+            </div>
+            <div class="row g-0 bg-white overflow-hidden flex-md-row mb-1 h-md-250 position-relative shadow overflow-visible mb-2">
+                <div class="" role="presentation">
+                    {% comment %}
+                    {% include 'notifyapp/includes/inc_notification_filters.html' %}
+                    {% endcomment %}
+                </div>
+            </div>
+
+            <ul class="content-list p-0 list-unstyled">
+                {% include 'notifyapp/includes/inc_notification_items.html' %}
+            </ul>
+
+        </div>
+        {% include 'mainapp/includes/inc_sidebar.html' %}
+    </div>
+</div>
+
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'js/notification_page.js' %}"></script>
+{% endblock %}

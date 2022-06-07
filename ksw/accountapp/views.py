@@ -1,25 +1,27 @@
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import PasswordChangeView
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.template.loader import render_to_string
-from django.urls import reverse, reverse_lazy
+from django.urls import reverse_lazy
 from django.views.generic import TemplateView, FormView
 
+from mainapp.services.queries import get_user_rating, get_user_activity
 from .forms import PostForm
 from .services import post_save, get_filtered_posts, get_filtered_comments, get_filtered_bookmarks, check_user
 from authapp.forms import WriterUserEditForm, WriterUserProfileForm, PasswordChangeForm, EmailChangeForm
 from authapp.models import WriterUser
 from authapp.forms import PassChangeForm
-from mainapp.models import Post, Comment, StatusArticle
+from mainapp.models import Post, StatusArticle
 
 
 @login_required
 def account(request, username):
     user = get_object_or_404(WriterUser, username=username)
-    return render(request, "accountapp/account.html", {'target_user': user})
+    user_info = {'rating': get_user_rating(user),
+                 'activity': get_user_activity(user)}
+    return render(request, "accountapp/account.html", {'target_user': user, 'user_info': user_info})
 
 
 @login_required
@@ -44,7 +46,6 @@ def account_comments(request, username):
     if request.is_ajax():
         user = get_object_or_404(WriterUser, username=username)
         comments = get_filtered_comments(request, user)
-        print('*** COMMENT', comments[0])
         context = {'comments': comments, 'target_user': user}
 
         result = render_to_string(

@@ -1,0 +1,50 @@
+{% load main_extras %}
+
+{% if notifications %}
+
+{% for notify in notifications %}
+<li
+    id="header-notification-{{ notify.id }}"
+    {% if notify.level == 'danger' %}
+    class="unread bg-warning" style="--bs-bg-opacity: .2;"
+    {% else %}
+    class="unread bg-primary" style="--bs-bg-opacity: .1;"
+    {% endif %}
+>
+    <div class="d-flex position-relative p-3">
+        <img class="rounded-circle shadow-1-strong me-3"
+            src="{% get_avatar notify.actor %}" alt="avatar"
+            width="42" height="42" />
+        <div>
+            <span class="text">
+                <a href="{{ notify.data.target_url }}"
+                   class="follow-notification-target text-decoration-none text-muted"
+                   data-target="{{ notify.id }}">
+                {{ notify.description }}
+                </a>
+            </span>
+        </div>
+        {% if notify.unread %}
+        <span
+            role="button"
+            class="mark-read position-absolute bottom-0 end-0 me-2 mb-2"
+            data-target="{{ notify.id }}"
+        ><i class="fa-solid text-danger fa-2xs fa-circle" style="pointer-events: none;"></i></span>
+        {% else %}
+        <span
+            role="button"
+            class="mark-unread position-absolute bottom-0 end-0 me-2 mb-2"
+            data-target="{{ notify.id }}"
+        ><i class="fa-regular text-danger fa-2xs fa-circle" style="pointer-events: none;"></i></span>
+        {% endif %}
+    </div>
+
+</li>
+{% endfor %}
+{% else %}
+<li>
+    <div class="p-3" style="--bs-bg-opacity: .1;">
+        У вас нет непрочитанных уведомлений.
+    </div>
+</li>
+{% endif %}

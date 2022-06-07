@@ -1,31 +1,25 @@
 from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import get_object_or_404
 
-from authapp.models import WriterUser, WriterUserProfile
+from authapp.models import WriterUser
 from mainapp.models import Post, Like, Comment, View
-from mainapp.services.helpers import get_cti_404
 from accountapp.models import Bookmark
 
 
 def create_comment(user: WriterUser, post: Post, target_id: int, target_type: str, comment_body: str) -> Comment:
-    """ Создает и сохраняет новый комментарий """
+    """ Создает новый комментарий """
     comment = {
         'post': post,
         'object_id': target_id,
         'author': user,
         'body': comment_body,
-        'content_type_id': get_cti_404(target_type)
+        'content_type_id': get_object_or_404(ContentType, model=target_type).id
     }
 
     new_comment = Comment(**comment)
     new_comment.save()
 
     return new_comment
-
-
-def get_user_rating(user):
-    user_profile = get_object_or_404(WriterUserProfile, user=user.pk)
-    return user_profile.rating
 
 
 def toggle_content_object(user: WriterUser, target_type: str, target_id: str, model_name: str) -> int:
@@ -46,7 +40,7 @@ def toggle_content_object(user: WriterUser, target_type: str, target_id: str, mo
     return target_obj.total_bookmarks if model_name == 'bookmark' else target_obj.total_likes
 
 
-def create_post_view(post: Post, user: WriterUser) -> None:
+def create_post_view(post: Post, user) -> None:
     """ Создает объект просмотра """
 
     if user.is_authenticated:
@@ -60,3 +54,22 @@ def create_post_view(post: Post, user: WriterUser) -> None:
 
         if is_created:
             new_view.save()
+
+
+def get_user_activity(user):
+    return 2 * Like.objects.filter(author=user).count() + \
+           5 * Comment.objects.filter(author=user).count() + \
+           10 * Post.objects.filter(author=user).count()
+
+
+def get_user_rating(user):
+    idx = 0
+    for post in Post.objects.filter(author=user, status__name='published'):
+        idx += post.like.count() + post.comment.count()
+    return idx
+
+
+def get_most_rated():
+    users = [{'user': user, 'rating': get_user_rating(user)} for user in WriterUser.objects.all()]
+    max_rated_users = sorted(users, key=lambda x: x['rating'], reverse=True)[:4]
+    return [x['user'] for x in max_rated_users]

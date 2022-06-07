@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'notifications',
     'mainapp',
     'authapp',
     'ckeditor',
@@ -54,6 +55,7 @@ INSTALLED_APPS = [
     'social_django',
     'django_countries',
     'gradeapp',
+    'notifyapp',
 ]
 
 AUTHENTICATION_BACKENDS = (
@@ -93,6 +95,7 @@ TEMPLATES = [
                 'mainapp.context_processors.menu',
                 'mainapp.context_processors.top4',
                 'mainapp.context_processors.archive_peroids',
+                'notifyapp.context_processors.get_user_notifications',
             ],
         },
     },
@@ -100,6 +103,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'ksw.wsgi.application'
 
+DJANGO_NOTIFICATIONS_CONFIG = {'USE_JSONFIELD': True}
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
