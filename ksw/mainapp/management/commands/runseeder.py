@@ -1,5 +1,6 @@
 import json
 import os
+from getpass import getpass
 from random import getrandbits
 
 from django.contrib.contenttypes.models import ContentType
@@ -14,8 +15,16 @@ from accountapp.models import Bookmark
 
 env = environ.Env()
 environ.Env.read_env()
-ADM_PASSWD = env('INIT_ADM_PSWD')
-USR_PASSWD = env('INIT_USRS_PSWD')
+
+try:
+    ADM_PASSWD = env('INIT_ADM_PSWD')
+except environ.ImproperlyConfigured:
+    ADM_PASSWD = getpass('Введите пароль для администратора: ')
+
+try:
+    USR_PASSWD = env('INIT_USRS_PSWD')
+except environ.ImproperlyConfigured:
+    USR_PASSWD = getpass('Введите пароль для пользователей: ')
 
 
 class Command(BaseCommand):
