@@ -4,6 +4,8 @@ from mainapp.models import Post
 
 
 class PostForm(forms.ModelForm):
+    """Форма. Создание статьи"""
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['category'].empty_label = "Категория не выбрана"

@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import account, post_create, post_update, post_delete, account_posts, account_comments, \
-    account_bookmarks, SettingsView, UserProfileView, PassChangeView, EmailChangeView, settings_success
+    account_bookmarks, SettingsView, UserProfileView, PassChangeView, EmailChangeView
 
 app_name = 'accountapp'
 

@@ -1,9 +1,10 @@
 from functools import wraps
-from django.core.exceptions import PermissionDenied
 from django.http import JsonResponse
 
 
 def require_ajax_and_auth(view):
+    """Проверяет, что запрос AJAX и пользователь, сделавший запрос, прошел аутентификацию"""
+
     @wraps(view)
     def _wrapped_view(request, *args, **kwargs):
         if not request.is_ajax():

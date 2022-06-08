@@ -1,4 +1,4 @@
-from django.contrib import auth, messages
+from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import PasswordChangeView, PasswordResetView
 from django.http import HttpResponseRedirect
@@ -13,6 +13,8 @@ from .services.queries import make_user_active
 
 
 def login(request):
+    """Представление. Страница авторизации"""
+
     title = 'вход'
     login_form = WriterUserLoginForm(data=request.POST or None)
 
@@ -40,11 +42,14 @@ def login(request):
 
 
 def logout(request):
+    """Представление. Выход из аккаунта"""
+
     auth.logout(request)
     return HttpResponseRedirect(reverse('index_page'))
 
 
 def register(request):
+    """Представление. Страница регистрации"""
 
     register_form = WriterUserRegisterForm(data=request.POST or None)
 
@@ -70,6 +75,8 @@ def register(request):
 
 
 def edit(request):
+    """Представление. Страница настроек пользователя"""
+
     title = 'профиль'
 
     if request.method == 'POST':
@@ -90,6 +97,8 @@ def edit(request):
 
 
 def verify(request, email, activation_key):
+    """Представление. Страница с подтверждением регистрации"""
+
     context = {'title': 'Активация аккаунта'}
     try:
         user = get_object_or_404(WriterUser, email=email)
@@ -110,11 +119,15 @@ def verify(request, email, activation_key):
 
 
 class PasswordChangeView(PasswordChangeView):
+    """Представление. Страница смены пароля"""
+
     from_class = PassChangeForm
     success_url = reverse_lazy('auth:password_success')
 
 
 class PassResetView(PasswordResetView):
+    """Представление. Страница сброса пароля"""
+
     form_class = PassResetForm
     template_name = 'authapp/password_reset/password_reset.html'
     subject_template_name = 'authapp/password_reset/password_reset_subject.txt'
@@ -123,11 +136,15 @@ class PassResetView(PasswordResetView):
 
 
 def password_success(request):
+    """Представление. Страница с результатом процедуры сброса пароля"""
+
     return render(request, 'authapp/password_success.html', {})
 
 
 @login_required
 def email_change(request):
+    """Представление. Страница для смены Email"""
+
     if request.method == 'GET':
         form = EmailChangeForm(user=request.user)
     elif request.method == 'POST':
@@ -139,4 +156,6 @@ def email_change(request):
 
 
 def email_success(request):
+    """Представление. Страница с результатами процедуры сброса Email"""
+
     return render(request, 'authapp/email_success.html', {})

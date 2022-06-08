@@ -8,6 +8,7 @@ from accountapp.models import Bookmark
 
 def create_comment(user: WriterUser, post: Post, target_id: int, target_type: str, comment_body: str) -> Comment:
     """ Создает новый комментарий """
+
     comment = {
         'post': post,
         'object_id': target_id,
@@ -24,8 +25,8 @@ def create_comment(user: WriterUser, post: Post, target_id: int, target_type: st
 
 def toggle_content_object(user: WriterUser, target_type: str, target_id: str, model_name: str) -> int:
     """Создает новый объект (тип Like/Bookmark) для статьи или комментария,
-       если объект уже существует, удаляет его.
-    """
+       если объект уже существует, удаляет его."""
+
     models = {'like': Like, 'bookmark': Bookmark}
 
     target_ct = get_object_or_404(ContentType, model=target_type)

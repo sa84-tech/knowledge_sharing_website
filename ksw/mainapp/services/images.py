@@ -1,10 +1,9 @@
 from PIL import Image
 
 
-def crop_center(pil_img, crop_width: int, crop_height: int) -> Image:
-    """
-    Функция обрезает изображение по центру
-    """
+def crop_center(pil_img: Image, crop_width: int, crop_height: int) -> Image:
+    """Обрезает изображение по центру"""
+
     img_width, img_height = pil_img.size
     return pil_img.crop(((img_width - crop_width) // 2,
                          (img_height - crop_height) // 2,
@@ -13,9 +12,8 @@ def crop_center(pil_img, crop_width: int, crop_height: int) -> Image:
 
 
 def crop_square(image_path: str, square_size: int = 200) -> Image:
-    """
-    Функция вырезает квадратное изображение и сжимает его до указанного размера
-    """
+    """Вырезает квадратное изображение и сжимает его до указанного размера"""
+
     pil_img = Image.open(image_path)
 
     if pil_img.height != pil_img.width:
@@ -27,9 +25,8 @@ def crop_square(image_path: str, square_size: int = 200) -> Image:
 
 
 def crop_rect(image_path: str, width_ratio: int, rect_height: int = 300) -> Image:
-    """
-    Функция вырезает прямоугольное изображение и сжимает его до указанного размера
-    """
+    """Вырезает прямоугольное изображение и сжимает его до указанного размера"""
+
     pil_img = Image.open(image_path)
     new_img_width = int(pil_img.height * width_ratio)
 

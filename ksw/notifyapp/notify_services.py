@@ -10,18 +10,21 @@ from ksw.settings import MEDIA_URL
 
 def _get_comment_url(comment) -> str:
     """Возвращает url старницы на которой оставлен комментарий comment"""
+
     post_url = reverse("post_page", kwargs={"pk": comment.post.id})
     return f'{post_url}#comment-{comment.id}'
 
 
 def _get_post_url(post) -> str:
     """Возвращает url старницы на которой оставлен комментарий comment"""
+
     post_url = reverse("post_page", kwargs={"pk": post.id})
     return post_url
 
 
 def comment_signal_handler(sender, instance, created, **kwargs) -> None:
     """Обработчик события сохранения комментария. Создает объект Notification """
+
     target = instance.content_object
     sender = instance.author
     recipient = instance.content_object.author
@@ -48,6 +51,7 @@ def comment_signal_handler(sender, instance, created, **kwargs) -> None:
 
 def post_signal_handler(sender, instance, created, **kwargs) -> None:
     """Обработчик события сохранения Статьи (Post). Создает объект Notification """
+
     if instance.status.name == 'under_review':
         sender = instance.author
         avatar = instance.author.avatar.url if instance.author.avatar else f'{MEDIA_URL}seeder/users/no_avatar.jpg'
@@ -60,6 +64,7 @@ def post_signal_handler(sender, instance, created, **kwargs) -> None:
 
 def mark_notification_as_read(user: WriterUser, notification_id: int) -> None:
     """Меняет состояние уведомления на Прочитано"""
+
     notification = Notification.objects.get(recipient=user, id=notification_id)
     if notification:
         notification.mark_as_read()
@@ -67,6 +72,7 @@ def mark_notification_as_read(user: WriterUser, notification_id: int) -> None:
 
 def get_notification_list(notifications: list[Notification]) -> list[dict]:
     """Возвращает отформатировонный список уведомлений"""
+
     notification_list = []
     for notification in notifications:
         struct = model_to_dict(notification)

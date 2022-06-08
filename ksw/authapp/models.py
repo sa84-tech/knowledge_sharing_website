@@ -1,4 +1,4 @@
-from datetime import timedelta, datetime
+from datetime import timedelta
 
 from django.contrib.auth.models import AbstractUser
 from django.db import models
@@ -7,14 +7,14 @@ from django.dispatch import receiver
 from django.utils.timezone import now
 from django_countries.fields import CountryField
 
-# from mainapp.models import Like, Comment, Post
 from mainapp.services.images import crop_square
-# from authapp.services.queries import get_user_rating, get_user_activity
 
 AVATAR_SIZE = 200
 
 
 class WriterUser(AbstractUser):
+    """Модель пользователя"""
+
     avatar = models.ImageField(upload_to='users_avatars', blank=True)
     email = models.EmailField(verbose_name='email', blank=False, unique=True)
     birthday = models.DateField(blank=True, null=True)
@@ -48,6 +48,8 @@ class WriterUser(AbstractUser):
 
 
 class WriterUserProfile(models.Model):
+    """Мадель профиля пользователя"""
+
     MALE = 'M'
     FEMALE = 'W'
 

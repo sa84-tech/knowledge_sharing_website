@@ -1,7 +1,7 @@
 import json
 
 from django.db.models import Q
-from django.http import JsonResponse, Http404
+from django.http import JsonResponse, Http404, HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator
 from django.template.loader import render_to_string
@@ -10,7 +10,7 @@ from accountapp.services import check_user
 from authapp.models import WriterUserProfile
 from gradeapp.grade_services import get_user_rating, get_user_activity
 from .forms import CommentForm, ContentForm
-from .models import Post, Comment
+from .models import Post
 from .services.decorators import require_ajax_and_auth
 from .services.queries import create_comment, create_post_view, toggle_content_object
 
@@ -18,8 +18,9 @@ from .services.queries import create_comment, create_post_view, toggle_content_o
 POSTS_PER_PAGE = 5
 
 
-def index_page(request, category_id=0, slug=None):
-    """Открыть Главную страницу"""
+def index_page(request, category_id=0, slug=None) -> HttpResponse:
+    """Представление. Главная страница"""
+
     posts = Post.objects.filter(status__name='published')
     if slug:
         posts = posts.filter(category__slug=slug)
@@ -37,8 +38,9 @@ def index_page(request, category_id=0, slug=None):
     return render(request, "mainapp/index.html", context)
 
 
-def post_page(request, pk):
-    """Открыть страницу статьи"""
+def post_page(request, pk: int) -> HttpResponse:
+    """Представление. Страница статьи"""
+
     post = get_object_or_404(Post, pk=pk)
 
     if post.status.name != 'published' and not check_user(request, post.author):
@@ -58,8 +60,8 @@ def post_page(request, pk):
 
 
 @require_ajax_and_auth
-def add_comment_ajax(request):
-    """Создать комментарий"""
+def add_comment_ajax(request) -> JsonResponse:
+    """Представление AJAX. Создать комментарий"""
 
     form = CommentForm(json.loads(request.body))
     if form.is_valid():
@@ -84,7 +86,7 @@ def add_comment_ajax(request):
 
 @require_ajax_and_auth
 def add_mark_ajax(request):
-    """Создать метку (Лайк, Закладка)"""
+    """Представление AJAX. Создать метку (Лайк, Закладка)"""
 
     form = ContentForm(json.loads(request.body))
 
@@ -100,8 +102,8 @@ def add_mark_ajax(request):
 
 
 def search(request):
+    """Представление. Страница поиска"""
 
-    """Открыть страницу поиска"""
     query = request.GET.get('q')
     sort = request.GET.get('sorting', '-created')
     if sort not in ['created', '-created', 'topic']:
@@ -119,13 +121,13 @@ def search(request):
 
 
 def help_doc(request):
-    """Открыть страницу Помощь"""
+    """Представление. Страница помощи"""
+
     return render(request, "mainapp/help.html")
 
 
-def archive_filter(request, year, month):
-    """Принимает число год и месяц с кнопок блока архива на боковой панели сайта,
-    возвращает список всех статей, отсортированных по дате создания, в диапазоне месяца и выбранного года"""
+def archive_filter(request, year: int, month: int) -> HttpResponse:
+    """Представление. Главная страница с списком статей за определенный период"""
 
     posts = Post.objects.filter(status__name='published',
                                 created__year=year,

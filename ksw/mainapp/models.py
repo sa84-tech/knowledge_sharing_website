@@ -14,6 +14,8 @@ WIDTH_TO_HEIGHT_RATIO = 0.72
 
 
 class Category(models.Model):
+    """Модель для категории статьи"""
+
     name = models.CharField(
         verbose_name='имя категории',
         max_length=64,
@@ -43,6 +45,8 @@ class Category(models.Model):
 
 
 class StatusArticle(models.Model):
+    """Модель статуса статьи"""
+
     name = models.CharField(
         verbose_name='название статуса',
         max_length=64,
@@ -61,6 +65,8 @@ class StatusArticle(models.Model):
 
 
 class Like(models.Model):
+    """Модель лайка"""
+
     content_type = models.ForeignKey(
         ContentType,
         on_delete=models.CASCADE,
@@ -82,6 +88,8 @@ class Like(models.Model):
 
 
 class View(models.Model):
+    """Модель просмотра"""
+
     content_type = models.ForeignKey(
         ContentType,
         on_delete=models.CASCADE,
@@ -102,6 +110,8 @@ class View(models.Model):
 
 
 class Comment(models.Model):
+    """Модель комментария"""
+
     post = models.ForeignKey('Post', on_delete=models.CASCADE, related_name="comments")
     body = models.TextField(
         verbose_name='комментарий',
@@ -165,6 +175,8 @@ class Comment(models.Model):
 
 
 class Post(models.Model):
+    """Модель статьи"""
+
     topic = models.CharField(
         verbose_name='название статьи',
         max_length=200,
