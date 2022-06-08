@@ -1,14 +1,17 @@
+import hashlib
+import random
+
+from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, UserChangeForm, PasswordChangeForm, \
     PasswordResetForm
 from django_countries.fields import CountryField
 
 from .models import WriterUser, WriterUserProfile
-from django import forms
-import hashlib
-import random
 
 
 class WriterUserLoginForm(AuthenticationForm):
+    """Форма авторизации пользователя"""
+
     class Meta:
         model = WriterUser
         fields = ('username', 'password')
@@ -20,6 +23,8 @@ class WriterUserLoginForm(AuthenticationForm):
 
 
 class WriterUserRegisterForm(UserCreationForm):
+    """Форма регистрации пользователя"""
+
     class Meta:
         model = WriterUser
         fields = ('username', 'email', 'password1', 'password2')
@@ -45,6 +50,8 @@ class DateInput(forms.DateInput):
 
 
 class WriterUserEditForm(UserChangeForm):
+    """Форма редактирования информации о пользователе"""
+
     class Meta:
         model = WriterUser
         fields = ('username', 'first_name', 'last_name', 'avatar', 'birthday')
@@ -66,6 +73,7 @@ class WriterUserEditForm(UserChangeForm):
 
 
 class WriterUserProfileForm(forms.ModelForm):
+    """Форма редактирования профиля пользователя"""
 
     class Meta:
         model = WriterUserProfile
@@ -80,6 +88,8 @@ class WriterUserProfileForm(forms.ModelForm):
 
 
 class PassChangeForm(PasswordChangeForm):
+    """Форма смены пароля"""
+
     class Meta:
         model = WriterUser
 
@@ -91,6 +101,8 @@ class PassChangeForm(PasswordChangeForm):
 
 
 class PassResetForm(PasswordResetForm):
+    """Форма сброса пароля"""
+
     def __init__(self, *args, **kwargs):
         super(PassResetForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
@@ -99,6 +111,8 @@ class PassResetForm(PasswordResetForm):
 
 
 class EmailChangeForm(forms.Form):
+    """Форма смены Email"""
+
     error_messages = {
         'email_mismatch': "Два поля адреса электронной почты не совпадают.",
         'email_inuse': "Данный адрес электронной почты уже используется. Введите другой адрес",

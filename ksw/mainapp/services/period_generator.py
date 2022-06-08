@@ -1,10 +1,13 @@
-import datetime
-import dateutil.relativedelta
 import calendar
+import datetime
 import locale
 
+import dateutil.relativedelta
 
-def period_generator(request):
+
+def period_generator(request) -> list:
+    """Возвращает список временных интервалов Месяц, Год"""
+
     today = datetime.date.today()
     periods = []
     locale.setlocale(locale.LC_ALL, '')  # перевод названий месяцев на русский язык

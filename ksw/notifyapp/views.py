@@ -12,7 +12,8 @@ from notifyapp.notify_services import mark_notification_as_read, get_notificatio
 
 
 class NotificationsViewList(ListView):
-    """Страница с списком уведомлений пользователя"""
+    """Представление. Страница с списком уведомлений пользователя"""
+
     template_name = 'notifyapp/notifications.html'
     context_object_name = 'notifications'
 
@@ -26,7 +27,9 @@ class NotificationsViewList(ListView):
 
 
 @require_ajax_and_auth
-def mark_all_as_read_ajax(request):
+def mark_all_as_read_ajax(request) -> JsonResponse:
+    """Представление AJAX. Страница с списком уведомлений пользователя"""
+
     request.user.notifications.mark_all_as_read()
     list_html = render_to_string(
         'notifyapp/includes/inc_notification_items.html',
@@ -36,8 +39,8 @@ def mark_all_as_read_ajax(request):
 
 
 @require_ajax_and_auth
-def mark_as_read_ajax(request):
-    """Меняет состояние уведомления на Прочитано"""
+def mark_as_read_ajax(request) -> JsonResponse:
+    """Представление AJAX. Меняет состояние уведомления на Прочитано"""
 
     notification_id = request.GET.get('id')
     try:
@@ -48,8 +51,8 @@ def mark_as_read_ajax(request):
 
 
 @require_ajax_and_auth
-def delete_ajax(request):
-    """Меняет состояние уведомления на Прочитано"""
+def delete_ajax(request) -> JsonResponse:
+    """Представление AJAX. Удаляет уведомление"""
 
     notification_id = request.GET.get('id')
     notification = get_object_or_404(Notification, recipient=request.user, id=notification_id)
@@ -58,8 +61,8 @@ def delete_ajax(request):
 
 
 @require_ajax_and_auth
-def get_unread_notification_list(request):
-    """Получить список непрочитанных уведомлений пользователя request.user"""
+def get_unread_notification_list(request) -> JsonResponse:
+    """Представление AJAX. Возвращает список непрочитанных уведомлений пользователя"""
 
     num_to_fetch = 50
     template = 'mainapp/includes/inc_header_notification_items.html'

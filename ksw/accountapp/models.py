@@ -6,6 +6,7 @@ from django.conf import settings
 
 class Bookmark(models.Model):
     """Модель закладки"""
+
     content_type = models.ForeignKey(
         ContentType,
         on_delete=models.CASCADE,
